@@ -135,12 +135,12 @@
 #define cb_UINT8_MAX    ((cb_uint8)0xff)
 #define cb_UINT16_MAX   ((cb_uint16)0xffff)
 #define cb_UINT32_MAX   ((cb_uint32)0xffffffff)
-#define cb_INT8_MAX     ((cb_uint8)0x7f)
-#define cb_INT16_MAX    ((cb_uint16)0x7fff)
-#define cb_INT32_MAX    ((cb_uint32)0x7fffffff)
-#define cb_INT8_MIN     ((cb_uint8)0x80)
-#define cb_INT16_MIN    ((cb_uint16)0x8000)
-#define cb_INT32_MIN    ((cb_uint32)0x80000000)
+#define cb_INT8_MAX     ((cb_int8)0x7f)
+#define cb_INT16_MAX    ((cb_int16)0x7fff)
+#define cb_INT32_MAX    ((cb_int32)0x7fffffff)
+#define cb_INT8_MIN     ((cb_int8)0x80)
+#define cb_INT16_MIN    ((cb_int16)0x8000)
+#define cb_INT32_MIN    ((cb_int32)0x80000000)
 
 /* Packed struct default defines */
 #ifndef cb_PACKED_STRUCT_ATTR_INLINE_POST

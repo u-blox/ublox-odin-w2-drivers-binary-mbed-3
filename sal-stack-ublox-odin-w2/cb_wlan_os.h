@@ -110,6 +110,8 @@ extern void cbWLAN_OS_SL_acquire(cbWLAN_OS_REPrivHandle *hWlan);
  */
 extern void cbWLAN_OS_SL_release(cbWLAN_OS_REPrivHandle *hWlan);
 
+void cbWLAN_OS_ISRHandler(void* hCallback);
+
 extern void cbWLAN_OS_interrupt();
 
 #endif /* _CB_WLAN_OS_H_ */

@@ -179,6 +179,12 @@ extern void cbBM_init(
     cbBM_InitComplete initCompleteCallback);
 
 /**
+ * This function sets all default parameters for LE. 
+ * This function needs to be called before the cbBM_init.
+*/
+extern void cbBM_setDefaultValuesLeParams(void);
+
+/**
  * Get the current Bluetooth address of the device.
  * @param pAddress Pointer to return variable.
  * @return if the operation is successful cbBM_OK is returned.
@@ -308,7 +314,7 @@ extern cb_int32 cbBM_inquiryCancel(void);
  * Perform a remote name request for Bluetooth Classic.
  * @param pAddress          Pointer to address of remote device.
  * @param clockOffset       Clock offset. Can be found in inquiry response.
- * @param pageTimeout       Page timeout in slots (Length of connection attempt).
+ * @param pageTimeout       Page timeout in ms (Length of connection attempt).
  * @param remoteNameCallb   Callback used to notify the the completion of the 
  *                          name request.
  * @return If the operation is successfully initiated cbBM_OK is returned.
@@ -450,7 +456,7 @@ extern cb_int32 cbBM_getAdvData(
  * @param   linklossTmo        Default link loss timeout
  * @return  cbBM_OK is returned on success.
  */
- cb_int32 cbBM_setConnectionParams(
+ cb_int32 cbBM_setAutoConnectionParams(
      cb_uint32 createConnectionTimeout,
      cb_uint16 connIntervalMin,
      cb_uint16 connIntervalMax,
@@ -466,7 +472,7 @@ extern cb_int32 cbBM_getAdvData(
  * @param   pLinklossTmo        Default link loss timeout
  * @return  cbBM_OK is returned on success.
  */
- cb_int32 cbBM_getConnectionParams(
+ cb_int32 cbBM_getAutoConnectionParams(
      cb_uint32 *pCreateConnectionTimeout,
      cb_uint16 *pConnIntervalMin,
      cb_uint16 *pConnIntervalMax,
@@ -474,51 +480,14 @@ extern cb_int32 cbBM_getAdvData(
      cb_uint16 *pLinklossTmo);
 
 /**
- * Set Bluetooth Low Energy scan parameters. The scan parameters 
- * are only used when the device is acting Bluetooth Low Energy central.
- * Scan is enabled during device discovery, connection establishment and 
- * when auto connect is enabled. Setting the scan parameters will not 
- * affect an ongoing scan but the next scan started.
- * @param   scanInterval        Scan interval For 100% duty cycle use scan interval 16 and scan window 16
- * @param   scanWindow          Scan window
- * @return  cbBM_OK is returned on success.
- */
-extern cb_int32 cbBM_setScanParams(
-    cb_uint16 scanInterval,
-    cb_uint16 scanWindow);
-
-/**
  * Get Bluetooth Low Energy scan parameters.
  * @param   pScanInterval        Scan interval
  * @param   pScanWindow          Scan window
  * @return  cbBM_OK is returned on success.
  */
-extern cb_int32 cbBM_getScanParams(
+extern cb_int32 cbBM_getAutoconnScanParams(
     cb_uint16 *pScanInterval,
     cb_uint16 *pScanWindow);
-
-/**
- * Set Bluetooth Low Energy advertising interval.
- * Time = N * 0.625 msec, Time Range: 20 ms to 10.24 sec
- * The advertising interval is only used when the device is 
- * acting Bluetooth Low Energy peripheral.
- * @param   minAdvInterval      Minimal advertising interval
- * @param   maxAdvInterval      Maximal advertising interval
- * @return  cbBM_OK is returned on success.
- */
-extern cb_int32 cbBM_setAdvertisingInterval(
-    cb_uint16 minAdvInterval,
-    cb_uint16 maxAdvInterval);
-
-/**
- * Get Bluetooth Low Energy advertising interval.
- * @param   pMinAdvInterval      Minimal advertising interval
- * @param   pMaxAdvInterval      Maximal advertising interval
- * @return  cbBM_OK is returned on success.
- */
-extern cb_int32 cbBM_getAdvertisingInterval(
-    cb_uint16 *pMinAdvInterval,
-    cb_uint16 *pMaxAdvInterval);
 
 /**
  * Start an Bluetooth Low Energy device discovery.
@@ -550,9 +519,7 @@ extern cb_int32 cbBM_deviceDiscoveryLeCancel(void);
  *                              name request.
  * @return If the operation is successfully initiated cbBM_OK is returned.
  */
-extern cb_int32 cbBM_remoteNameLe(
-                                  TBdAddr *pAddress,
-                                  cb_uint32 createConnectionTmo,
+extern cb_int32 cbBM_remoteNameLe(TBdAddr *pAddress,
                                   cbBM_RemoteNameCallback remoteNameCallback);
 
 
@@ -577,4 +544,79 @@ extern cb_int8 cbBM_getMaxTxPower(void);
  * @cbBM_LinkQualityCallback is used to provide result.
  */
 extern cb_int32 cbBM_GetLinkQuality(TBdAddr bdAddr,cbBM_LinkQualityCallback  linkQualityCallback);
+
+/*
+* Read the connection parameters for Bond.
+* @return cbCMLE_AclParamsLe pointer to values.
+*/
+void cbBM_getBondParameters(TAclParamsLe* bondParams);
+/*
+* Read the connection parameters for connection.
+* @return cbCMLE_AclParamsLe pointer to values.
+*/
+void cbBM_getConnectParameters(TAclParamsLe* aclParams);
+/*
+* Read the connection parameters for remote name request.
+* @return cbCMLE_AclParamsLe pointer to values.
+*/
+void cbBM_getRemoteNameReqParameters(TAclParamsLe* aclParams);
+
+/*
+* Sets the LE parameter.
+* @newValue new parameter value.
+*/
+extern cb_uint32 cbBM_setAdvertisingIntervalMin(cb_uint32 newValue);
+extern cb_uint32 cbBM_setAdvertisingIntervalMax(cb_uint32 newValue);
+extern cb_uint32 cbBM_setAdvChannelmap(cb_uint32 newValue);
+extern cb_uint32 cbBM_setConnectConnIntervalMin(cb_uint32 newValue);
+extern cb_uint32 cbBM_setConnectConnIntervalMax(cb_uint32 newValue);
+extern cb_uint32 cbBM_setConnectConnLatency(cb_uint32 newValue);
+extern cb_uint32 cbBM_setConnectLinklossTmo(cb_uint32 newValue);
+extern cb_uint32 cbBM_setConnectCreateConnTmo(cb_uint32 newValue);
+extern cb_uint32 cbBM_setConnectScanInterval(cb_uint32 newValue);
+extern cb_uint32 cbBM_setConnectScanWindow(cb_uint32 newValue);
+extern cb_uint32 cbBM_setBondConnIntervalMin(cb_uint32 newValue);
+extern cb_uint32 cbBM_setBondConnIntervalMax(cb_uint32 newValue);
+extern cb_uint32 cbBM_setBondConnLatency(cb_uint32 newValue);
+extern cb_uint32 cbBM_setBondLinklossTmo(cb_uint32 newValue);
+extern cb_uint32 cbBM_setBondCreateConnTmo(cb_uint32 newValue);
+extern cb_uint32 cbBM_setBondScanInterval(cb_uint32 newValue);
+extern cb_uint32 cbBM_setBondScanWindow(cb_uint32 newValue);
+extern cb_uint32 cbBM_setRemoteNameConnIntervalMin(cb_uint32 newValue);
+extern cb_uint32 cbBM_setRemoteNameConnIntervalMax(cb_uint32 newValue);
+extern cb_uint32 cbBM_setRemoteNameConnLatency(cb_uint32 newValue);
+extern cb_uint32 cbBM_setRemoteNameLinklossTmo(cb_uint32 newValue);
+extern cb_uint32 cbBM_setRemoteNameCreateConnTmo(cb_uint32 newValue);
+extern cb_uint32 cbBM_setRemoteNameScanInterval(cb_uint32 newValue);
+extern cb_uint32 cbBM_setRemoteNameScanWindow(cb_uint32 newValue);
+
+/*
+* Read the LE parameter.
+* @return parameter.
+*/
+extern cb_uint16 cbBM_getAdvertisingIntervalMin(void);
+extern cb_uint16 cbBM_getAdvertisingIntervalMax(void);
+extern cb_uint16 cbBM_getAdvChannelmap(void);
+extern cb_uint16 cbBM_getConnectConnIntervalMin(void);
+extern cb_uint16 cbBM_getConnectConnIntervalMax(void);
+extern cb_uint16 cbBM_getConnectConnLatency(void);
+extern cb_uint16 cbBM_getConnectLinklossTmo(void);
+extern cb_uint16 cbBM_getConnectCreateConnTmo(void);
+extern cb_uint16 cbBM_getConnectScanInterval(void);
+extern cb_uint16 cbBM_getConnectScanWindow(void);
+extern cb_uint16 cbBM_getBondConnIntervalMin(void);
+extern cb_uint16 cbBM_getBondConnIntervalMax(void);
+extern cb_uint16 cbBM_getBondConnLatency(void);
+extern cb_uint16 cbBM_getBondLinklossTmo(void);
+extern cb_uint16 cbBM_getBondCreateConnTmo(void);
+extern cb_uint16 cbBM_getBondScanInterval(void);
+extern cb_uint16 cbBM_getBondScanWindow(void);
+extern cb_uint16 cbBM_getRemoteNameConnIntervalMin(void);
+extern cb_uint16 cbBM_getRemoteNameConnIntervalMax(void);
+extern cb_uint16 cbBM_getRemoteNameConnLatency(void);
+extern cb_uint16 cbBM_getRemoteNameLinklossTmo(void);
+extern cb_uint16 cbBM_getRemoteNameCreateConnTmo(void);
+extern cb_uint16 cbBM_getRemoteNameScanInterval(void);
+extern cb_uint16 cbBM_getRemoteNameScanWindow(void);
+
 #endif

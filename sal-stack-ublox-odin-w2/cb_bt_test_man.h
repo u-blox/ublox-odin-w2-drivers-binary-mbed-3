@@ -37,6 +37,7 @@ typedef enum
 } cbBTM_TestEvt;
 
 typedef void (*cbBTM_TestCallback)(cbBTM_TestEvt evt);
+typedef void (*cbBTM_LeTestEndCallback)(cbBTM_TestEvt evt, cb_uint16 nbrOfPackets);
 
 
 /*===========================================================================
@@ -228,7 +229,7 @@ extern cb_int32 cbBTM_enableBleReceiverTest(
  * @param   callback    Test callback used to notify if the test was successfully ended.
  * @returns cbBTM_OK is returned 
  */
-extern cb_int32 cbBTM_bleTestEnd(cbBTM_TestCallback callback);
+extern cb_int32 cbBTM_bleTestEnd(cbBTM_LeTestEndCallback callback);
 
 #endif /* _CB_BT_TEST_MAN_H_ */
 

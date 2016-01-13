@@ -21,6 +21,7 @@
 
 #include "cb_comdefs.h"
 #include "bt_types.h"
+#include "cb_bt_stack_config.h"
 
 
 /*===========================================================================
@@ -40,8 +41,8 @@
 #define cbBCM_SPS_CONNECTION_FAILED      (-10)
 #define cbBCM_ACL_DISCONNECTED           (-11)
 
-#define cbBCM_INVALID_CONNECTION_HANDLE  (-1)
-#define cbBCM_INVALID_SERVER_CHANNEL     (-1)
+#define cbBCM_INVALID_CONNECTION_HANDLE  (cb_UINT32_MAX)
+#define cbBCM_INVALID_SERVER_CHANNEL     (cb_UINT8_MAX)
 #define cbBCM_SERVICE_NAME_MAX_LEN       (32)
 
 #define cbBCM_DEV_ID_VENDOR_ID_SRC_BLUETOOTH    (0x0001)
@@ -51,7 +52,7 @@
 /*===========================================================================
  * TYPES
  *=========================================================================*/
-typedef cb_int16 cbBCM_Handle;
+typedef cb_uint32 cbBCM_Handle;
 
 typedef enum 
 {
@@ -69,11 +70,11 @@ typedef enum
  */
 typedef struct 
 {
-    cb_uint32           pageTimeout;            /** Length of connection attempt in units of 0,625ms. Default value 5000. */
-    cb_uint16           packetType;             /** Packet types allowd on the connection. By default all packets but 3MBit EDR are allowed. */
+    cb_uint32           pageTimeout;            /** Length of connection attempt. Default value 5000ms. */
+    cb_uint16           packetType;             /** Packet types allowed in the connection. By default all packets but 3MBit EDR are allowed. */
     TMasterSlavePolicy  masterSlavePolicy;      /** Whether master slave switch shall be allowed or not. By default master slave switch is allowed. */
     cb_uint16           clockOffset;            /** Clock offset is part in inquiry response. Using this value may result in faster connection setup  Default value 0. */
-    cb_uint16           linkSupervisionTimeout; /** Link supervision timeout in units of 0,625ms. Default value 3200. */
+    cb_uint16           linkSupervisionTimeout; /** Link supervision timeout. Default value 2000ms. */
 } cbBCM_ConnectionParameters;
 
 /**
@@ -94,7 +95,7 @@ typedef struct
     cbBCM_ConnectionType    type;
     TConnHandle             aclHandle;
     TBluetoothType          btType;
-    cb_int32                serverChannel;
+    cb_uint8                serverChannel;
     cb_uint8                uuid[16] ;
     cb_boolean              uuidValid;
     cb_char                 serviceName[cbBCM_SERVICE_NAME_MAX_LEN];
@@ -124,6 +125,11 @@ typedef struct
     cbBCM_DisconnectEvt      pfDisconnectEvt;
 } cbBCM_ConnectionCallback;
 
+typedef void(*cbBCM_RoleDiscoveryCallback)(
+    cbBCM_Handle handle,
+    cb_int8 status,
+    cb_int8 role);
+
 typedef void (*cbBCM_RssiCallback)(
     cbBCM_Handle handle,
     cb_int32 status,
@@ -139,9 +145,9 @@ typedef void (*cbBCM_WriteCnf)(
     cb_int32 status);
 
 /**
- * Set max number of connections for a data manager
+ * Set max number of Bluetooth links.
  * Not used by application 
- * @return Number of free bytes in channel data buffer
+ * @return status TRUE if command was successful
  */
 typedef cb_int32 (*cbBCM_SetMaxLinksCmd)(cb_uint32 maxLinks);
 
@@ -265,20 +271,36 @@ extern cb_int32 cbBCM_enableDeviceIdServiceRecord(
     cb_uint16 version,
     cb_uint16 vendorIdSource);
 
+
+/**
+* Set max number of Bluetooth classic links. Reconfigures buffer management.
+*
+* @param   maxLinks Max number of Bluetooth classic connections.
+* @return  If the operation is successful cbBCM_OK is returned.
+*/
+extern cb_uint32 cbBCM_setPacketType(cb_uint16 packetType);
+
+/**
+* Get BT classic packet type.
+*
+* @return  Allowed packet types returned.
+*/
+extern cb_uint16 cbBCM_getPacketType(void);
+
 /**
  * Set max number of Bluetooth classic links. Reconfigures buffer management.
  * 
  * @param   maxLinks Max number of Bluetooth classic connections.
  * @return  If the operation is successful cbBCM_OK is returned.
  */
-extern cb_int32 cbBCM_setMaxLinksClassic(cb_uint32 maxLinks);
+extern cb_int32 cbBCM_setMaxLinksClassic(cb_uint16 maxLinks);
 
 /**
  * Get max number of Bluetooth classic links.
  * 
  * @return  The maximum number of Bluetooth classic links.
  */
-extern cb_uint32 cbBCM_getMaxLinksClassic(void);
+extern cb_uint16 cbBCM_getMaxLinksClassic(void);
 
 /**
  * Set max number of Bluetooth Low Energy links. Reconfigures buffer management.
@@ -286,14 +308,14 @@ extern cb_uint32 cbBCM_getMaxLinksClassic(void);
  * @param   maxLinks Max number of Bluetooth Low Energy connections.
  * @return  If the operation is successful cbBCM_OK is returned.
  */
-extern cb_int32 cbBCM_setMaxLinksLE(cb_uint32 maxLinks);
+extern cb_int32 cbBCM_setMaxLinksLE(cb_uint16 maxLinks);
 
 /**
  * Get max number of Bluetooth Low Energy links.
  * 
  * @return  The maximum number of Bluetooth Low Energy links.
  */
-extern cb_uint32 cbBCM_getMaxLinksLE(void);
+extern cb_uint16 cbBCM_getMaxLinksLE(void);
 
 /**
  * Initiate a Bluetooth Serial Port Profile connection.
@@ -324,7 +346,7 @@ extern cb_uint32 cbBCM_getMaxLinksLE(void);
 extern cbBCM_Handle cbBCM_reqConnectSpp(
     TBdAddr *pAddress,
     cb_char *pServiceName,
-    cb_int32 serverChannel,
+    cb_uint8 serverChannel,
     cbBCM_ConnectionParameters *pAclParameters,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
@@ -369,7 +391,7 @@ extern cb_int32 cbBCM_rspConnectSppCnf(
 extern cbBCM_Handle cbBCM_reqConnectDun(
     TBdAddr *pAddress,
     cb_char *pServiceName,
-    cb_int32 serverChannel,
+    cb_uint8 serverChannel,
     cbBCM_ConnectionParameters *pAclParameters,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
@@ -416,7 +438,7 @@ extern cbBCM_Handle cbBCM_reqConnectUuid(
     TBdAddr *pAddress,
     cb_uint8 *pUuid,
     cb_char *pServiceName,
-    cb_int32 serverChannel,
+    cb_uint8 serverChannel,
     cbBCM_ConnectionParameters *pAclParameters,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
@@ -580,6 +602,16 @@ cb_int32 cbBCM_reqServiceSearchDeviceId(
     cbBCM_ServiceSearchCompleteCallback pCompleteCallback);
 
 /**
+* @brief   Get local Master/Slave role in an active connection.
+* @param   handle          Connection handle
+* @param   rssiCallback    Callback function used to notify the role
+* @return  If the operation is successful cbBCM_OK is returned.
+*/
+extern cb_int32 cbBCM_RoleDiscovery(
+    cbBCM_Handle handle,
+    cbBCM_RoleDiscoveryCallback roleDiscoveryCallback);
+
+/**
  * @brief   Get current Received Signal Strength Indication (RSSI)
  *          of an active connection.
  * @param   handle          Connection handle
@@ -591,17 +623,6 @@ extern cb_int32 cbBCM_getRssi(
     cbBCM_RssiCallback rssiCallback);
 
 /**
- * @brief   Get the packet types currently used for an active Bluetooth
- *          Classic connection.
- * @param   handle          Connection handle
- * @param   pPacketType     Packet types bitmask
- * @return  If the operation is successful cbBCM_OK is returned.
- */
-extern cb_int32 cbBCM_getPacketType(
-    cbBCM_Handle handle,
-    TPacketType *pPacketType);
-
-/**
  * @brief   Change the packet types currently used for an active Bluetooth
  *          Classic connection.
  * @param   handle          Connection handle
@@ -609,8 +630,7 @@ extern cb_int32 cbBCM_getPacketType(
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_cmdChangePacketType(
-    cbBCM_Handle handle,
-    TPacketType  packetType);
+    cbBCM_Handle handle);
 
 /**
  * @brief   Get the current  connection parameters for an active Bluetooth 
@@ -686,7 +706,7 @@ extern cb_int32 cbBCM_registerDataCallback(
  *          is returned. If the operation is successful the protocol handle is 
  *          returned.
  */
-extern cb_int32 cbBCM_getProtocolHandle(
+extern cbBCM_Handle cbBCM_getProtocolHandle(
     cbBCM_Handle handle);
 
 #endif /* _CB_BT_CONN_MAN_H_ */

@@ -33,8 +33,9 @@
 #define SIZE_OF_EXT_INQ_RSP                           (240)
 #define MIN_PASSKEY_VALUE                             (0)
 #define MAX_PASSKEY_VALUE                             (999999)
-#define INVALID_CONN_HANDLE                           ((TConnHandle)0xFFFF)
+#define INVALID_CONN_HANDLE                           ((TConnHandle)cb_UINT32_MAX)
 #define MAX_ADV_DATA_LENGTH                           (31)
+#define UUID_LENGTH                                   (16)
 
 
 #define PACKET_TYPE_DM1                                                 (0x0008)
@@ -66,7 +67,7 @@ typedef cb_uint16       uint16;
 typedef cb_uint8       TErrorCode;
 typedef cb_uint8       TLinkType;
 typedef cb_uint16      TPacketType;
-typedef cb_uint16      TConnHandle;
+typedef cb_uint32      TConnHandle;
 
 typedef enum
 {
@@ -175,5 +176,16 @@ typedef struct
     cb_uint8 length;
     cb_uint8 data[MAX_ADV_DATA_LENGTH];
 } TAdvData;
+
+typedef struct
+{
+    cb_uint16 createConnectionTimeout;
+    cb_uint16 connectionIntervalMin;
+    cb_uint16 connectionIntervalMax;
+    cb_uint16 connectionLatency;
+    cb_uint16 linkLossTimeout;
+    cb_uint16  scanInterval;
+    cb_uint16  scanWindow;
+} TAclParamsLe;
 
 #endif /* _BT_TYPES_H */

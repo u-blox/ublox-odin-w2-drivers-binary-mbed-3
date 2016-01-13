@@ -32,7 +32,7 @@
  *
  * @ingroup wlan
  */
-#define cbWLAN_MAX_USERNAME_LENGTH      32
+#define cbWLAN_MAX_USERNAME_LENGTH      64
 
 /**
  * Max password length in @ref cbWLAN_Util_PSKFromPWD and @ref cbWLAN_EnterpriseConnectParameters
@@ -86,6 +86,13 @@ struct cbWLAN_Stream_s {
  */
 typedef struct cbWLAN_StartParameters_s {
     cbWLAN_MACAddress      mac;        /**< MAC of WLAN interface, set to all zeros if hardware programmed address should be used. */
+    cb_boolean disable80211d;
+    cbWM_ModuleType  deviceType;      /**< Specify current device type. */
+    union {
+        struct {
+            cbWM_TxPowerSettings txPowerSettings;   /**< Transmission power settings. */
+        } ODIN_W26X;
+    } deviceSpecific;
 } cbWLAN_StartParameters;
 
 /**
@@ -152,6 +159,17 @@ typedef struct cbWLAN_EnterpriseConnectParameters_s {
 } cbWLAN_EnterpriseConnectParameters;
 
 /**
+ * Common access point parameters.
+ *
+ * @ingroup wlan
+ */
+typedef struct cbWLAN_CommonApParameters_s {
+    cbWLAN_Ssid             ssid;       /**< SSID to connect to. */
+    cbWLAN_Channel          channel;    /**< Active channel. */
+    cbWLAN_RateMask         basicRates; /**< Basic rates. */
+}cbWLAN_CommonApParameters;
+
+/**
  * Scan parameters
  *
  * @ingroup wlan
@@ -198,6 +216,10 @@ typedef enum {
     cbWLAN_STATUS_CONNECTING,
     cbWLAN_STATUS_CONNECTED,
     cbWLAN_STATUS_CONNECTION_FAILURE,
+    cbWLAN_STATUS_AP_UP,
+    cbWLAN_STATUS_AP_DOWN,
+    cbWLAN_STATUS_AP_STA_ADDED,
+    cbWLAN_STATUS_AP_STA_REMOVED,
 } cbWLAN_StatusIndicationInfo;
 
 /**
@@ -240,7 +262,7 @@ typedef struct cbWLAN_StatusConnectedInfo_s {
  */
 typedef struct cbWLAN_PacketIndicationInfo_s {
     void        *rxData;                /**< Pointer to the port specific data type. */
-    cb_int32    size;                   /**< Length of the data payload in the port specific packet data type. */
+    cb_uint32    size;                   /**< Length of the data payload in the port specific packet data type. */
     cb_boolean  isChecksumVerified;     /**< True if the TCP/UDP checksum is verified and correct. */
 } cbWLAN_PacketIndicationInfo;
 
@@ -358,6 +380,7 @@ cbRTSL_Status cbWLAN_disconnect(void);
  */
 cbRTSL_Status cbWLAN_scan(cbWLAN_ScanParameters *params);
 
+
 /**
 * Retrieve an RSSI value for station mode.
 *
@@ -367,6 +390,22 @@ cbRTSL_Status cbWLAN_scan(cbWLAN_ScanParameters *params);
 * @return RSSI value in dBm
 */
 cb_int16 cbWLAN_STA_getRSSI();
+
+/**
+ * Start access point in open mode (no encryption).
+ * Connection progress is reported as @ref cbWLAN_statusIndication callbacks.
+ *
+ * @param commonParams Accesspoint parameters.
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
+ */
+cbRTSL_Status cbWLAN_apStartOpen(cbWLAN_CommonApParameters *commonParams);
+
+/**
+ * Stop access point.
+ *
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
+ */
+cbRTSL_Status cbWLAN_apStop(void);
 
 /**
  * Send an Ethernet data packet.

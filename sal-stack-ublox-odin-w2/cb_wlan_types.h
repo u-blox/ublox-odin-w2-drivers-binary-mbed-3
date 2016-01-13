@@ -254,6 +254,23 @@ typedef enum cbWLAN_AccessCategory_e {
     cbWLAN_AC_NC = 7, /**< Voice (Network Control)*/
 } cbWLAN_AccessCategory;
 
+
+
+/**
+* connectBlue Hardware Identification
+*
+* @ingroup types
+*/
+typedef enum cbWM_ModuleType_e {
+    cbWM_MODULE_UNKNOWN,
+    cbWM_MODULE_OWL22X,
+    cbWM_MODULE_OWL253,
+    cbWM_MODULE_OWS451,
+    cbWM_MODULE_OWL351,
+    cbWM_MODULE_ODIN_W16X = cbWM_MODULE_OWL351,
+    cbWM_MODULE_ODIN_W26X,
+} cbWM_ModuleType;
+
 /**
  * Mac address type
  *
@@ -266,6 +283,13 @@ typedef cb_uint8 cbWLAN_MACAddress[6];
  * @ingroup wlantypes
  */
 typedef cb_uint32 cbWLAN_RateMask;
+
+/**
+* Transmission power
+*
+* @ingroup wlantypes
+*/
+typedef cb_uint8 cbWLAN_TxPower;
 
 /**
  * The different frequency bands to choose from.
@@ -409,6 +433,37 @@ typedef struct version_st{
     cbWM_FWRevision target;
 } cbWM_Version;
 
+/**
+* Describes power levels for dynamic power level control.
+*
+* @ingroup types
+*/
+typedef struct cbWM_TxPowerSettings_s {
+    cbWLAN_TxPower lowTxPowerLevel;
+    cbWLAN_TxPower medTxPowerLevel;
+    cbWLAN_TxPower maxTxPowerLevel;
+} cbWM_TxPowerSettings;
+
+/**
+* Describes an access point.
+*
+* @ingroup types
+*/
+typedef struct cbWLAN_ApInformation {
+    cbWLAN_Ssid                 ssid;                   /**< SSID */
+    cbWLAN_MACAddress           bssid;                  /**< BSSID */
+    cbWLAN_Channel              channel;                /**< Channel */
+} cbWLAN_ApInformation;
+
+/**
+* Describes a station connected to an access point.
+*
+* @ingroup types
+*/
+typedef struct cbWLAN_ApStaInformation {
+    cbWLAN_MACAddress MAC;
+} cbWLAN_ApStaInformation;
+
 /*---------------------------------------------------------------------------
  * VARIABLE DECLARATIONS
  *-------------------------------------------------------------------------*/
@@ -438,10 +493,18 @@ extern const cb_uint8 PATTERN_WME_PE[3];
  *
  * For @ref cbWLAN_CHANNEL_ALL This function will return @ref cbWLAN_BAND_2_4GHz.
  *
- * @param channel The channel you wish to know the band for.
+ * @param channel The channel to be queried for band.
  * @return The @ref cbWLAN_Band band for the requested channel.
  */
 cbWLAN_Band cbWLAN_getBandFromChannel(cbWLAN_Channel channel);
+
+/**
+* Returns the valid rates @ref cbWLAN_RateMask based for the channel.
+*
+* @param channel The channel to be queried for rates.
+* @return The valid rates @ref cbWLAN_RateMask for the requested channel.
+*/
+cbWLAN_RateMask cbWLAN_getRatesForChannel(cbWLAN_Channel channel);
 
 /**
  * Checks is the input rate is a 802.11n rate or not.
