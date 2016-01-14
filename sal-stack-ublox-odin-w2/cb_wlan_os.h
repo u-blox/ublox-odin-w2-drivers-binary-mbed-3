@@ -16,6 +16,10 @@
 #ifndef _CB_WLAN_OS_H_
 #define _CB_WLAN_OS_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_types.h"
 
 /*===========================================================================
@@ -113,5 +117,9 @@ extern void cbWLAN_OS_SL_release(cbWLAN_OS_REPrivHandle *hWlan);
 void cbWLAN_OS_ISRHandler(void* hCallback);
 
 extern void cbWLAN_OS_interrupt();
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_WLAN_OS_H_ */

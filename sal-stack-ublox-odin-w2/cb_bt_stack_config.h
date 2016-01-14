@@ -12,6 +12,10 @@
  *               Test application uses default configuration
  *-------------------------------------------------------------------------*/
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 
 /*===========================================================================
@@ -54,6 +58,9 @@
 
 #define cbLINK_KEYS_MAX_RECORD_SIZE 256
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_BT_STACK_CONFIG_H_ */
 

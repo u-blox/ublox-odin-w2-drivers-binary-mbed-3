@@ -11,6 +11,10 @@
  * Description : 
  *-------------------------------------------------------------------------*/
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
@@ -27,5 +31,9 @@ typedef void(*cbMain_InitComplete)(void);
  * FUNCTIONS
  *=========================================================================*/
 extern void cbMAIN_init_bt(cbMain_InitComplete initCompleteCallback);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /*_CB_MAIN_H_*/

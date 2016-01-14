@@ -10,6 +10,10 @@
 #ifndef _CB_BT_UTILS_H_
 #define _CB_BT_UTILS_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 #include "bt_types.h"
 
@@ -34,5 +38,8 @@ extern void cbBT_UTILS_cpyBdAddr(
     TBdAddr* dest, 
     TBdAddr* src);
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_BT_UTILS_H_ */

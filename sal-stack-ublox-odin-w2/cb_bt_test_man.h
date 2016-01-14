@@ -16,6 +16,10 @@
 * @brief Functionality for Bluetooth radio tests and qualification.
  */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 
 #include "cb_bt_man.h"
@@ -230,6 +234,10 @@ extern cb_int32 cbBTM_enableBleReceiverTest(
  * @returns cbBTM_OK is returned 
  */
 extern cb_int32 cbBTM_bleTestEnd(cbBTM_LeTestEndCallback callback);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_BT_TEST_MAN_H_ */
 

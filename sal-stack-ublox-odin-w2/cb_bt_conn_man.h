@@ -19,6 +19,10 @@
 * using this module.
  */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 #include "bt_types.h"
 #include "cb_bt_stack_config.h"
@@ -708,6 +712,10 @@ extern cb_int32 cbBCM_registerDataCallback(
  */
 extern cbBCM_Handle cbBCM_getProtocolHandle(
     cbBCM_Handle handle);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_BT_CONN_MAN_H_ */
 

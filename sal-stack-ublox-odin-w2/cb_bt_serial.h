@@ -19,6 +19,10 @@
  * Port Profile (SPP).
  */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 
 #include "cb_comdefs.h"
 #include "bt_types.h"
@@ -132,4 +136,9 @@ extern cb_int32 cbBSE_frameSize(cbBCM_Handle handle, cb_uint32 *pFrameSize);
  * @return None
  */
 extern void cbBSE_handleMsg(cb_uint32 msgId, void* pData);
+
+#if defined(__cplusplus)
+}
+#endif
+
 #endif

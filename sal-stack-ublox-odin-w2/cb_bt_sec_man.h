@@ -17,6 +17,10 @@
  * security modes, passkey and pin code handling.
  */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 
 /*===========================================================================
@@ -332,6 +336,10 @@ extern cb_int32 cbBSM_deleteBondedDevice(TBdAddr* pBdAddress);
  * @return If the operation is successful cbBSM_OK is returned.
  */
 extern cb_int32 cbBSM_deleteAllBondedDevices(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_BT_SEC_MAN_H_ */
 

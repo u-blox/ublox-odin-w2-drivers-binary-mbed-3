@@ -17,6 +17,10 @@
 #ifndef _CB_TYPES_H_
 #define _CB_TYPES_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_port_types.h"
 
 /*===========================================================================
@@ -271,6 +275,10 @@
 #  define cb_PACKED_STRUCT_END(name) \
         cb_PACKED_STRUCT_ATTR_INLINE_POST name; \
         cb_PACKED_STRUCT_ATTR_POST
+#endif
+
+#if defined(__cplusplus)
+}
 #endif
 
 #endif /* _CB_TYPES_H_ */

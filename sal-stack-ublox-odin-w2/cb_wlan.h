@@ -18,6 +18,10 @@
 #ifndef _CB_WLAN_H_
 #define _CB_WLAN_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_types.h"
 #include "cb_wlan_types.h"
 #include "cb_status.h"
@@ -493,6 +497,9 @@ void cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
  */
 extern void cbWLAN_scanIndication(void *callbackContext, cbWLAN_ScanIndicationInfo *bssDescriptor, cb_boolean isLastResult);
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_WLAN_H_ */
 

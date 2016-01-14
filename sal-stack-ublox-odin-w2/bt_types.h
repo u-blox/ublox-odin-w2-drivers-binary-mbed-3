@@ -16,6 +16,10 @@
  * @brief Common Bluetooth types
  */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 
 /*===========================================================================
@@ -187,5 +191,9 @@ typedef struct
     cb_uint16  scanInterval;
     cb_uint16  scanWindow;
 } TAclParamsLe;
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _BT_TYPES_H */

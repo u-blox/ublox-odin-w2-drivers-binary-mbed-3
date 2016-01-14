@@ -10,6 +10,10 @@
 #ifndef _cb_ASSERT_H_
 #define _cb_ASSERT_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 
 #ifdef NDEBUG
@@ -69,6 +73,9 @@ extern void cbOS_error2(const cb_char *file, cb_uint32 line);
  * TYPES
  *=========================================================================*/
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _cb_ASSERT_H_ */
 

@@ -10,6 +10,10 @@
 #ifndef _CB_STATUS_H_
 #define _CB_STATUS_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
@@ -28,6 +32,10 @@
     cbSTATUS_TIMEOUT
  
  } cbRTSL_Status;
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_STATUS_H_ */
 

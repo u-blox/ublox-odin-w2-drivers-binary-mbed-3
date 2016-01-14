@@ -17,6 +17,10 @@
 #ifndef _CB_PLATFORM_BASIC_TYPES_H_
 #define _CB_PLATFORM_BASIC_TYPES_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -101,6 +105,9 @@ typedef int                     cb_int;
 */
 /**@}*/
 
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_PLATFORM_BASIC_TYPES_H_ */
 

@@ -10,6 +10,10 @@
 #ifndef _CB_OS_H_
 #define _CB_OS_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 
 /*===========================================================================
@@ -215,5 +219,9 @@ void cbOS_exitCritical(cb_uint32 prevState);
  * @param us  Delay time in microseconds
  */
 void cbOS_delay(cb_uint32 us);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /* _CB_OS_H_ */

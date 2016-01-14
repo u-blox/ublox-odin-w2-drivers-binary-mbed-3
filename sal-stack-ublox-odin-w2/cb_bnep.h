@@ -11,6 +11,10 @@
 * Description : External interface for BNEP
 *-------------------------------------------------------------------------*/
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 #include "bt_types.h"
 
@@ -179,5 +183,9 @@ extern cb_int32 cbBNEP_rspNegConnect(cbBNEP_Handle bnepHandle);
 * - bufSize: Length of the data
 *-------------------------------------------------------------------------*/
 extern cb_int32 cbBNEP_reqData      (cbBNEP_Handle bnepHandle, cb_uint8* pBuf, cb_uint16 bufSize);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

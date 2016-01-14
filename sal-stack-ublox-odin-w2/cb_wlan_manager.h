@@ -11,6 +11,10 @@
  * Description : WLAN manager
  *-------------------------------------------------------------------------*/
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_status.h"
 //#include "cb_url.h"
 #include "cb_wlan_types.h"
@@ -44,5 +48,9 @@ void cbWLANMGR_enable(cb_boolean enable);
 void cbWLANMGR_setConfigSsid(cb_char* ssid);
 void cbWLANMGR_setConfigWpa2(cb_char* passPhrase);
 void cbWLANMGR_setConfigOpen(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif /*_CB_WLAN_MANAGER_H_*/

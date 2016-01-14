@@ -21,6 +21,10 @@
  * scan and more.
  */
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_comdefs.h"
 #include "bt_types.h"
 
@@ -618,5 +622,9 @@ extern cb_uint16 cbBM_getRemoteNameLinklossTmo(void);
 extern cb_uint16 cbBM_getRemoteNameCreateConnTmo(void);
 extern cb_uint16 cbBM_getRemoteNameScanInterval(void);
 extern cb_uint16 cbBM_getRemoteNameScanWindow(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

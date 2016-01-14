@@ -20,6 +20,10 @@
 
 #include "cb_comdefs.h"
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /*==============================================================================
  * CONSTANTS
  *==============================================================================
@@ -46,5 +50,9 @@ extern cb_int32 cbDEV_INFO_register(
 
 
 extern cb_int32 cbDEV_INFO_getNbrOfAttributes(void);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif

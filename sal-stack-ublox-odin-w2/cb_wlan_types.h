@@ -17,6 +17,10 @@
 #ifndef _CB_WLAN_TYPES_H_
 #define _CB_WLAN_TYPES_H_
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 #include "cb_types.h"
 
 /*===========================================================================
@@ -520,6 +524,10 @@ cb_boolean cbWLAN_isNRate(cbWLAN_Rate rate);
  * @return @ref TRUE if the channel is valid. @ref FALSE otherwise.
  */
 cb_boolean cbWLAN_isValidChannel(cbWLAN_Channel channel);
+
+#if defined(__cplusplus)
+}
+#endif
 
 #endif
 
