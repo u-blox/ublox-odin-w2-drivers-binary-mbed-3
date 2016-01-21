@@ -1,5 +1,5 @@
 {
-  "name": "sal-stack-ublox-odin-w2-binary",
+  "name": "ublox-odin-w2-drivers-binary",
   "version": "0.0.1",
   "description": "u-blox odin Bluetooth/wifi driver",
   "private": true,
@@ -16,12 +16,14 @@
   "extraIncludes": [],
   "dependencies": {
     "mbed-hal-st-stm32cubef4": "andreaslarssonublox/mbed-hal-st-stm32cubef4#master",
-    "sal": "1.0.2",
-    "cmsis-core-stm32f4": "1.0.4"
+    "cmsis-core-stm32f4": "^1.0.0"
   },
   "targetDependencies": {},
   "testDependencies": {
-    "sockets": "1.0.2"
+    "sal-stack-lwip-ublox-odin-w2" : "0.0.1",
+    "ublox-odin-w2-lwip-adapt" : "0.0.1",
+    "sal": "^1.0.0",
+    "sockets": "^1.0.0"
   },
   "scripts": {
     "testReporter": [
