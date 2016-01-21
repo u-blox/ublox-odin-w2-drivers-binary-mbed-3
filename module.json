@@ -13,7 +13,9 @@
   ],
   "author": "",
   "licenses": [],
-  "extraIncludes": [],
+  "extraIncludes": [
+    "ublox-odin-w2-drivers-binary"
+  ],
   "dependencies": {
     "mbed-hal-st-stm32cubef4": "andreaslarssonublox/mbed-hal-st-stm32cubef4#master",
     "cmsis-core-stm32f4": "^1.0.0"

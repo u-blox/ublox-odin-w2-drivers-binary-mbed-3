@@ -16,7 +16,6 @@
 */
 #include "mbed-drivers/mbed.h"
 #include "minar/minar.h"
-#include "mbed/test_env.h"
 
 // Force float printf support
 asm(".global _printf_float");
@@ -279,7 +278,6 @@ static void controllerStartupComplete(void)
     {
         thisApp.app_state = btMAIN_Idle;
     }
-    MBED_HOSTTEST_RESULT(true);
 }
 
 static void testBonding(void)
@@ -455,8 +453,4 @@ void app_start(int argc, char *argv[]) {
     initParams.nvdsStartIdLinkKeysLe = 1000 + 2500;
     initParams.maxLinkKeysLe = 25;
     cbMAIN_initBt(&initParams, controllerStartupComplete);
-    MBED_HOSTTEST_TIMEOUT(20);
-    MBED_HOSTTEST_SELECT(default_auto);
-    MBED_HOSTTEST_DESCRIPTION(TestBT);
-    MBED_HOSTTEST_START("UBLX_DRIVER");
 }
