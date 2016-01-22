@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2012 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Wireless LAN driver

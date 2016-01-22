@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Wireless LAN driver
@@ -19,6 +19,10 @@
 
 #include "cb_types.h"
 #include "cb_target.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -81,5 +85,9 @@ void cbTARGET_freeDataFrame(cbTARGET_Handle *hTarget, cbTARGET_dataFrame* frame)
 cb_uint32 cbTARGET_getDataFrameSize(cbTARGET_Handle *hTarget, cbTARGET_dataFrame* frame);
 
 cb_uint8 cbTARGET_getDataFrameTID(cbTARGET_Handle *hTarget, cbTARGET_dataFrame* frame);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

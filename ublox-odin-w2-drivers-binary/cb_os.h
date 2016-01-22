@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2006 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component: Operating System
@@ -11,6 +11,10 @@
 #define _CB_OS_H_
 
 #include "cb_comdefs.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -215,5 +219,9 @@ void cbOS_exitCritical(cb_uint32 prevState);
  * @param us  Delay time in microseconds
  */
 void cbOS_delay(cb_uint32 us);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_OS_H_ */

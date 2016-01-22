@@ -1,10 +1,8 @@
 #ifndef __CB_DEV_INFO_H__
 #define __CB_DEV_INFO_H__
 /*------------------------------------------------------------------------------
- * Copyright (c) 2008 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
- *------------------------------------------------------------------------------
- * Produced by connectBlue AB, Malmö, Sweden
  *------------------------------------------------------------------------------
  * Component: Device Information service
  * File     : 
@@ -19,6 +17,10 @@
  */
 
 #include "cb_comdefs.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*==============================================================================
  * CONSTANTS
@@ -46,5 +48,9 @@ extern cb_int32 cbDEV_INFO_register(
 
 
 extern cb_int32 cbDEV_INFO_getNbrOfAttributes(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

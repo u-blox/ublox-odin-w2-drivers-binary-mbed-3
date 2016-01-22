@@ -1,5 +1,5 @@
 ﻿/*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : WLAN
@@ -17,6 +17,11 @@
 #define _CB_WLAN_OS_H_
 
 #include "cb_types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 /*===========================================================================
  * DEFINES
@@ -113,5 +118,9 @@ extern void cbWLAN_OS_SL_release(cbWLAN_OS_REPrivHandle *hWlan);
 void cbWLAN_OS_ISRHandler(void* hCallback);
 
 extern void cbWLAN_OS_interrupt();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_WLAN_OS_H_ */

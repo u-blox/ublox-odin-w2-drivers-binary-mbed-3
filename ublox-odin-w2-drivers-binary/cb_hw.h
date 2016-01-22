@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2000 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component: CB HW
@@ -14,6 +14,9 @@
 
 #include "cb_comdefs.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -113,6 +116,10 @@ cbHW_ResetReason cbHW_resetReason(void);
 cbHW_FlowControl cbHW_flowControl(void);
 
 void cbHW_enableAllIrq(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

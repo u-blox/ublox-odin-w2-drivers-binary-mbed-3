@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2014 u-blox, Sweden.
+ * Copyright (c) 2016 u-blox, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Bluetooth utility
@@ -12,6 +12,10 @@
 
 #include "cb_comdefs.h"
 #include "bt_types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * FUNCTIONS
@@ -34,5 +38,8 @@ extern void cbBT_UTILS_cpyBdAddr(
     TBdAddr* dest, 
     TBdAddr* src);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_BT_UTILS_H_ */

@@ -1,5 +1,5 @@
 ﻿/*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : WLAN
@@ -22,6 +22,11 @@
 #include "cb_wlan_types.h"
 #include "cb_status.h"
 #include "cb_wlan_os.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 /*===========================================================================
  * DEFINES
@@ -86,11 +91,11 @@ struct cbWLAN_Stream_s {
  */
 typedef struct cbWLAN_StartParameters_s {
     cbWLAN_MACAddress      mac;        /**< MAC of WLAN interface, set to all zeros if hardware programmed address should be used. */
-    cb_boolean disable80211d;
+    cb_boolean disable80211d;          /**< This must be set to FALSE */
     cbWM_ModuleType  deviceType;      /**< Specify current device type. */
     union {
         struct {
-            cbWM_TxPowerSettings txPowerSettings;   /**< Transmission power settings. */
+            cbWM_TxPowerSettings txPowerSettings;   /**< Transmission power settings. Use cbWLAN_TX_POWER_AUTO to let the driver dynamically choose power level */
         } ODIN_W26X;
     } deviceSpecific;
 } cbWLAN_StartParameters;
@@ -489,6 +494,10 @@ void cbWLAN_getChannelList(cbWLAN_ChannelList *channelList);
  * @param channelList Pointer to channel list
  */
 void cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_WLAN_H_ */
 

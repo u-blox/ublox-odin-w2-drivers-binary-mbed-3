@@ -2,7 +2,7 @@
 #define _CB_BT_CONN_MAN_H_
 /**
  *---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Bluetooth Connection Manager
@@ -23,6 +23,9 @@
 #include "bt_types.h"
 #include "cb_bt_stack_config.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -708,6 +711,10 @@ extern cb_int32 cbBCM_registerDataCallback(
  */
 extern cbBCM_Handle cbBCM_getProtocolHandle(
     cbBCM_Handle handle);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_BT_CONN_MAN_H_ */
 

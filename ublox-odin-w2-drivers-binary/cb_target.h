@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : WLAN driver
@@ -23,6 +23,10 @@
 #define _CB_TARGET_H_
 
 #include "cb_wlan_types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -156,5 +160,9 @@ cb_boolean cbTARGET_f0_read(cbTARGET_Handle *hTarget, cb_uint32 address, cb_uint
 
 
 cb_uint16 cbTARGET_getBlockSize(cbTARGET_Handle *hTarget);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2013 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : WLAN driver
@@ -52,6 +52,8 @@
 #define cbRATE_MASK_ALL (cbRATE_MASK_B | cbRATE_MASK_G | cbRATE_MASK_N)
 
 #define cbWLAN_MAX_CHANNEL_LIST_LENGTH      38
+
+#define cbWLAN_TX_POWER_AUTO    0xFF
 
 /*===========================================================================
  * TYPES

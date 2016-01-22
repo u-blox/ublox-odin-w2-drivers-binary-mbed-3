@@ -2,7 +2,7 @@
 #define _CB_BT_STACK_CONFIG_H_
 
 /*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Bluetooth Stack Configuration
@@ -13,6 +13,10 @@
  *-------------------------------------------------------------------------*/
 
 #include "cb_comdefs.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES

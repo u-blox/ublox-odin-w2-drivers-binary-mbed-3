@@ -2,7 +2,7 @@
 #define _CB_BT_MAN_H_
 /*
  *---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Bluetooth Manager
@@ -23,6 +23,10 @@
 
 #include "cb_comdefs.h"
 #include "bt_types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
 * DEFINES
@@ -618,5 +622,9 @@ extern cb_uint16 cbBM_getRemoteNameLinklossTmo(void);
 extern cb_uint16 cbBM_getRemoteNameCreateConnTmo(void);
 extern cb_uint16 cbBM_getRemoteNameScanInterval(void);
 extern cb_uint16 cbBM_getRemoteNameScanWindow(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

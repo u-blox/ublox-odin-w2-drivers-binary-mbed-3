@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2010 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : RTSL
@@ -13,6 +13,9 @@
 #include "cb_comdefs.h"
 #include <stdarg.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -189,6 +192,10 @@ cb_char* cbLOG_macAddrToHex(cb_uint8* pAddr);
 cb_char* cbLOG_uiToHex(cb_uint16 val);
 
 cb_char* cbLOG_toStr(cb_char* str,int length);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_LOG_H_ */
 

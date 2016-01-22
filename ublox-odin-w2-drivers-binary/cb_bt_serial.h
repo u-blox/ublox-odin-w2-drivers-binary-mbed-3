@@ -2,7 +2,7 @@
 #define _cb_BT_SERIAL_H_
 /**
  *---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Bluetooth Serial
@@ -23,6 +23,10 @@
 #include "cb_comdefs.h"
 #include "bt_types.h"
 #include "cb_bt_conn_man.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
 * DEFINES
@@ -132,4 +136,9 @@ extern cb_int32 cbBSE_frameSize(cbBCM_Handle handle, cb_uint32 *pFrameSize);
  * @return None
  */
 extern void cbBSE_handleMsg(cb_uint32 msgId, void* pData);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

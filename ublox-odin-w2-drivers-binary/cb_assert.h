@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2009 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Assert
@@ -15,6 +15,11 @@
 #ifdef NDEBUG
 #include "cb_os.h"
 #endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 /*===========================================================================
  * DEFINES
@@ -69,6 +74,9 @@ extern void cbOS_error2(const cb_char *file, cb_uint32 line);
  * TYPES
  *=========================================================================*/
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _cb_ASSERT_H_ */
 

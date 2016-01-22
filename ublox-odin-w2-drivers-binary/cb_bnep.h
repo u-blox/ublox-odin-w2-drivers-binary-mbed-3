@@ -2,7 +2,7 @@
 #define __cbBNEP_H__
 
 /*---------------------------------------------------------------------------
-* Copyright (c) 2009 connectBlue AB, Sweden.
+* Copyright (c) 2016 u-blox AB, Sweden.
 * Any reproduction without written permission is prohibited by law.
 *
 * Component   : BNEP
@@ -11,12 +11,12 @@
 * Description : External interface for BNEP
 *-------------------------------------------------------------------------*/
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 #include "cb_comdefs.h"
 #include "bt_types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -184,7 +184,7 @@ extern cb_int32 cbBNEP_rspNegConnect(cbBNEP_Handle bnepHandle);
 *-------------------------------------------------------------------------*/
 extern cb_int32 cbBNEP_reqData      (cbBNEP_Handle bnepHandle, cb_uint8* pBuf, cb_uint16 bufSize);
 
-#if defined(__cplusplus)
+#ifdef __cplusplus
 }
 #endif
 

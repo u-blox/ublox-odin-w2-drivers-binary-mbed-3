@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2006 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component: RTSL
@@ -12,6 +12,9 @@
 
 #include "cb_comdefs.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -78,6 +81,10 @@ cbTIMER_Id cbTIMER_after(
  * - id: Timer identifier returned in the cbTIMER_after call.
  *-------------------------------------------------------------------------*/
 void cbTIMER_cancel(cbTIMER_Id id);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_TIMER_H_ */
 

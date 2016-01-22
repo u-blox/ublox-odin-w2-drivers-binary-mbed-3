@@ -2,7 +2,7 @@
 #define _CB_BT_TEST_MAN_H_
 
 /*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : Bluetooth Test
@@ -20,6 +20,9 @@
 
 #include "cb_bt_man.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*===========================================================================
  * DEFINES
@@ -230,6 +233,10 @@ extern cb_int32 cbBTM_enableBleReceiverTest(
  * @returns cbBTM_OK is returned 
  */
 extern cb_int32 cbBTM_bleTestEnd(cbBTM_LeTestEndCallback callback);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CB_BT_TEST_MAN_H_ */
 
