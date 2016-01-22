@@ -1,6 +1,6 @@
 /*
 * PackageLicenseDeclared: Apache-2.0
-* Copyright (c) 2015 u-blox
+* Copyright (c) 2016 u-blox
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,6 +14,23 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
+/*
+* This test verifies the basic functionality of the u-blox Bluetooth stack
+* and does the following steps:
+* - Start Bluetooth stack
+* - Makes the device pairable and connectable
+* - Start Inquiry
+* - Pair with up to 6 (btcAPP_MAX_CONNECTIONS) remote devices
+* - Connect to u-blox SPP service of (up to 6) remote devices
+* - Send data to the connected device through the SPP service
+* - Disconnect the connected devices
+*
+*   To run the test the remote devices Bluetooth Address needs to be
+*   defined in the array "remoteDevices". The test steps are triggered by
+*   pressing the SW1 button on the board, see ublox-c029-gcc\target.json
+*/
+
 #include "mbed-drivers/mbed.h"
 #include "minar/minar.h"
 
@@ -61,14 +78,14 @@ static void testBonding(void);
 static void sendDataToDevices(void);
 static void disconnectDevices(void);
 
-//static  TBdAddr XperiaZ3 = { { 0x40, 0xb8, 0x37, 0x5c, 0x79, 0x5f }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com08 = { { 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xDE }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com09 = { { 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xED }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com21 = { { 0x78, 0xA5, 0x04, 0x2F, 0x02, 0x60 }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com22 = { { 0x78, 0xA5, 0x04, 0x2F, 0x03, 0x06 }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com28 = { { 0x00, 0x12, 0xf3, 0x27, 0x46, 0xf6 }, BT_PUBLIC_ADDRESS };
+//static  TBdAddr phone = { { 0x40, 0xb8, 0x37, 0x5c, 0x79, 0x5f }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com01 = { { 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xDE }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com02 = { { 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xED }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com03 = { { 0x78, 0xA5, 0x04, 0x2F, 0x02, 0x60 }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com04 = { { 0x78, 0xA5, 0x04, 0x2F, 0x03, 0x06 }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com05 = { { 0x00, 0x12, 0xf3, 0x27, 0x46, 0xf6 }, BT_PUBLIC_ADDRESS };
 
-static  TBdAddr remoteDevices[btcAPP_MAX_CONNECTIONS] = { com08, com09, com22, com21, com28 };
+static  TBdAddr remoteDevices[btcAPP_MAX_CONNECTIONS] = { com02, com01, com03, com04, com05 };
 
 typedef struct
 {
@@ -442,8 +459,6 @@ void app_start(int argc, char *argv[]) {
     {
         thisApp.connDevHandle[i] = -1;
     }
-
-    //cbMAIN_init_bt(controllerStartupComplete); // TODO move, this will change CPU speed. Must be called before any SPI/I2C/UART initialization    
 
     cbBT_UTILS_setInvalidBdAddr(&initParams.address);
     initParams.leRole = cbBM_LE_ROLE_CENTRAL;

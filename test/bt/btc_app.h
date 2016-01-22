@@ -1,15 +1,22 @@
 #ifndef _BTC_APP_H_
 #define _BTC_APP_H_
 
-/*---------------------------------------------------------------------------
-* Copyright (c)
-* 
+/*
+* PackageLicenseDeclared: Apache-2.0
+* Copyright (c) 2016 u-blox
 *
-* Component   : Application
-* File        : btc_app.h
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
 *
-* Description :
-*-------------------------------------------------------------------------*/
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 #include <stdint.h>
 #include "ublox-odin-w2-drivers-binary\bt_types.h"
@@ -76,7 +83,7 @@ btcAPPe btcAPPinquiry(void);
 btcAPPe btcAPPreqBond(TBdAddr *pAddress);
 btcAPPe btcAPPregisterCallBacks(btcAPP_EventCallBack* pCallBacks);
 btcAPPe btcAPPrequestConnectSPP(TBdAddr *pAddress);
-btcAPPe btcAPPwrite(int16_t handle, uint8_t *pBuf, uint32_t nBytes, int32_t tag);
-btcAPPe btcAPPdisconnect(int16_t handle);
+btcAPPe btcAPPwrite(uint32_t handle, uint8_t *pBuf, uint32_t nBytes, int32_t tag);
+btcAPPe btcAPPdisconnect(uint32_t handle);
 
 #endif /*_BTC_APP_H_*/

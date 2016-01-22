@@ -1,11 +1,19 @@
-/*---------------------------------------------------------------------------
-* Copyright (c) 
+/*
+* PackageLicenseDeclared: Apache-2.0
+* Copyright (c) 2016 u-blox
 *
-* Component   : Application
-* File        : bt_app.c
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
 *
-* Description : 
-*-------------------------------------------------------------------------*/
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,7 +67,7 @@ typedef struct
     int32_t                  serverChannel;
     btcAPP_Conn_State        connectedState;
     btcAPP_SPP_Role          role;
-    int16_t                  connHandle;
+    cbBCM_Handle             connHandle;
 } btcAPP_Connection;
 
 struct listNode
@@ -179,21 +187,20 @@ static btcAPPe foundDevListAdd(TBdAddr *pBDAddr)
     return result;
 }
 
-static void deviceListDeleteAll(void)
-{
-    struct devListNode *node;
-    while (btcAPP.devicesList != NULL)
-    {
-        node = btcAPP.devicesList;
-        btcAPP.devicesList = btcAPP.devicesList->next;
-        free(node);
-    }
-}
+//static void deviceListDeleteAll(void)
+//{
+//    struct devListNode *node;
+//    while (btcAPP.devicesList != NULL)
+//    {
+//        node = btcAPP.devicesList;
+//        btcAPP.devicesList = btcAPP.devicesList->next;
+//        free(node);
+//    }
+//}
 
 static btcAPPe deviceListAdd(btcAPP_Connection *pDevice)
 {
     btcAPPe result = BTC_APP_ERROR;
-    btcAPP_Connection *pThisDevice = malloc(sizeof(btcAPP_Connection));
     struct devListNode *node = malloc(sizeof(struct devListNode));
 
     if (node != NULL)
@@ -251,7 +258,7 @@ static void deviceListDelete(TBdAddr *pBDAddr)
 }
 
 // if pBDAddr is NULL will search by handle
-static btcAPP_Connection *deviceListFind(TBdAddr *pBDAddr, int16_t handle)
+static btcAPP_Connection *deviceListFind(TBdAddr *pBDAddr, cbBCM_Handle handle)
 {
     struct devListNode *temp = btcAPP.devicesList;
 
@@ -273,20 +280,19 @@ static btcAPP_Connection *deviceListFind(TBdAddr *pBDAddr, int16_t handle)
     return NULL;
 }
 
-static bool getConHandleByAddress(TBdAddr* pBdAddress, int *connHandle)
-{
-    int index;
-    btcAPP_Connection* pDevice;
-    bool found = FALSE;
-
-    pDevice = deviceListFind(pBdAddress, 0);
-    if (pDevice != NULL)
-    {
-        *connHandle = pDevice->connHandle;
-        found = TRUE;
-    }
-    return found;
-}
+//static bool getConHandleByAddress(TBdAddr* pBdAddress, int *connHandle)
+//{
+//    btcAPP_Connection* pDevice;
+//    bool found = FALSE;
+//
+//    pDevice = deviceListFind(pBdAddress, 0);
+//    if (pDevice != NULL)
+//    {
+//        *connHandle = pDevice->connHandle;
+//        found = TRUE;
+//    }
+//    return found;
+//}
 
 static int devieListCount(void)
 {
@@ -384,12 +390,11 @@ static void HandleConnectEvt(cbBCM_Handle handle, cbBCM_ConnectionInfo info)
 
 static void HandleConnectCnf(cbBCM_Handle handle, cbBCM_ConnectionInfo info, cb_int32 status)
 {
-    btcAPPe result = BTC_APP_ERROR;
-    int index;
     btcAPP_Connection* pDevice = NULL;
+    cb_int32 result = BTC_APP_ERROR;
 
     pDevice = deviceListFind(&info.address, 0);
-    printf("HandleConnectCnf handle:%d, status=%ld, pDevice=0x%x\n", handle, status, pDevice);
+    printf("HandleConnectCnf handle:%ld, status=%ld \n", handle, status);
 
     if ((status == cbBCM_OK) && (pDevice != NULL))
     {
@@ -399,7 +404,7 @@ static void HandleConnectCnf(cbBCM_Handle handle, cbBCM_ConnectionInfo info, cb_
         btcAPP.conn_state = State_Connected;
 
         result = cbBSE_open(handle, (cbBSE_Callback *)&BTStreamCallbacks);
-        printf("cbBSE_open handle:%d, result=%d\n", handle, result);
+        printf("cbBSE_open handle:%ld, result=%ld\n", handle, result);
         if (btcAPP.eventCallback != NULL)
         {
             btcAPP.eventCallback->connectEvt(result, handle, &info.address);
@@ -415,7 +420,6 @@ static void HandleConnectCnf(cbBCM_Handle handle, cbBCM_ConnectionInfo info, cb_
 
 static void HandleDisconnectEvt(cbBCM_Handle handle)
 {
-    int32_t result = BTC_APP_ERROR;
     btcAPP_Connection *conn = deviceListFind(NULL, handle);
 
     if (conn != NULL)
@@ -472,7 +476,6 @@ static void inquiryCompleteCallback(cb_int32 status)
 void btcAPPinit(void)
 {
     btcAPPe result = BTC_APP_OK;
-    int8_t i;
     cb_uint8 channel;
     cb_char readname[40];
     TCod cod = { { 1, 2, 3 } };
@@ -579,7 +582,7 @@ btcAPPe btcAPPrequestConnectSPP(TBdAddr *pAddress)
     return result;
 }
 
-btcAPPe btcAPPwrite(int16_t handle, uint8_t *pBuf, uint32_t nBytes, int32_t tag)
+btcAPPe btcAPPwrite(uint32_t handle, uint8_t *pBuf, uint32_t nBytes, int32_t tag)
 {
     int32_t result = BTC_APP_ERROR;
     btcAPP_Connection *conn = deviceListFind(NULL, handle);
@@ -591,7 +594,7 @@ btcAPPe btcAPPwrite(int16_t handle, uint8_t *pBuf, uint32_t nBytes, int32_t tag)
     return result;
 }
 
-btcAPPe btcAPPdisconnect(int16_t handle)
+btcAPPe btcAPPdisconnect(uint32_t handle)
 {
     int32_t result = BTC_APP_ERROR;
     btcAPP_Connection *conn = deviceListFind(NULL, handle);
