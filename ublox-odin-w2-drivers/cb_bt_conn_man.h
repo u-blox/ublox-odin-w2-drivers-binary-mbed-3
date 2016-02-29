@@ -63,6 +63,7 @@ typedef enum
     cbBCM_SPP_CONNECTION,           // Serial Port Profile
     cbBCM_DUN_CONNECTION,           // Dial Up Networking Profile
     cbBCM_UUID_CONNECTION,          // UUID
+    cbBCM_PAN_CONNECTION,           // PAN
 
     cbBCM_ACL_LE_CONNECTION,        // GATT
     cbBCM_SPS_CONNECTION            // LE connectBlue Serial Service connection
@@ -91,6 +92,13 @@ typedef struct
     cb_uint16 connectionLatency;            /** Slave latency. Default value 0. */
     cb_uint16 linkLossTimeout;              /** Link loss timeout in ms. Default 2000ms. */
 } cbBCM_ConnectionParametersLe;
+
+typedef enum
+{
+    cbBCM_PAN_ROLE_PANU = 0,
+    cbBCM_PAN_ROLE_NAP,
+    cbBCM_PAN_ROLE_NONE
+}cbBCM_PAN_Role;
 
 typedef struct
 {
@@ -254,6 +262,24 @@ extern cb_int32 cbBCM_enableServerProfileUuid128(
     cb_uint8 *pUuid128,
     cb_char *pServiceName,
     cb_uint8 *pServerChannel,
+    cbBCM_ConnectionCallback *pConnectionCallback);
+
+
+/**
+* Registers the server role of the local device. If role is cbBCM_PAN_ROLE_NAP a service
+* record will be registred in the local service data base. The local device can only act as a
+* PAN NAP or Pan user at a time. If PAN NAP is enabled the device will only accept incoming
+* connections from PAN users. If PAN user is enabled it is only possible to be connected to
+* one remote PAN NAP device.
+*
+* @param   pServiceName        The name of the service
+* @param   role                The PAN role of the local device
+* @param   pConnectionCallback Callback structure for connection management.
+* @return  If the operation is successful cbBCM_OK is returned.
+*/
+extern cb_int32 cbBCM_enableServerProfilePan(
+    cb_char *pServiceName,
+    cbBCM_PAN_Role role,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
 /**
@@ -454,6 +480,42 @@ extern cbBCM_Handle cbBCM_reqConnectUuid(
  * @return If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_rspConnectUuidCnf(
+    cbBCM_Handle handle,
+    cb_boolean accept);
+
+/**
+* Initiate a Bluetooth PAN Profile connection.
+* The connection sequence includes ACL connection setup and L2CAP connection setup.
+* A pfConnectCnf callback will be received when the connection is complete.
+* The error code in the*callback is cbBCM_OK if the connection was successfully established.
+* The error code in the callback is cbBCM_ERROR if the connection failed.
+*
+* @param   pAddress          Pointer to address of remote device.
+* @param   remoteRole        PAN role of the local device
+* @param   remoteRole        PAN role of the remote device
+* @param   pAclParams        Link configuration including link supervision timeout
+*                            and master slave policy. Pass NULL to use default connection
+*                            parameters.
+* @param   pConnectionCallback Callback structure for connection management.
+* @return  If the operation is successful the connection handle is returned. If
+*          not cbBCM_INVALID_CONNECTION_HANDLE is returned.
+*/
+extern cbBCM_Handle cbBCM_reqConnectPan(
+    TBdAddr *pAddress,
+    cbBCM_PAN_Role remoteRole,
+    cbBCM_PAN_Role localRole,
+    cbBCM_ConnectionParameters *pAclParams,
+    cbBCM_ConnectionCallback *pConnectionCallback);
+
+/**
+* Accept or reject an incoming PAN connection. This is a
+* response to a cbBCM_ConnectInd connection indication.
+*
+* @param accept    TRUE to accept the incoming connection.
+*                  FALSE to reject.
+* @return If the operation is successful cbBCM_OK is returned.
+*/
+extern cb_int32 cbBCM_rspConnectPan(
     cbBCM_Handle handle,
     cb_boolean accept);
 

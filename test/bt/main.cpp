@@ -39,11 +39,11 @@ asm(".global _printf_float");
 
 extern "C" {
 #include "btc_app.h"
-#include "ublox-odin-w2-drivers-binary\bt_types.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_utils.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_man.h"
-#include "ublox-odin-w2-drivers-binary\cb_main.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_serial.h"
+#include "ublox-odin-w2-drivers/bt_types.h"
+#include "ublox-odin-w2-drivers/cb_bt_utils.h"
+#include "ublox-odin-w2-drivers/cb_bt_man.h"
+#include "ublox-odin-w2-drivers/cb_main.h"
+#include "ublox-odin-w2-drivers/cb_bt_serial.h"
 }
 
 #define BT_MAIN_TEST_DATA_SIZE (512)

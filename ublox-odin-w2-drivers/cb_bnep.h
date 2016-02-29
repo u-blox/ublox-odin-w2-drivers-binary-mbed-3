@@ -22,6 +22,10 @@ extern "C" {
  * DEFINES
  *=========================================================================*/
 
+#ifndef cbBNEP_MAX_LINKS
+#define cbBNEP_MAX_LINKS (7)
+#endif
+
 // Max Ethernet frame size
 // header (14) + payload (1500) + 802.1Q Tag header (4) => 1518
 #define cbBNEP_MAX_FRAME_SIZE               ((cb_uint32)1518)
@@ -116,6 +120,17 @@ typedef enum
 /*===========================================================================
 * FUNCTIONS
 *=========================================================================*/
+
+/*---------------------------------------------------------------------------
+* Find out if BNEP resource is free for the specified handle.
+* Returns TRUE if resource is available.
+*-------------------------------------------------------------------------*/
+cb_boolean cbBNEPIsHandleFree(cbBNEP_Handle handle);
+
+/*---------------------------------------------------------------------------
+* Sets maximum allowed bnep connections
+*-------------------------------------------------------------------------*/
+void cbBNEPSetMaxLinks(cb_int32 maxLinks);
 
 /*---------------------------------------------------------------------------
 * Initializes the Bluetooth BNEP module.

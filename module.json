@@ -1,6 +1,6 @@
 {
   "name": "ublox-odin-w2-drivers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "u-blox odin Bluetooth/wifi driver",
   "private": true,
   "keywords": [
@@ -17,13 +17,13 @@
     "ublox-odin-w2-drivers"
   ],
   "dependencies": {
-    "mbed-hal-st-stm32cubef4": "andreaslarssonublox/mbed-hal-st-stm32cubef4#master",
+    "mbed-hal-st-stm32cubef4": "andreaslarssonublox/mbed-hal-st-stm32cubef4#1.0.2",
     "cmsis-core-stm32f4": "^1.0.0"
   },
   "targetDependencies": {},
   "testDependencies": {
     "sal-stack-lwip-ublox-odin-w2" : "0.0.1",
-    "ublox-odin-w2-lwip-adapt" : "0.0.1",
+    "ublox-odin-w2-lwip-adapt" : "0.0.2",
     "sal": "^1.0.0",
     "sockets": "^1.0.0"
   },
