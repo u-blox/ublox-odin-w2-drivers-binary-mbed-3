@@ -1,10 +1,10 @@
-# u-blox ODIN W2 Wifi and Bluetooth drivers 
+# u-blox ODIN-W2 Wifi and Bluetooth drivers 
 
 This is a binary module including u-blox Bluetooth and WiFi stack for [mbed OS](https://mbed/com).
 
 ## Required hardware
 
-u-blox Odin W2 module
+u-blox ODIN-W2 module
 
 ## Get the source code
 git clone https://github.com/u-blox/ublox-odin-w2-drivers-binary.git  
