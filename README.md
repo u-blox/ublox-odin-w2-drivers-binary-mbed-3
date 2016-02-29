@@ -1,4 +1,4 @@
-# c029/binary
+# u-blox ODIN W2 Wifi and Bluetooth drivers 
 
 This is a binary module including u-blox Bluetooth and WiFi stack for [mbed OS](https://mbed/com).
 
