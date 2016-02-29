@@ -19,7 +19,7 @@
 */
 
 #include <stdint.h>
-#include "ublox-odin-w2-drivers-binary\bt_types.h"
+#include "ublox-odin-w2-drivers/bt_types.h"
 
 /*===========================================================================
 * DEFINES

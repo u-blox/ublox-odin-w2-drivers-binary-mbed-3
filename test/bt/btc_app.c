@@ -19,12 +19,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "btc_app.h"
-#include "ublox-odin-w2-drivers-binary\bt_types.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_utils.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_serial.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_man.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_conn_man.h"
-#include "ublox-odin-w2-drivers-binary\cb_bt_sec_man.h"
+#include "ublox-odin-w2-drivers/bt_types.h"
+#include "ublox-odin-w2-drivers/cb_bt_utils.h"
+#include "ublox-odin-w2-drivers/cb_bt_serial.h"
+#include "ublox-odin-w2-drivers/cb_bt_man.h"
+#include "ublox-odin-w2-drivers/cb_bt_conn_man.h"
+#include "ublox-odin-w2-drivers/cb_bt_sec_man.h"
 
 /*===========================================================================
 * DEFINES

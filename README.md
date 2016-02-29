@@ -1,74 +1,49 @@
-# c029/binary
+# u-blox ODIN-W2 Wifi and Bluetooth drivers 
 
 This is a binary module including u-blox Bluetooth and WiFi stack for [mbed OS](https://mbed/com).
 
-## Structure of This Module
-
-```
-   |__ sal-stack-ublox-odin-w2
-   |    \__ bt_types.h
-   |    \__ cb_assert.h
-   |    \__ cb_bnep.h
-   |    \__ cb_bt_conn_man.h
-   |    \__ cb_bt_man.h
-   |    \__ cb_bt_sec_man.h
-   |    \__ cb_bt_serial.h
-   |    \__ cb_bt_stack_config.h
-   |    \__ cb_bt_test_man.h
-   |    \__ cb_bt_utils.h
-   |    \__ cb_comdefs.h
-   |    \__ cb_dev_info.h
-   |    \__ cb_ethernet.h
-   |    \__ cb_hw.h
-   |    \__ cb_log.h
-   |    \__ cb_main.h
-   |    \__ cb_os.h
-   |    \__ cb_platform_basic_types.h
-   |    \__ cb_port_types.h
-   |    \__ cb_status.h
-   |    \__ cb_target.h
-   |    \__ cb_target_data.h
-   |    \__ cb_timer.h
-   |    \__ cb_types.h
-   |    \__ cb_wlan.h
-   |    \__ cb_wlan_os.h
-   |    \__ cb_wlan_types.h
-   |__ source
-   |    \__ link-lib.cmake
-   |    \__ ublox-odin-w2-drivers-binary.a
-   |__ test
-   |    \__ bt
-   |    \__ udp-time-client
-   |__ module.json
-   |__ LICENSE
-   \__ README.md
-```
-
 ## Required hardware
 
-## Dependencies
+u-blox ODIN-W2 module
 
-## Using This Module
+## Get the source code
+git clone https://github.com/u-blox/ublox-odin-w2-drivers-binary.git  
+git clone https://github.com/u-blox/ublox-odin-w2-lwip-adapt.git  
+git clone https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2.git  
+git clone https://github.com/u-blox/target-ublox-odin-w2-gcc.git
 
-Add this module as a dependency to another module's module.json file
+## Make yotta links from the modules above  
+cd target-ublox-odin-w2-gcc  
+yotta link-target  
+cd..  
 
-"dependencies": {
-  "mbed-hal-st-stm32cubef4": "andreaslarssonublox/mbed-hal-st-stm32cubef4#master",
-  "ublox-odin-w2-drivers-binary": "*",
-  "ublox-odin-w2-lwip-adapt": "*",
-  "sal-stack-lwip-ublox-odin-w2": "*"
+cd ublox-odin-w2-lwip-adapt  
+yotta link  
+cd..  
+
+cd sal-stack-lwip-ublox-odin-w2  
+yotta link  
+cd..  
+
+cd ublox-odin-w2-drivers-binary  
+yotta link ublox-odin-w2-lwip-adapt  
+yotta link sal-stack-lwip-ublox-odin-w2  
+yotta link-target ublox-odin-w2-gcc  
+
+## Set C029 target  
+yotta target ublox-c029-gcc
+
+## Building the tests
+A config file is needed to be able to build the tests.
+Include following to your config.json
+```json
+{
+"test": {
+    "wifi_ssid": "\"YOUR AP\"",
+    "wifi_passphrase": "\"YOUR PASSWORD\"",
+    "bt_remote_nap_addr": "0x11, 0x22, 0xAA, 0xBB, 0xCC, 0x00"
+  }
 }
+```
+Use the following to build: yotta build --config config.json
 
-and then 
-
-include "ublox-odin-w2-drivers-binary/*.h"
-
-Targets:
-ublox-c029-gcc
-ublox-odin-w2-gcc
-
-## Known limitations
-
-## Known problems
-
-## Future improvements
