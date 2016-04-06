@@ -3,7 +3,7 @@ The u-blox Embedded Bluetooth Stack is optimized for small embedded industrial s
 Direct function calls and callbacks are used as much as possible and message passing and critical sections are used sparsely. All Bluetooth stack processes are running in the same context therefore mutual exclusions are not required for the different callbacks from the stack to the application.
 The block diagram below shows the different modules in the stack.
 
-![](mbed_ble_c_stack_system_overview.svg)
+![](mbed_ble_c_stack_system_overview.png)
 
 The top modules cbBM, cbBSM, cbBCM, cbBSE, cbBTSPS, cbGATT and cbBTPAN above are exported via the API and they are described below. The other modules are internal and thus not accessible by the application. The functions/callbacks are described in the header files.
 
