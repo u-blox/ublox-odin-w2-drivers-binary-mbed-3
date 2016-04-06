@@ -24,7 +24,7 @@ The ODIN-W2 module supports a variety of interfaces such as WLAN, Bluetooth, Blu
 
 The embedded Bluetooth Stack and the embedded WLAN driver are optimized for small embedded industrial systems with high requirements on performance and robustness. The Bluetooth stack contains the classic SPP, DUN, PAN, DID and GAP profiles and the low energy GATT, GAP and u-blox Serial Port Service. The Wi-Fi driver contains station as well as access point. A supplicant is also included.
 
-![](mbed_odin_w2.svg)
+![](mbed_odin_w2.png)
 
 The exported components and corresponding files in the u-blox ODIN-W2 driver is shortly described below.
 
@@ -84,7 +84,7 @@ Examples of how to set-up and debug an application can be found here [https://gi
 
 ## Flash memory configuration
 
-![](mbed_odin_w2_flash.svg)
+![](mbed_odin_w2_flash.png)
 
 The flash memory configuration above shows how the utilization can look like when two 128k sectors are used as non-volatile storage of link keys. How much space the ARM mbed OS and ODIN-W2 drivers occupy is very dependent on how much functionality is used. The [Wi-Fi example](https://github.com/u-blox/mbed-examples-odin-w2) will occupy ~1.2MByte.
 
