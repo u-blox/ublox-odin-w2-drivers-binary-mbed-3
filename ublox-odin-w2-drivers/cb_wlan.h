@@ -21,7 +21,6 @@
 #include "cb_types.h"
 #include "cb_wlan_types.h"
 #include "cb_status.h"
-#include "cb_wlan_os.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -89,13 +88,13 @@ struct cbWLAN_Stream_s {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_StartParameters_s {
+typedef struct cbWLAN_StartParameters {
     cbWLAN_MACAddress      mac;        /**< MAC of WLAN interface, set to all zeros if hardware programmed address should be used. */
-    cb_boolean disable80211d;          /**< This must be set to FALSE */
+    cb_boolean disable80211d;
     cbWM_ModuleType  deviceType;      /**< Specify current device type. */
     union {
         struct {
-            cbWM_TxPowerSettings txPowerSettings;   /**< Transmission power settings. Use cbWLAN_TX_POWER_AUTO to let the driver dynamically choose power level */
+            cbWM_TxPowerSettings txPowerSettings;   /**< Transmission power settings. */
         } ODIN_W26X;
     } deviceSpecific;
 } cbWLAN_StartParameters;
@@ -105,7 +104,7 @@ typedef struct cbWLAN_StartParameters_s {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_CommonConnectParameters_s {
+typedef struct cbWLAN_CommonConnectParameters {
     cbWLAN_MACAddress      bssid;      /**< BSSID to connect to, set to all zero for any BSSID. */
     cbWLAN_Ssid            ssid;       /**< SSID to connect to. */
 } cbWLAN_CommonConnectParameters;
@@ -116,18 +115,27 @@ typedef struct cbWLAN_CommonConnectParameters_s {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_WEPConnectParameters_s {
+typedef struct cbWLAN_WEPConnectParameters {
     cbWLAN_WEPKey           keys[4];    /**< WEP keys. */
     cb_uint32               txKey;      /**< Active WEP transmission key index (0-3). */
 } cbWLAN_WEPConnectParameters;
+
+/**
+* WPA PSK parameters.
+*
+* @ingroup wlan
+*/
+typedef struct cbWLAN_WPAPSK {
+    cb_uint8                key[cbWLAN_PSK_LENGTH]; /**< WPA pre-shared key in binary form. */
+} cbWLAN_WPAPSK;
 
 /**
  * WPA PSK specific connect parameters.
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_WPAPSKConnectParameters_s {
-    cb_uint8                psk[cbWLAN_PSK_LENGTH]; /**< WPA pre-shared key in binary form. */
+typedef struct cbWLAN_WPAPSKConnectParameters {
+    cbWLAN_WPAPSK           psk; /**< WPA pre-shared key*/
 } cbWLAN_WPAPSKConnectParameters;
 
 
@@ -154,7 +162,7 @@ typedef enum cbWLAN_AuthenticationSuite {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_EnterpriseConnectParameters_s {
+typedef struct cbWLAN_EnterpriseConnectParameters {
     cbWLAN_EnterpriseMode   authMode;       /**< Enterprise authentication mode. */
     cb_uint8                username[cbWLAN_MAX_USERNAME_LENGTH];       /**< Username string. */
     cb_uint8                passphrase[cbWLAN_MAX_PASSPHRASE_LENGTH];   /**< Passphrase string. */
@@ -168,18 +176,31 @@ typedef struct cbWLAN_EnterpriseConnectParameters_s {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_CommonApParameters_s {
+typedef struct cbWLAN_CommonApParameters {
     cbWLAN_Ssid             ssid;       /**< SSID to connect to. */
     cbWLAN_Channel          channel;    /**< Active channel. */
     cbWLAN_RateMask         basicRates; /**< Basic rates. */
 }cbWLAN_CommonApParameters;
+
+
+/**
+* WPA PSK specific AP parameters.
+*
+* @ingroup wlan
+*/
+typedef struct cbWLAN_WPAPSKApParameters {
+    cbWLAN_CipherSuite      rsnCiphers; /**< Bit field indicating which ciphers that shall be displayed in RSN information elements. If 0 no RSN information elements is added to beacons and probe responses. */
+    cbWLAN_CipherSuite      wpaCiphers; /**< Bit field indicating which ciphers that shall be displayed in WPA information elements. If 0 no WPA information elements is added to beacons and probe responses. */
+    cbWLAN_WPAPSK           psk; /**< WPA pre-shared key*/
+} cbWLAN_WPAPSKApParameters;
+
 
 /**
  * Scan parameters
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_ScanParameters_s {
+typedef struct cbWLAN_ScanParameters {
     cbWLAN_Ssid             ssid;       /**< SSID to scan for, set to zero length for broadcast scan. */
 } cbWLAN_ScanParameters;
 
@@ -189,7 +210,7 @@ typedef struct cbWLAN_ScanParameters_s {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_ScanIndicationInfo_s {
+typedef struct cbWLAN_ScanIndicationInfo {
     cbWLAN_MACAddress bssid;                /**< BSS BSSID */
     cbWLAN_Ssid ssid;                       /**< BSS SSID */
     cbWLAN_Channel channel;                 /**< BSS channel */
@@ -197,8 +218,8 @@ typedef struct cbWLAN_ScanIndicationInfo_s {
     cb_int32 rssi;                          /**< RSSI for scan result packet. */
 
     cbWLAN_AuthenticationSuite authenticationSuites; /**< Supported authentication suites */
-    cbWLAN_CipherSuite unicastCiphers;              /**< Supported unicast ciphter suites */
-    cbWLAN_CipherSuite groupCipher;                 /**< Supported group ciphter suites */
+    cbWLAN_CipherSuite unicastCiphers;              /**< Supported unicast cipher suites */
+    cbWLAN_CipherSuite groupCipher;                 /**< Supported group cipher suites */
 
     cbWLAN_RateMask basicRateSet;                   /**< Basic rate set, i.e. required rates. */
     cbWLAN_RateMask supportedRateSet;               /**< Supported rate set, super set of basic rate set. */
@@ -245,7 +266,7 @@ typedef enum {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_StatusStartedInfo_s {
+typedef struct cbWLAN_StatusStartedInfo {
     cbWLAN_MACAddress macAddress;      /**< MAC address of WLAN driver. */
 } cbWLAN_StatusStartedInfo;
 
@@ -255,7 +276,7 @@ typedef struct cbWLAN_StatusStartedInfo_s {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_StatusConnectedInfo_s {
+typedef struct cbWLAN_StatusConnectedInfo {
     cbWLAN_MACAddress bssid;           /**< BSSID of the BSS connected to. */
     cbWLAN_Channel channel;             /**< Operating channels of the BSS connected to. */
 } cbWLAN_StatusConnectedInfo;
@@ -265,7 +286,7 @@ typedef struct cbWLAN_StatusConnectedInfo_s {
  *
  * @ingroup wlan
  */
-typedef struct cbWLAN_PacketIndicationInfo_s {
+typedef struct cbWLAN_PacketIndicationInfo {
     void        *rxData;                /**< Pointer to the port specific data type. */
     cb_uint32    size;                   /**< Length of the data payload in the port specific packet data type. */
     cb_boolean  isChecksumVerified;     /**< True if the TCP/UDP checksum is verified and correct. */
@@ -308,21 +329,21 @@ typedef void (*cbWLAN_scanIndication)(void *callbackContext, cbWLAN_ScanIndicati
 /**
  * Initialize WLAN component.
  *
- * @param targetId Port specific TARGET identifier.
  * @param callbackContext Context handle used in indication callbacks.
  * @return @ref cbSTATUS_OK if successful, otherwise cbSTATUS_ERROR.
  */
-cbRTSL_Status cbWLAN_init(cb_int32 targetId, void *callbackContext);
+cbRTSL_Status cbWLAN_init(void *callbackContext);
 
 /**
  * Start WLAN component.
  * Create WLAN driver instance, bind it to targetId and start the 
  * driver.
  *
+ * @param targetId Port specific TARGET identifier.
  * @param params Start parameters passed to WLAN driver instance.
  * @return @ref cbSTATUS_OK if successful, otherwise cbSTATUS_ERROR.
  */
-cbRTSL_Status cbWLAN_start(cbWLAN_StartParameters *params);
+cbRTSL_Status cbWLAN_start(cb_int32 targetId, cbWLAN_StartParameters *params);
 
 /**
  * Stop WLAN component.
@@ -410,10 +431,20 @@ cb_int16 cbWLAN_STA_getRSSI();
  * Start access point in open mode (no encryption).
  * Connection progress is reported as @ref cbWLAN_statusIndication callbacks.
  *
- * @param commonParams Accesspoint parameters.
+ * @param commonParams Common Accesspoint parameters.
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
  */
 cbRTSL_Status cbWLAN_apStartOpen(cbWLAN_CommonApParameters *commonParams);
+
+/**
+* Start access point with WPA PSK authentication.
+* Connection progress is reported as @ref cbWLAN_statusIndication callbacks.
+*
+* @param commonParams Common Accesspoint parameters.
+* @param wpaParams WPA PSK specific parameters.
+* @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
+*/
+cbRTSL_Status cbWLAN_apStartWPAPSK(cbWLAN_CommonApParameters *commonParams, cbWLAN_WPAPSKApParameters *wpaParams);
 
 /**
  * Stop access point.
@@ -471,9 +502,11 @@ cbRTSL_Status cbWLAN_Util_parsePEMKey(cbWLAN_Stream const * const certificate, c
  * Set the channel list to be used for connection and scanning.
  * The list will be filtered according to the allowed channel list
  * set. The list can include both 2.4GHz and 5GHz channels.
+ * If channel list parameter is NULL the default channel list is 
+ * restored.
  * 
  * @param channelList Pointer to channel list for the driver to use.
-
+ *
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
 cbRTSL_Status cbWLAN_setChannelList(const cbWLAN_ChannelList *channelList);

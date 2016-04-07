@@ -21,7 +21,6 @@
 
 #include "cb_comdefs.h"
 #include "bt_types.h"
-#include "cb_bt_stack_config.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,12 +68,18 @@ typedef enum
     cbBCM_SPS_CONNECTION            // LE connectBlue Serial Service connection
 }cbBCM_ConnectionType;
 
+typedef enum
+{
+    cbBM_LINK_QUALITY_READY_OK,
+    cbBM_LINK_QUALITY_READY_ERROR
+} cbBCM_LinkQualityEvt;
+
 /**
  * Bluetooth Classic Acl connection parameters
  */
 typedef struct 
 {
-    cb_uint32           pageTimeout;            /** Length of connection attempt. Default value 5000ms. */
+    cb_uint16           pageTimeout;            /** Length of connection attempt. Default value 5000ms. */
     cb_uint16           packetType;             /** Packet types allowed in the connection. By default all packets but 3MBit EDR are allowed. */
     TMasterSlavePolicy  masterSlavePolicy;      /** Whether master slave switch shall be allowed or not. By default master slave switch is allowed. */
     cb_uint16           clockOffset;            /** Clock offset is part in inquiry response. Using this value may result in faster connection setup  Default value 0. */
@@ -205,6 +210,9 @@ typedef void (*cbBCM_ServiceSearchDeviceIdCallback)(
     cb_boolean didPrimaryService,
     cb_uint16 didVendorIdSource);
 
+typedef void(*cbBCM_LinkQualityCallback)(
+    cbBCM_LinkQualityEvt linkQualityEvt,
+    uint8               linkQuality);
 
 /*===========================================================================
  * FUNCTIONS
@@ -618,7 +626,7 @@ extern cb_int32 cbBCM_cmdDisconnect(
  */
 extern cb_int32 cbBCM_reqServiceSearchSpp(
     TBdAddr *pAddress,
-    cb_int32 maxServices,
+    cb_uint16 maxServices,
     cbBCM_ServiceSearchSppCallback pCallback,
     cbBCM_ServiceSearchCompleteCallback pCompleteCallback);
 
@@ -632,7 +640,7 @@ extern cb_int32 cbBCM_reqServiceSearchSpp(
  */
 extern cb_int32 cbBCM_reqServiceSearchDun(
     TBdAddr *pAddress,
-    cb_int32 maxServices,
+    cb_uint16 maxServices,
     cbBCM_ServiceSearchSppCallback pCallback,
     cbBCM_ServiceSearchCompleteCallback pCompleteCallback);
 
@@ -647,8 +655,8 @@ extern cb_int32 cbBCM_reqServiceSearchDun(
  */
 extern cb_int32 cbBCM_reqServiceSearchUuid(
     TBdAddr *pAddress,
-    cb_uint8 *pUuid128,
-    cb_int32 maxServices,
+    const cb_uint8 *pUuid128,
+    cb_uint16 maxServices,
     cbBCM_ServiceSearchSppCallback pCallback,
     cbBCM_ServiceSearchCompleteCallback pCompleteCallback);
 
@@ -662,30 +670,37 @@ extern cb_int32 cbBCM_reqServiceSearchUuid(
  */
 cb_int32 cbBCM_reqServiceSearchDeviceId(
     TBdAddr *pAddress,
-    cb_int32 maxServices,
+    cb_uint16 maxServices,
     cbBCM_ServiceSearchDeviceIdCallback pCallback,
     cbBCM_ServiceSearchCompleteCallback pCompleteCallback);
 
 /**
 * @brief   Get local Master/Slave role in an active connection.
-* @param   handle          Connection handle
+* @param   bdAddr          address to the connection
 * @param   rssiCallback    Callback function used to notify the role
 * @return  If the operation is successful cbBCM_OK is returned.
 */
 extern cb_int32 cbBCM_RoleDiscovery(
-    cbBCM_Handle handle,
+    TBdAddr bdAddr,
     cbBCM_RoleDiscoveryCallback roleDiscoveryCallback);
 
 /**
  * @brief   Get current Received Signal Strength Indication (RSSI)
  *          of an active connection.
- * @param   handle          Connection handle
+ * @param   bdAddress       bt address to the connected device
  * @param   rssiCallback    Callback function used to notify the rssi value
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_getRssi(
-    cbBCM_Handle handle,
+    TBdAddr bdAddress,
     cbBCM_RssiCallback rssiCallback);
+
+/*
+* Read the LinkQuality .
+* @return status as int32.
+* @cbBM_LinkQualityCallback is used to provide result.
+*/
+extern cb_int32 cbBCM_GetLinkQuality(TBdAddr bdAddr, cbBCM_LinkQualityCallback  linkQualityCallback);
 
 /**
  * @brief   Change the packet types currently used for an active Bluetooth
@@ -735,9 +750,9 @@ extern cb_int32 cbBCM_updateConnectionParams(
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_enableDevInfoService(
-    cb_char *pManufacturer,
-    cb_char *pModel,
-    cb_char *pFwVersion,
+    const cb_char *pManufacturer,
+    const cb_char *pModel,
+    const cb_char *pFwVersion,
     cb_uint16 startIndex);
 
 /**

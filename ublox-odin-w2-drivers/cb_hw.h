@@ -70,13 +70,22 @@ void cbHW_setWakeupEvent(void);
 void cbHW_resetWakeupEvent(void);
 
 /**
- * Wait for specified amount of microseconds
+ * Wait for specified amount of microseconds. May be interrupt dependent.
  * @note Granularity may vary between systems. Will be at least systick based.
  * The system may go to sleep during the delay.
  * 
  * @param us Time to delay in microseconds.
  */
 void cbHW_delay(cb_uint32 us);
+
+/**
+* Wait for specified amount of microseconds using a software loop.
+* @note Granularity may vary between systems. 
+* The system will not go to sleep during the delay.
+*
+* @param us Time to delay in microseconds.
+*/
+void cbHW_softDelay(cb_uint32 us);
 cb_boolean cbHW_sysFreqIsSupported(cb_uint32 sysFreq);
 void cbHW_setSysFreq(cb_uint32 sysFreq);
 cb_uint32 cbHW_getSysFreq(void);

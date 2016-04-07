@@ -90,7 +90,7 @@ typedef enum
 typedef struct
 {
     TPinCode pin;
-    uint32   nBytes;
+    cb_uint8   nBytes;
 } cbBSM_PinCode;
 
 typedef enum

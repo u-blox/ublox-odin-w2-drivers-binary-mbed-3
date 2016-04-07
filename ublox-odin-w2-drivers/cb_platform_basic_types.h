@@ -27,6 +27,9 @@
 /*===========================================================================
  * COMMON SYSTEM DEFINES
  *=========================================================================*/
+#ifndef __GNUC__
+#  error "This cb_platform_basic_types.h is only valid for GCC. Check your make target"
+#endif
 
 
 typedef int8_t                  cb_int8;
@@ -100,6 +103,10 @@ typedef int                     cb_int;
 #define cb_PACKED_STRUCT_ATTR_POST
 */
 /**@}*/
+
+
+#define DO_PRAGMA(x) _Pragma (#x)
+#define TODO(x) DO_PRAGMA(message ("TODO - " #x))
 
 
 #endif /* _CB_PLATFORM_BASIC_TYPES_H_ */

@@ -164,6 +164,13 @@
     cb_PACKED_STRUCT_ATTR_INLINE_POST name; \
     cb_PACKED_STRUCT_ATTR_POST
 
+#ifdef __GNUC__
+#  define DO_PRAGMA(x) _Pragma (#x)
+#  define TODO(x) DO_PRAGMA(message ("TODO - " #x))
+#else 
+#  define TODO(x)
+#endif
+
 /*===========================================================================
  * TYPES
  *=========================================================================*/

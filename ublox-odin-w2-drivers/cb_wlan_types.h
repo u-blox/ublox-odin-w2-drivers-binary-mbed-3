@@ -335,6 +335,12 @@ typedef enum {
     cbWLAN_CONNECT_MODE_ENTERPRISE,
 } cbWLAN_ConnectMode;
 
+typedef enum {
+    cbWLAN_AP_MODE_OPEN,
+    cbWLAN_AP_MODE_WEP_OPEN,
+    cbWLAN_AP_MODE_WPA_PSK,
+    cbWLAN_AP_MODE_ENTERPRISE,
+} cbWLAN_ApMode;
 
 /** 
  * Ethernet header

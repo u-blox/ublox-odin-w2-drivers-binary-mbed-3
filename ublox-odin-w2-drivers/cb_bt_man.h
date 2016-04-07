@@ -70,16 +70,6 @@ typedef void (*cbBM_RemoteNameCallback)(
 
 typedef enum
 {
-    cbBM_LINK_QUALITY_READY_OK,
-    cbBM_LINK_QUALITY_READY_ERROR
-} cbBM_LinkQualityEvt;
-
-typedef void (*cbBM_LinkQualityCallback)(
-    cbBM_LinkQualityEvt linkQualityEvt,
-    uint8               linkQuality);
-
-typedef enum
-{
     cbBM_DEVICE_DISCOVERY_LE_ALL = 0,
     cbBM_DEVICE_DISCOVERY_LE_GENERAL,
     cbBM_DEVICE_DISCOVERY_LE_LIMITED,
@@ -543,13 +533,6 @@ extern cb_int32 cbBM_add128BitsServiceClassLe(cb_uint8* uuid128);
 extern cb_int8 cbBM_getMaxTxPower(void);
 
 /*
- * Read the LinkQuality .
- * @return status as int32.
- * @cbBM_LinkQualityCallback is used to provide result.
- */
-extern cb_int32 cbBM_GetLinkQuality(TBdAddr bdAddr,cbBM_LinkQualityCallback  linkQualityCallback);
-
-/*
 * Read the connection parameters for Bond.
 * @return cbCMLE_AclParamsLe pointer to values.
 */
@@ -569,30 +552,30 @@ void cbBM_getRemoteNameReqParameters(TAclParamsLe* aclParams);
 * Sets the LE parameter.
 * @newValue new parameter value.
 */
-extern cb_uint32 cbBM_setAdvertisingIntervalMin(cb_uint32 newValue);
-extern cb_uint32 cbBM_setAdvertisingIntervalMax(cb_uint32 newValue);
-extern cb_uint32 cbBM_setAdvChannelmap(cb_uint32 newValue);
-extern cb_uint32 cbBM_setConnectConnIntervalMin(cb_uint32 newValue);
-extern cb_uint32 cbBM_setConnectConnIntervalMax(cb_uint32 newValue);
-extern cb_uint32 cbBM_setConnectConnLatency(cb_uint32 newValue);
-extern cb_uint32 cbBM_setConnectLinklossTmo(cb_uint32 newValue);
-extern cb_uint32 cbBM_setConnectCreateConnTmo(cb_uint32 newValue);
-extern cb_uint32 cbBM_setConnectScanInterval(cb_uint32 newValue);
-extern cb_uint32 cbBM_setConnectScanWindow(cb_uint32 newValue);
-extern cb_uint32 cbBM_setBondConnIntervalMin(cb_uint32 newValue);
-extern cb_uint32 cbBM_setBondConnIntervalMax(cb_uint32 newValue);
-extern cb_uint32 cbBM_setBondConnLatency(cb_uint32 newValue);
-extern cb_uint32 cbBM_setBondLinklossTmo(cb_uint32 newValue);
-extern cb_uint32 cbBM_setBondCreateConnTmo(cb_uint32 newValue);
-extern cb_uint32 cbBM_setBondScanInterval(cb_uint32 newValue);
-extern cb_uint32 cbBM_setBondScanWindow(cb_uint32 newValue);
-extern cb_uint32 cbBM_setRemoteNameConnIntervalMin(cb_uint32 newValue);
-extern cb_uint32 cbBM_setRemoteNameConnIntervalMax(cb_uint32 newValue);
-extern cb_uint32 cbBM_setRemoteNameConnLatency(cb_uint32 newValue);
-extern cb_uint32 cbBM_setRemoteNameLinklossTmo(cb_uint32 newValue);
-extern cb_uint32 cbBM_setRemoteNameCreateConnTmo(cb_uint32 newValue);
-extern cb_uint32 cbBM_setRemoteNameScanInterval(cb_uint32 newValue);
-extern cb_uint32 cbBM_setRemoteNameScanWindow(cb_uint32 newValue);
+extern cb_int32 cbBM_setAdvertisingIntervalMin(cb_uint16 newValue);
+extern cb_int32 cbBM_setAdvertisingIntervalMax(cb_uint16 newValue);
+extern cb_int32 cbBM_setAdvChannelmap(cb_uint16 newValue);
+extern cb_int32 cbBM_setConnectConnIntervalMin(cb_uint16 newValue);
+extern cb_int32 cbBM_setConnectConnIntervalMax(cb_uint16 newValue);
+extern cb_int32 cbBM_setConnectConnLatency(cb_uint16 newValue);
+extern cb_int32 cbBM_setConnectLinklossTmo(cb_uint16 newValue);
+extern cb_int32 cbBM_setConnectCreateConnTmo(cb_uint16 newValue);
+extern cb_int32 cbBM_setConnectScanInterval(cb_uint16 newValue);
+extern cb_int32 cbBM_setConnectScanWindow(cb_uint16 newValue);
+extern cb_int32 cbBM_setBondConnIntervalMin(cb_uint16 newValue);
+extern cb_int32 cbBM_setBondConnIntervalMax(cb_uint16 newValue);
+extern cb_int32 cbBM_setBondConnLatency(cb_uint16 newValue);
+extern cb_int32 cbBM_setBondLinklossTmo(cb_uint16 newValue);
+extern cb_int32 cbBM_setBondCreateConnTmo(cb_uint16 newValue);
+extern cb_int32 cbBM_setBondScanInterval(cb_uint16 newValue);
+extern cb_int32 cbBM_setBondScanWindow(cb_uint16 newValue);
+extern cb_int32 cbBM_setRemoteNameConnIntervalMin(cb_uint16 newValue);
+extern cb_int32 cbBM_setRemoteNameConnIntervalMax(cb_uint16 newValue);
+extern cb_int32 cbBM_setRemoteNameConnLatency(cb_uint16 newValue);
+extern cb_int32 cbBM_setRemoteNameLinklossTmo(cb_uint16 newValue);
+extern cb_int32 cbBM_setRemoteNameCreateConnTmo(cb_uint16 newValue);
+extern cb_int32 cbBM_setRemoteNameScanInterval(cb_uint16 newValue);
+extern cb_int32 cbBM_setRemoteNameScanWindow(cb_uint16 newValue);
 
 /*
 * Read the LE parameter.

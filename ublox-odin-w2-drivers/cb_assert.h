@@ -12,9 +12,6 @@
 
 #include "cb_comdefs.h"
 
-#ifdef NDEBUG
-#include "cb_os.h"
-#endif
 
 #ifdef __cplusplus
 extern "C" {
