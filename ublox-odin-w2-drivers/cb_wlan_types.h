@@ -19,6 +19,10 @@
 
 #include "cb_types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
@@ -331,6 +335,12 @@ typedef enum {
     cbWLAN_CONNECT_MODE_ENTERPRISE,
 } cbWLAN_ConnectMode;
 
+typedef enum {
+    cbWLAN_AP_MODE_OPEN,
+    cbWLAN_AP_MODE_WEP_OPEN,
+    cbWLAN_AP_MODE_WPA_PSK,
+    cbWLAN_AP_MODE_ENTERPRISE,
+} cbWLAN_ApMode;
 
 /** 
  * Ethernet header
@@ -522,6 +532,10 @@ cb_boolean cbWLAN_isNRate(cbWLAN_Rate rate);
  * @return @ref TRUE if the channel is valid. @ref FALSE otherwise.
  */
 cb_boolean cbWLAN_isValidChannel(cbWLAN_Channel channel);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

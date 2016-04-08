@@ -33,7 +33,7 @@
 #define SIZE_OF_EXT_INQ_RSP                           (240)
 #define MIN_PASSKEY_VALUE                             (0)
 #define MAX_PASSKEY_VALUE                             (999999)
-#define INVALID_CONN_HANDLE                           ((TConnHandle)cb_UINT32_MAX)
+#define INVALID_CONN_HANDLE                           ((TConnHandle)0xFFFF)
 #define MAX_ADV_DATA_LENGTH                           (31)
 #define UUID_LENGTH                                   (16)
 
@@ -67,7 +67,7 @@ typedef cb_uint16       uint16;
 typedef cb_uint8       TErrorCode;
 typedef cb_uint8       TLinkType;
 typedef cb_uint16      TPacketType;
-typedef cb_uint32      TConnHandle;
+typedef cb_uint16      TConnHandle;
 
 typedef enum
 {

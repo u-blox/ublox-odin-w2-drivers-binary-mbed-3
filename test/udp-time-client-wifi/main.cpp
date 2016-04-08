@@ -206,7 +206,7 @@ static void scheduledConnectWpa2()
 
     connectParams.ssid.ssidLength = strlen(_ssid);
     memcpy(connectParams.ssid.ssid, _ssid, connectParams.ssid.ssidLength);
-    cbWLAN_Util_PSKFromPWD(tempPassphrase, connectParams.ssid, wpaConnectParams.psk);
+    cbWLAN_Util_PSKFromPWD(tempPassphrase, connectParams.ssid, wpaConnectParams.psk.key);
     cbWLAN_connectWPAPSK(&connectParams, &wpaConnectParams);
 }
 
@@ -359,7 +359,7 @@ void app_start(int argc, char *argv[]) {
     (void)argc;
     (void)argv;
 
-    cbMAIN_initWlan();
+    cb_int32 wlanTargetId = cbMAIN_initWlan();
 
     MBED_HOSTTEST_TIMEOUT(30);
     MBED_HOSTTEST_SELECT(tcpecho_client_auto);
@@ -379,7 +379,7 @@ void app_start(int argc, char *argv[]) {
     cbIP_init();
 
     cbWLAN_registerStatusCallback(handleStatusIndication, NULL);
-    cbWLAN_start(&startParams);
+    cbWLAN_start(wlanTargetId,&startParams);
 
     _timeClient = new UDPTimeClient(SOCKET_STACK_LWIP_IPV4);
 }

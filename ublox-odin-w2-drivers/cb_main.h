@@ -41,7 +41,8 @@ typedef void(*cbMAIN_initBtComplete)(void);
  *=========================================================================*/
 
 extern void cbMAIN_initBt(cbBM_InitParams *pInitParameters, cbMAIN_initBtComplete callback);
-extern void cbMAIN_initWlan(void);
+extern cb_int32 cbMAIN_initWlan(void);
+extern void cbMAIN_initEth(void);
 extern void cbMAIN_registerErrorHandler(cbMAIN_ErrorHandler errHandler);
 
 #ifdef __cplusplus
