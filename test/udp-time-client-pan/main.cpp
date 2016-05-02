@@ -79,7 +79,8 @@ using namespace mbed::Sockets::v0;
 #endif
 
 #ifndef YOTTA_CFG_TEST_BT_REMOTE_NAP_ADDR
-#error YOTTA_CFG_TEST_BT_REMOTE_NAP_ADDR must be defined in a config.json file
+#warning YOTTA_CFG_TEST_BT_REMOTE_NAP_ADDR must be defined in a config.json file
+#define YOTTA_CFG_TEST_BT_REMOTE_NAP_ADDR 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa
 #endif
 
 /*===========================================================================
