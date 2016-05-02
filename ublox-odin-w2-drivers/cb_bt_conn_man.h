@@ -308,6 +308,13 @@ extern cb_int32 cbBCM_enableDeviceIdServiceRecord(
     cb_uint16 version,
     cb_uint16 vendorIdSource);
 
+/**
+* Set Bluetooth watchdog settings
+*
+* @param   disconnectReset Reset the device on any dropped Bluetooth connection
+* @return  void
+*/
+extern void cbBCM_setBluetoothWatchdogValue(cb_uint32 disconnectReset);
 
 /**
 * Set max number of Bluetooth classic links. Reconfigures buffer management.
