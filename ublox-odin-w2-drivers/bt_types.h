@@ -52,6 +52,8 @@
 #define PACKET_TYPE_NO_2_DH5                                            (0x1000)
 #define PACKET_TYPE_NO_3_DH5                                            (0x2000)
 
+#define PACKET_TYPE_ALL (PACKET_TYPE_DM1 | PACKET_TYPE_DH1 | PACKET_TYPE_DM3 | PACKET_TYPE_DH3 | PACKET_TYPE_DM5 | PACKET_TYPE_DH5)
+
 /*===========================================================================
  * TYPES
  *=========================================================================*/
