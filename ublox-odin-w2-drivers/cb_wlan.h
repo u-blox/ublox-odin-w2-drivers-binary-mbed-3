@@ -257,8 +257,38 @@ typedef enum {
     cbWLAN_STATUS_DISCONNECTED_UNKNOWN,
     cbWLAN_STATUS_DISCONNECTED_NO_BSSID_FOUND,
     cbWLAN_STATUS_DISCONNECTED_AUTH_TIMEOUT,
-    cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE,
+    cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE, 
 } cbWLAN_StatusDisconnectedInfo;
+
+/**
+ * IOCTL parameters @ref cbWLAN_ioctl
+ *
+ * @ingroup wlan
+ */
+typedef enum {
+    cbWLAN_IOCTL_FIRST,
+    cbWLAN_IOCTL_SET_POWER_SAVE_MODE = cbWLAN_IOCTL_FIRST,       //!< Set power mode  @ref cbWLAN_IoctlPowerSaveMode
+    cbWLAN_IOCTL_GET_POWER_SAVE_MODE,                            //!< Get power mode  @ref cbWLAN_IoctlPowerSaveMode
+    cbWLAN_IOCTL_SET_LISTEN_INTERVAL,                            //!< Set listen interval, integer value 0 - 16 
+    cbWLAN_IOCTL_GET_LISTEN_INTERVAL,                            //!< Get listen interval, integer value 0 - 16 
+    cbWLAN_IOCTL_SET_DTIM_ENABLE,                                //!< Set DTIM enable 0, disable 1 enable
+    cbWLAN_IOCTL_GET_DTIM_ENABLE,                                //!< Get DTIM enable 0, disable 1 enable
+    cbWLAN_IOCTL_SET_SLEEP_TIMEOUT,                              //!< Set enter power save entry delay (in ms). Power save mode will be entered only if there no activity during this delay
+    cbWLAN_IOCTL_GET_SLEEP_TIMEOUT,                              //!< Get enter power save entry delay (in ms). Power save mode will be entered only if there no activity during this delay
+
+    cbWLAN_IOCTL_LAST,
+} cbWLAN_Ioctl;
+
+/**
+ * Power save modes set using  @ref cbWLAN_ioctl
+ *
+ * @ingroup wlan
+ */
+typedef enum {
+    cbWLAN_IOCTL_POWER_SAVE_MODE_OFF,
+    cbWLAN_IOCTL_POWER_SAVE_MODE_SLEEP,
+    cbWLAN_IOCTL_POWER_SAVE_MODE_DEEP_SLEEP
+} cbWLAN_IoctlPowerSaveMode;
 
 /**
  * Start parameters indicated from WLAN driver for status indication 
@@ -515,9 +545,10 @@ cbRTSL_Status cbWLAN_setChannelList(const cbWLAN_ChannelList *channelList);
  * Returns the wanted channel list.
  *
  * @param channelList Pointer to channel list
-
+ *
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
-void cbWLAN_getChannelList(cbWLAN_ChannelList *channelList);
+cbRTSL_Status cbWLAN_getChannelList(cbWLAN_ChannelList *channelList);
 
 /**
  * Returns the channel list currently used. This channel list
@@ -525,8 +556,22 @@ void cbWLAN_getChannelList(cbWLAN_ChannelList *channelList);
  * current regulatory domain.
  *
  * @param channelList Pointer to channel list
+ * 
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
-void cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
+cbRTSL_Status cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
+
+/**
+ * WLAN control settings. Both in and out parameters are supported. 
+ * If an ioctl request is not supported cbSTATUS_ERROR is returned and 
+ * the value parameter shall be ignored.
+ *
+ * @param ioctl parameter that shall be set. @ref cbWLAN_Ioctl lists all supported parameters.
+ * @param ioctl value. @ref cbWLAN_Ioctl lists the type for all supported parameters.
+ *
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
+ */
+cbRTSL_Status cbWLAN_ioctl(cbWLAN_Ioctl ioctl, void* value);
 
 #ifdef __cplusplus
 }
