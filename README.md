@@ -6,7 +6,7 @@ The binary is intended for a u-blox ODIN-W2 module.
 
 Please note that this document is not intended as a complete system description. It is intended to be an overview and for details the header files and sample project must be used. If needed Doxygen can be used to generate documentation of the header files, see [documentation](documentation/doxygen/).
 
-**NOTE 1: Bluetooth low energy is not yet included in the driver module although it might be mentioned at several places.**
+**NOTE 1: Bluetooth low energy is currently only experimental.**
 
 **NOTE 2: The Ethernet interface is currently only experimental since it's not possible to set any configuration of an external PHY chip.**
 
