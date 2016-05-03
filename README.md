@@ -49,6 +49,7 @@ The exported components and corresponding files in the u-blox ODIN-W2 driver is 
 - cb\_gatt\_utils.h - Utility functions for GATT
 - bt\_types.h - Common Bluetooth types that are used be several components
 - cb\_bt\_utils.h - Utility functions like comparing Bluetooth addresses
+
 For more info about the Bluetooth components look [here](documentation/readme_bluetooth.md).
 
 ### Wi-Fi
