@@ -41,10 +41,14 @@ The exported components and corresponding files in the u-blox ODIN-W2 driver is 
 - **BT Connection Manager**(cb\_bt\_conn\_man.h) - Setting up and tearing down Bluetooth SPP/PAN/DUN connections
 - **BT Security Manager**(cb\_bt\_sec\_man.h) - Security manager that handles pairing and link keys. **NOTE, this API is subject to change for the next release.**
 - **BT PAN**(cb\_bt\_pan.h) - Personal Area Network Profile(PAN) for sending Ethernet frames over Classic Bluetooth
-- **BT Serial**(cb\_bt\_serial.h) - Serial Port Profile(SPP) based on RFCOMM for sending and receiving transparent data. Also supports ub-bloc Serial Port Servie for low energy and Dial-Up Network(DUN).
+- **BT Serial**(cb\_bt\_serial.h) - Serial Port Profile(SPP) based on RFCOMM for sending and receiving transparent data. Also supports Dial-Up Network(DUN).
+- **BT Serial low energy**(cb\_bt\_serial\_le.h) - u-blox Serial Port Service for sending and receiving transparent data.
+- cb\_gatt.h - Common GATT for low energy functionality
+- cb\_gatt\_client.h - GATT client functionality, typically used by a central
+- cb\_gatt\_server.h - GATT server functionality, typically used by a peripheral
+- cb\_gatt\_utils.h - Utility functions for GATT
 - bt\_types.h - Common Bluetooth types that are used be several components
 - cb\_bt\_utils.h - Utility functions like comparing Bluetooth addresses
-
 For more info about the Bluetooth components look [here](documentation/readme_bluetooth.md).
 
 ### Wi-Fi
