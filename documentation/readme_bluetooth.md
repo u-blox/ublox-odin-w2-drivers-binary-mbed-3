@@ -54,7 +54,7 @@ PANU and NAP are supported by the ODIN-W2 drivers.
 The Bluetooth low energy Serial component provides a generic data packet interface on top of GATT. After a connection has been set up using the Connection Manager a data packet channel can be opened. The data packet channel will be automatically closed when a disconnection occurs. The usage is similar to cbBSE.
 
 ## Bluetooth low energy Generic Attribute Profile(cbBTGATT)
-TBA
+TBA - see test apps for usage
 
 ## Bluetooth Test Manager(cbBTM)
 This component is used for testing different radio characteristics and assure that radio approvals are followed.
