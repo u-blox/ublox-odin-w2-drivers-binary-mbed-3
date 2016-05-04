@@ -47,10 +47,10 @@ The exported components and corresponding files in the u-blox ODIN-W2 driver is 
 - cb\_gatt\_client.h - GATT client functionality, typically used by a central
 - cb\_gatt\_server.h - GATT server functionality, typically used by a peripheral
 - cb\_gatt\_utils.h - Utility functions for GATT
-- bt\_types.h - Common Bluetooth types that are used be several components
+- bt\_types.h - Common Bluetooth types that are used by several components
 - cb\_bt\_utils.h - Utility functions like comparing Bluetooth addresses
 
-For more info about the Bluetooth components look [here](documentation/readme_bluetooth.md).
+For more info about the Bluetooth components see [documentation/readme_bluetooth.md](documentation/readme_bluetooth.md).
 
 ### Wi-Fi
 - **WLAN API**(cb\_wlan.h) - Scanning, connection setup, maintenance and termination
@@ -68,13 +68,13 @@ For more info about the Wi-Fi component look [here](documentation/readme_wifi.md
 ### TCP/IP stack
 Any TCP/IP stack can be used together with the driver but a ready to use [lwIP stack](http://savannah.nongnu.org/projects/lwip/) has been tested and is provided as a separate module [here](https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2). It has been slightly modified to better suite the Wi-Fi driver.
 
-To make it easier to customize the usage of the lwIP stack an adaptation module has been added and can be found [here](https://github.com/u-blox/ublox-odin-w2-lwip-adapt). For example, if layer 2 routing is needed it is highly recommended to fork the adaptation module or completely replace it.
+To make it easier to customize the usage of the lwIP stack an adaptation module has been added and can be found here [https://github.com/u-blox/ublox-odin-w2-lwip-adapt](https://github.com/u-blox/ublox-odin-w2-lwip-adapt). For example, if layer 2 routing is needed it is highly recommended to fork the adaptation module or completely replace it.
 
 ### mbed OS
 This is the ARM mbed OS framework and is a collection of OS-related modules and includes the [minar scheduler](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/Full_Guide/MINAR/), control of GPIOs, UART, SPI, I2C, security etc. A thorough description can be found [here](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/)
 
 ### ST firmware library
-A subset of the functionality provided by the ST firmware library is accessible from mbed OS. If more control is needed it's also possible to access the drivers directly [here](https://github.com/ARMmbed/mbed-hal-st-stm32cubef4). Note that it must be used with care since any misusage might break the driver and/or mbed OS.
+A subset of the functionality provided by the ST firmware library is accessible from mbed OS. If more control is needed it's also possible to access the drivers directly via the [mbed-hal-st-stm32cubef4 module](https://github.com/ARMmbed/mbed-hal-st-stm32cubef4). Note that it must be used with care since any misusage might break the driver and/or mbed OS.
 
 ### Deprecated API
 - cb_assert.h - use mbed assert instead
@@ -104,10 +104,10 @@ No boot, starting at address 0, is used in this flash configuration as this is t
 The ODIN-W2 drivers use both static RAM and dynamically allocated heap memory via the mbed OS module [ualloc](https://github.com/ARMmbed/ualloc). The heap usage is heavily dependent on the use case.
 
 ## Hardware watchdog
-The hardware watchdog is neither initialized nor enabled by default but can be added via the cbWD API.
+The hardware watchdog is neither initialized nor enabled by default but can be added via the cb_watchdog.h API.
 
 ## Power management
-Low power mode is currently enabled by default for the MCU and the Wi-Fi radio. It is not enabled for the Bluetooth radio since the idle power consumption is much lower than Wi-Fi anyway.
+Low power mode is currently enabled by default for the MCU and the Wi-Fi radio. It is not enabled for the Bluetooth radio since the idle power consumption is much lower than Wi-Fi anyway. For the Wi-Fi radio it's possible to finetune the behavior via the cbWLAN_ioctl function in cb_wlan.h.
 
 ## Hardware resources
 Both the Bluetooth stack and the Wi-Fi driver use parts of the hardware. The table below shows the dependencies to those resources.
@@ -115,12 +115,12 @@ Both the Bluetooth stack and the Wi-Fi driver use parts of the hardware. The tab
 | HW resource           | Component          | Description                                                                                                        |
 |-----------------------|--------------------|--------------------------------------------------------------------------------------------------------------------|
 | GPIO                  | ODIN-W2            | Only IO pins that are included in the ODIN-W2 target can be used.                                                  |
-| System tick interrupt | ODIN-W2 timers/HAL | The system tick is used by the ODIN-W2 internal timer component and the also by st fw lib.                         |
+| System tick interrupt | ODIN-W2 timers/HAL | The system tick is used by the ODIN-W2 internal timer component and also by the ST firmware lib.                         |
 | TIM2                  | minar              | Timer used by the minar scheduler yotta module                                                                     |
 | TIM3                  | ODIN-W2            | Used by the Bluetooth HCI UART                                                                                     |
 | DMA5, DMA6            | ODIN-W2            | DMA stream 5 and 6 are used by the Bluetooth HCI UART                                                               |
 | USART2                | ODIN-W2            | Used by the Bluetooth HCI UART                                                                                     |
-| IWDG                  | ODIN-W2            | The independent watchdog is setup using cbWD. Disabled by default. Can be emitted by not initialize the component. |
+| IWDG                  | ODIN-W2            | The independent watchdog is setup using cbWD. Disabled by default. Can be emitted by not initializing the component. |
 | Ethernet              | ODIN-W2            | TBA                                                                                                                |
 | SDIO                  | ODIN-W2            | TBA                                                                                                                |
 | Flash memory          | ODIN-W2            | Bluetooth link keys are stored in the last two sectors. OTP is reserved for the ODIN-W2 drivers.                   |
