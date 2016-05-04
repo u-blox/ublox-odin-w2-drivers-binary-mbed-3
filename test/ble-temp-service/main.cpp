@@ -54,7 +54,7 @@ typedef enum
 
 typedef struct
 {
-	State state;
+    State state;
     cb_uint8 appHandle;
     int8 temp;
 } Admin;
@@ -121,47 +121,47 @@ static void setState(State state)
 
 static void handleConnComplEvt(
     TConnHandle         handle, 
-	TErrorCode          errorCode, 
-	cb_uint8            role, 
-	TBdAddr             peerBdAddress, 
-	cb_uint16           connInterval,
-	cb_uint16           connLatency,
-	cb_uint16           connTmo,
-	cb_uint8            masterClkAccuracy)
+    TErrorCode          errorCode, 
+    cb_uint8            role, 
+    TBdAddr             peerBdAddress, 
+    cb_uint16           connInterval,
+    cb_uint16           connLatency,
+    cb_uint16           connTmo,
+    cb_uint8            masterClkAccuracy)
 {
-	(void)handle;
-	(void)role;
-	(void)peerBdAddress;
-	(void)connInterval;
-	(void)connLatency;
-	(void)connTmo;
-	(void)masterClkAccuracy;
+    (void)handle;
+    (void)role;
+    (void)peerBdAddress;
+    (void)connInterval;
+    (void)connLatency;
+    (void)connTmo;
+    (void)masterClkAccuracy;
 
-	if (errorCode == cbGATT_ERROR_CODE_OK)
-	{
-		setState(STATE_CONNECTED);
-	}
-	else
-	{
-		printf("Failed connection, error code: %d\n",errorCode);
-	}
+    if (errorCode == cbGATT_ERROR_CODE_OK)
+    {
+        setState(STATE_CONNECTED);
+    }
+    else
+    {
+        printf("Failed connection, error code: %d\n",errorCode);
+    }
 }
      
 static void handleDisconnectEvt(
     TConnHandle         handle, 
-	TErrorCode          errorCode)
+    TErrorCode          errorCode)
 {
-	(void)handle;
+    (void)handle;
 
-	setState(STATE_NOT_CONNECTED);
+    setState(STATE_NOT_CONNECTED);
     printf("Disconnection, error code: %d\n",errorCode);
 }
 
 static void increaseTemp()
 {
-	static cb_uint8 temp = 0;
-	temp++;
-	cbTEMP_SERVICE_set(temp);
+    static cb_uint8 temp = 0;
+    temp++;
+    cbTEMP_SERVICE_set(temp);
 }
 
 static void controllerStartupComplete(void)
@@ -186,10 +186,10 @@ static void controllerStartupComplete(void)
             result = cbBCM_setMaxLinksLE(1);
             MBED_ASSERT(result == cbBCM_OK);
 
-	        result = cbBM_setAdvertisingIntervalMin(100);
+            result = cbBM_setAdvertisingIntervalMin(100);
             MBED_ASSERT(result == cbBM_OK);
 
-	        result = cbBM_setAdvertisingIntervalMax(100);
+            result = cbBM_setAdvertisingIntervalMax(100);
             MBED_ASSERT(result == cbBM_OK);
 
             result = cbBM_setConnectableModeLe(cbBM_CONNECTABLE_MODE_LE_CONNECTABLE);
@@ -201,17 +201,17 @@ static void controllerStartupComplete(void)
             result = cbGATT_registerServer(&_gattServerCallBack,&_admin.appHandle);
             MBED_ASSERT(result == cbGATT_OK);
 
-	        result = cbBCM_enableDevInfoService("My manufacturer", "My model", "0.0.1", 1024);
+            result = cbBCM_enableDevInfoService("My manufacturer", "My model", "0.0.1", cbGATT_APP_START_SERVICE_HANDLE);
             MBED_ASSERT(result == cbBCM_OK);
 
-	        cbTEMP_SERVICE_init();
-          	result = cbTEMP_SERVICE_register(2048);
+            cbTEMP_SERVICE_init();
+            result = cbTEMP_SERVICE_register(cbGATT_APP_START_SERVICE_HANDLE  + 1024);
             MBED_ASSERT(result == cbTEMP_SERVICE_OK);
 
             // Fake the temp by increasing the value every second
             minar::Scheduler::postCallback(increaseTemp).period(minar::milliseconds(1000));
 
-	        setState(STATE_NOT_CONNECTED);
+            setState(STATE_NOT_CONNECTED);
         }
         break;
     default:

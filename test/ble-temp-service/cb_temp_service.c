@@ -99,12 +99,12 @@ cbGATT_ErrorCode handleTemp(TConnHandle connHandle,
 
 void cbTEMP_SERVICE_set(cb_int8 temp)
 {
-	_admin.temp = temp;
+    _admin.temp = temp;
 }
 
 void cbTEMP_SERVICE_init(void)
 {
-	_admin.temp = -127;
+    _admin.temp = -127;
 }
 
 cb_int32 cbTEMP_SERVICE_register(cb_uint16 startIndex)

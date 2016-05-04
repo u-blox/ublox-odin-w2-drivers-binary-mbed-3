@@ -54,7 +54,7 @@ typedef enum
 
 typedef struct
 {
-	State state;
+    State state;
     cbBCM_Handle connHandle;
 } Admin;
 
@@ -117,22 +117,22 @@ static void setState(State state)
      
 static void handleConnectInd(cbBCM_Handle handle, cbBCM_ConnectionInfo info)
 {
-	(void)handle;
-	(void)info;
-	cb_int32 result;
+    (void)handle;
+    (void)info;
+    cb_int32 result;
 
-	printf("%s\n", __FUNCTION__);
+    printf("%s\n", __FUNCTION__);
 
-	if (info.type == cbBCM_SPS_CONNECTION)
-	{
-		result = cbBCM_rspConnectSpsCnf(handle, TRUE); // Always accept incoming connections on SPS
-		MBED_ASSERT(result == cbBCM_OK);
-	}
-	else
-	{
-		result = cbBCM_rspConnectSpsCnf(handle, FALSE);
-		MBED_ASSERT(result == cbBCM_OK);
-	}
+    if (info.type == cbBCM_SPS_CONNECTION)
+    {
+        result = cbBCM_rspConnectSpsCnf(handle, TRUE); // Always accept incoming connections on SPS
+        MBED_ASSERT(result == cbBCM_OK);
+    }
+    else
+    {
+        result = cbBCM_rspConnectSpsCnf(handle, FALSE);
+        MBED_ASSERT(result == cbBCM_OK);
+    }
 }
 
 static void handleConnectEvt(cbBCM_Handle handle, cbBCM_ConnectionInfo info)
@@ -143,12 +143,12 @@ static void handleConnectEvt(cbBCM_Handle handle, cbBCM_ConnectionInfo info)
 
     printf("%s\n",__FUNCTION__);
 
-	setState(STATE_SPS_CONNECTED);
+    setState(STATE_SPS_CONNECTED);
     
-	MBED_ASSERT(info.type == cbBCM_SPS_CONNECTION);
+    MBED_ASSERT(info.type == cbBCM_SPS_CONNECTION);
 
-	result = cbBSL_open(handle, &_spsDataCallback);
-	MBED_ASSERT(result == cbBSL_OK);
+    result = cbBSL_open(handle, &_spsDataCallback);
+    MBED_ASSERT(result == cbBSL_OK);
 }
 
 static void handleDisconnectEvt(cbBCM_Handle handle)
@@ -156,7 +156,7 @@ static void handleDisconnectEvt(cbBCM_Handle handle)
     (void)handle;
     printf("%s\n",__FUNCTION__);
 
-	setState(STATE_SPS_NOT_CONNECTED);
+    setState(STATE_SPS_NOT_CONNECTED);
     _admin.connHandle = cbBCM_INVALID_CONNECTION_HANDLE;
 }
 
@@ -164,24 +164,24 @@ static void handleDisconnectEvt(cbBCM_Handle handle)
 static void handleDataAvailEvt(cbBCM_Handle handle)
 {
     cb_int32 result;
-	cb_uint8* pData;
-	cb_uint32 length;
+    cb_uint8* pData;
+    cb_uint32 length;
 
-	result = cbBSL_getReadBuf(handle, &pData, &length);
-	MBED_ASSERT(result == cbBSL_OK);
+    result = cbBSL_getReadBuf(handle, &pData, &length);
+    MBED_ASSERT(result == cbBSL_OK);
 
     // Assume that the data is printable i.e. ascii data,
-	cb_uint8* tmpData = (cb_uint8*)malloc(length + 1);
-	memcpy(tmpData,pData,length);
+    cb_uint8* tmpData = (cb_uint8*)malloc(length + 1);
+    memcpy(tmpData,pData,length);
     // Add zero termination for string
-	tmpData[length] = 0;
+    tmpData[length] = 0;
 
-	printf("Received data: %s\n",tmpData);
+    printf("Received data: %s\n",tmpData);
 
     // Consume all bytes so we can receive more
-	result = cbBSL_readBufConsumed(handle,length);
-	MBED_ASSERT(result == cbBSL_OK);
-	free(tmpData);
+    result = cbBSL_readBufConsumed(handle,length);
+    MBED_ASSERT(result == cbBSL_OK);
+    free(tmpData);
 }
 
 static void handleWriteCnf(cbBCM_Handle handle, cb_int32 status, cb_uint32 nBytes, cb_int32 tag)
@@ -215,10 +215,10 @@ static void controllerStartupComplete(void)
             result = cbBCM_setMaxLinksLE(1);
             MBED_ASSERT(result == cbBCM_OK);
 
-	        result = cbBM_setAdvertisingIntervalMin(100);
+            result = cbBM_setAdvertisingIntervalMin(100);
             MBED_ASSERT(result == cbBM_OK);
 
-	        result = cbBM_setAdvertisingIntervalMax(100);
+            result = cbBM_setAdvertisingIntervalMax(100);
             MBED_ASSERT(result == cbBM_OK);
 
             result = cbBM_setConnectableModeLe(cbBM_CONNECTABLE_MODE_LE_CONNECTABLE);
@@ -227,13 +227,13 @@ static void controllerStartupComplete(void)
             result = cbBM_setDiscoverableModeLe(cbBM_DISCOVERABLE_MODE_LE_GENERAL);
             MBED_ASSERT(result == cbBM_OK);
 
-	        result = cbBCM_enableDevInfoService("My manufacturer", "My model", "0.0.1", 1024);
+            result = cbBCM_enableDevInfoService("My manufacturer", "My model", "0.0.1", 1024);
             MBED_ASSERT(result == cbBCM_OK);
 
-	        result = cbBCM_enableSps(&_connectionCallbacks);
+            result = cbBCM_enableSps(&_connectionCallbacks);
             MBED_ASSERT(result == cbBCM_OK);
 
-	        setState(STATE_SPS_NOT_CONNECTED);
+            setState(STATE_SPS_NOT_CONNECTED);
         }
         break;
     default:

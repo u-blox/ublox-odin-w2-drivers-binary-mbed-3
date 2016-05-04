@@ -138,8 +138,8 @@ public:
     {
         _port = port;
 
-	    socket_error_t err = _usock.open(SOCKET_AF_INET4);
-	    TEST_EQ(err, SOCKET_ERROR_NONE);
+        socket_error_t err = _usock.open(SOCKET_AF_INET4);
+        TEST_EQ(err, SOCKET_ERROR_NONE);
 
         err = _usock.resolve(host_addr,UDPSocket::DNSHandler_t(this, &UDPTimeClient::onDNS));
         if(!TEST_EQ(err, SOCKET_ERROR_NONE)) {

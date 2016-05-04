@@ -313,7 +313,7 @@ void app_start(int argc, char *argv[]) {
     cb_int32 wlanTargetId = cbMAIN_initWlan();
 
     socket_error_t err = lwipv4_socket_init();
-	MBED_ASSERT(err == SOCKET_ERROR_NONE);
+    MBED_ASSERT(err == SOCKET_ERROR_NONE);
 
     cbWLAN_StartParameters startParams;
     memset(&startParams, 0, sizeof(startParams));

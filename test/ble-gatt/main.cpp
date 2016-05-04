@@ -181,21 +181,21 @@ static cb_boolean handleReadCharacteristicByUuidCnf(TConnHandle connHandle,
     {
     case STATE_WAIT_4_READ_TEMP_COMPLETED:
         {
-	        if (errorCode == cbGATT_ERROR_CODE_OK)
-	        {
-		        if (length == 1)
-		        {
-			        printf("Remote temp = %d\n", pAttrValue[0]);
-		        }
-		        else
-		        {
-			        printf("Invalid length of temp: %d\n", length);
-		        }
-	        }
-	        else
-	        {
-			    printf("Could not read temp, error code: %d\n", errorCode);
-	        }
+            if (errorCode == cbGATT_ERROR_CODE_OK)
+            {
+                if (length == 1)
+                {
+                    printf("Remote temp = %d\n", pAttrValue[0]);
+                }
+                else
+                {
+                    printf("Invalid length of temp: %d\n", length);
+                }
+            }
+            else
+            {
+                printf("Could not read temp, error code: %d\n", errorCode);
+            }
             enterDisconnecting();
         }
         break;
@@ -233,9 +233,9 @@ static void enterConnecting()
     aclParamsLe.createConnectionTimeout = 5000;
     aclParamsLe.linkLossTimeout = 2000;
     
-    result = cbBM_setConnectScanInterval(32);
-    MBED_ASSERT(result == cbBM_OK);
     result = cbBM_setConnectScanWindow(32);
+    MBED_ASSERT(result == cbBM_OK);
+    result = cbBM_setConnectScanInterval(32);
     MBED_ASSERT(result == cbBM_OK);
     
     setState(STATE_CONNECTING);

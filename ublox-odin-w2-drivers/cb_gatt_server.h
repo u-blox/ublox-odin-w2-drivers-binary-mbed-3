@@ -39,6 +39,8 @@ extern "C" {
 
 #define cbGATT_NBR_OF_ATTR_OF_SERVICE(x)    (sizeof(x)/sizeof(cbGATT_Attribute))
 
+#define cbGATT_APP_START_SERVICE_HANDLE     1024
+
 /*==============================================================================
  * TYPES
  *==============================================================================
@@ -292,8 +294,8 @@ cb_int32 cbGATT_writeRsp(
  * @param pAttrList         Attribute list
  * @param attrListSize      Size of the attribute list
  * @param startHandle       Start handle. Note that startHandle for the application 
- *                          should start at lowest 1024. 1-1023 is reserved for 
- *                          GATT/GAP and other u-blox services.
+ *                          should start at lowest 1024, cbGATT_APP_START_SERVICE_HANDLE. 
+ *                          1-1023 is reserved for GATT/GAP and other u-blox services.
  * @return cbGATT_OK if succeeded or some cbGATT_ERROR* when failed.
  */
 cb_int32 cbGATT_addService(
