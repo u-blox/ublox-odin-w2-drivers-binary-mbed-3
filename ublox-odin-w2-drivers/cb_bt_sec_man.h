@@ -323,6 +323,18 @@ extern cb_int32 cbBSM_getAllNumberBondedDevices(
     uint32* pNo);
 
 /**
+* Get a bonded devices.
+*
+* @param deviceIndex Index of the bonded device
+* @param pBdAddr Pointer to remote BD address.
+* @return If the operation is successful cbBSM_OK is returned.
+*/
+extern cb_int32 cbBSM_getBondedDevice(
+    uint32 deviceIndex,
+    TBdAddr* pBdAddr,
+    cb_boolean pIsLe);
+
+/**
  * Delete a bonded device and its link keys.
  * 
  * @param Pointer to the address of the device which bond shall be deleted.
