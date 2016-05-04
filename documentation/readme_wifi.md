@@ -24,5 +24,9 @@ The sequence diagram below shows a typical scenario from an uninitialized driver
 ![](mbed_wifi_sequence.png)
 
 ## Access Point mode
-TBA
+The access point mode is entered by calling any of the cbWLAN_apStart* functions. Whenever a connection is established an event cbWLAN_STATUS_AP_ADDED is received. A corresponding cbLWAN_STATUS_AP_REMOVED is called when the station disconnects.
+
+The sequence diagram below shows a typical scenario from an uninitialized driver to connected station. See wifi-ap test app for more info.
+
+![](mbed_wifi_ap_sequence.png)
 
