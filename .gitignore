@@ -1,0 +1,14 @@
+.yotta.json
+build
+yotta_modules
+yotta_targets
+config.json
+CodeDB
+DEBUG_STM32
+RELEASE_STM32
+*.opensdf
+*.sdf
+*.suo
+*.vcxproj.user
+*.log
+documentation/doxygen/html
