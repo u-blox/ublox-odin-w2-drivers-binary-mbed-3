@@ -37,7 +37,7 @@ The Bluetooth Serial component provides a generic data packet interface for SPP 
 ![](mbed_bt_spp_data_transfer.png)
 
 ## Bluetooth Security(cbBSM)
-** NOTE: The current security API is subject to change.**
+** NOTE: The current security API is subject to change.**  
 TBA - See BT test app for usage
 
 ## Bluetooth Personal-Area Network(cbBTPAN)
