@@ -27,7 +27,7 @@
 
 #define BTC_APP_OK       (0)
 #define BTC_APP_ERROR    (-1)
-#define btcAPP_MAX_CONNECTIONS      (6)
+#define btcAPP_MAX_CONNECTIONS      (5)
 
 /*===========================================================================
 * TYPES

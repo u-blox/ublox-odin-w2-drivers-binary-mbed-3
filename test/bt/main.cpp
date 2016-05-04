@@ -52,6 +52,28 @@ extern "C" {
 #define BT_MAIN_OK(i) (i == BTC_APP_OK ? TRUE : FALSE)
 #define main_bt__MIN(x , y)   (((x) < (y)) ? (x) : (y))
 
+//bt_remote_device_0
+#ifndef YOTTA_CFG_TEST_BT_REMOTE_DEVICE_1
+#warning bt_remote_device_1 is not defined in config.json file
+#define YOTTA_CFG_TEST_BT_REMOTE_DEVICE_1 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xDE
+#endif
+#ifndef YOTTA_CFG_TEST_BT_REMOTE_DEVICE_2
+#warning bt_remote_device_2 is not defined in config.json file
+#define YOTTA_CFG_TEST_BT_REMOTE_DEVICE_2 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xED
+#endif
+#ifndef YOTTA_CFG_TEST_BT_REMOTE_DEVICE_3
+#warning bt_remote_device_3 is not defined in config.json file
+#define YOTTA_CFG_TEST_BT_REMOTE_DEVICE_3 0x78, 0xA5, 0x04, 0x2F, 0x02, 0x60
+#endif
+#ifndef YOTTA_CFG_TEST_BT_REMOTE_DEVICE_4
+#warning bt_remote_device_4 is not defined in config.json file
+#define YOTTA_CFG_TEST_BT_REMOTE_DEVICE_4 0x78, 0xA5, 0x04, 0x2F, 0x03, 0x06
+#endif
+#ifndef YOTTA_CFG_TEST_BT_REMOTE_DEVICE_5
+#warning bt_remote_device_5 is not defined in config.json file
+#define YOTTA_CFG_TEST_BT_REMOTE_DEVICE_5 0x00, 0x12, 0xf3, 0x27, 0x46, 0xf6
+#endif
+
 typedef enum
 {
     btMAIN_initializing = 0,
@@ -78,14 +100,13 @@ static void testBonding(void);
 static void sendDataToDevices(void);
 static void disconnectDevices(void);
 
-//static  TBdAddr phone = { { 0x40, 0xb8, 0x37, 0x5c, 0x79, 0x5f }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com01 = { { 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xDE }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com02 = { { 0x78, 0xA5, 0x04, 0x2F, 0x4A, 0xED }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com03 = { { 0x78, 0xA5, 0x04, 0x2F, 0x02, 0x60 }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com04 = { { 0x78, 0xA5, 0x04, 0x2F, 0x03, 0x06 }, BT_PUBLIC_ADDRESS };
-static  TBdAddr com05 = { { 0x00, 0x12, 0xf3, 0x27, 0x46, 0xf6 }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com01 = { { YOTTA_CFG_TEST_BT_REMOTE_DEVICE_1 }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com02 = { { YOTTA_CFG_TEST_BT_REMOTE_DEVICE_2 }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com03 = { { YOTTA_CFG_TEST_BT_REMOTE_DEVICE_3 }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com04 = { { YOTTA_CFG_TEST_BT_REMOTE_DEVICE_4 }, BT_PUBLIC_ADDRESS };
+static  TBdAddr com05 = { { YOTTA_CFG_TEST_BT_REMOTE_DEVICE_5 }, BT_PUBLIC_ADDRESS };
 
-static  TBdAddr remoteDevices[btcAPP_MAX_CONNECTIONS] = { com02, com01, com03, com04, com05 };
+static  TBdAddr remoteDevices[btcAPP_MAX_CONNECTIONS] = { com01, com02, com03, com04, com05 };
 
 typedef struct
 {
@@ -113,7 +134,6 @@ static const btcAPP_EventCallBack appEventCallback =
 
 //DigitalIn button_SW1(SW1);
 InterruptIn button_SW1(SW1);
-static bool buttonPressed = false;
 static btAPP_CLASS thisApp;
 
 //===============================================================>
@@ -182,6 +202,7 @@ static void InquiryCnfEvent(btcAPPe status, uint16_t nbrOfDevices)
     {
         thisApp.app_state = btMAIN_InquiryCompleted;
         thisApp.nbrOfFoundDevices = nbrOfDevices;
+        printf("Inquiry completed. Found %d devices\n", nbrOfDevices);
     }
     else
     {
@@ -424,17 +445,8 @@ static void buttonPressedAction(void)
 
 void button_SW1_PressedInt()
 {
-    if (!buttonPressed)
-    {
-        buttonPressed = true;
-        minar::Scheduler::postCallback(&buttonPressedAction).delay(minar::milliseconds(100));
-    }
-    else
-    {
-        // ignore, two falling edges occur for each press and release
-        printf("Button SW1 released \n");
-        buttonPressed = false;
-    }
+    printf("Button SW1 released \n");
+    minar::Scheduler::postCallback(&buttonPressedAction).delay(minar::milliseconds(100));
 }
 
 void app_start(int argc, char *argv[]) {
