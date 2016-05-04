@@ -38,7 +38,7 @@ The Bluetooth Serial component provides a generic data packet interface for SPP 
 
 ## Bluetooth Security(cbBSM)
 ** NOTE: The current security API is subject to change.**
-TBA
+TBA - See BT test app for usage
 
 ## Bluetooth Personal-Area Network(cbBTPAN)
 The PAN profile is used for sending and receiving ethernet frames over a Bluetooth connection. This is typically supported by mobile phones and laptops.
