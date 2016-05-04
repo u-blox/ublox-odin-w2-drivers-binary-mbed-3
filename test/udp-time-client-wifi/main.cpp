@@ -362,8 +362,8 @@ void app_start(int argc, char *argv[]) {
     cb_int32 wlanTargetId = cbMAIN_initWlan();
 
     MBED_HOSTTEST_TIMEOUT(30);
-    MBED_HOSTTEST_SELECT(tcpecho_client_auto);
-    MBED_HOSTTEST_DESCRIPTION(TCP echo client);
+    MBED_HOSTTEST_SELECT(udp_time_client_wifi);
+    MBED_HOSTTEST_DESCRIPTION(UDP time client WiFi);
     MBED_HOSTTEST_START("NET_4");
     socket_error_t err = lwipv4_socket_init();
     TEST_EQ(err, SOCKET_ERROR_NONE);
