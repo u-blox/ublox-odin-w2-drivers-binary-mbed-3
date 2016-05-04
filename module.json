@@ -12,7 +12,7 @@
     "bluetooth"
   ],
   "author": "",
-  "licenses": [],
+  "license": "LICENSE",
   "extraIncludes": [
     "ublox-odin-w2-drivers"
   ],

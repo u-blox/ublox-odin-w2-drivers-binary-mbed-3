@@ -1,6 +1,6 @@
 Permissive Binary License
 
-Version 1.0, September 2015
+Version 1.1, May 2016
 
 Redistribution.  Redistribution and use in binary form, without
 modification, are permitted provided that the following conditions are
@@ -21,6 +21,8 @@ met:
 4) Neither the name of the copyright holder nor the names of its
    contributors may be used to endorse or promote products derived from
    this software without specific prior written permission.
+   
+5) The binary is only permitted to be used on u-blox ODIN-W2 series modules.
 
 Limited patent license. The copyright holders (and contributors) grant a
 worldwide, non-exclusive, no-charge, royalty-free patent license to
