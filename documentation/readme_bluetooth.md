@@ -54,7 +54,11 @@ PANU and NAP are supported by the ODIN-W2 drivers.
 The Bluetooth low energy Serial component provides a generic data packet interface on top of GATT. After a connection has been set up using the Connection Manager a data packet channel can be opened. The data packet channel will be automatically closed when a disconnection occurs. The usage is similar to cbBSE.
 
 ## Bluetooth low energy Generic Attribute Profile(cbBTGATT)
-TBA - see test apps for usage
+GATT is a profile used for setting and getting attribute data from a remote Bluetooth low energy enabled device. It is used by almost all profiles and services used in Bluetooth low energy. GATT for Classic Bluetooth is not supported by this platform.
+The GATT API is almost a one to one mapping of the GATT profile specification. The header files cb_gatt.h and cb_gatt_client.h should work as a reference for the different GATT requests and responses. Also the Bluetooth 4.0 specification is a useful resource.
+
+GATT is part of the Bluetooth embedded stack and used by various components in the stack. Only one request at a time is supported from the application. The application must wait until all responses from an outstanding request have been received.
+For more info see test apps and header files.
 
 ## Bluetooth Test Manager(cbBTM)
 This component is used for testing different radio characteristics and assure that radio approvals are followed.
