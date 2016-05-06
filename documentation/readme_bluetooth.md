@@ -55,7 +55,7 @@ The Bluetooth low energy Serial component provides a generic data packet interfa
 
 ## Bluetooth low energy Generic Attribute Profile(cbBTGATT)
 GATT is a profile used for setting and getting attribute data from a remote Bluetooth low energy enabled device. It is used by almost all profiles and services used in Bluetooth low energy. GATT for Classic Bluetooth is not supported by this platform.
-The GATT API is almost a one to one mapping of the GATT profile specification. The header files cb_gatt.h and cb_gatt_client.h should work as a reference for the different GATT requests and responses. Also the Bluetooth 4.0 specification is a useful resource.
+The GATT API is almost a one to one mapping of the GATT profile specification. The header files cb_gatt.h, cb_gatt_client.h, and cb_gatt_server.h should work as a reference for the different GATT requests and responses. Also the Bluetooth 4.0 specification is a useful resource.
 
 GATT is part of the Bluetooth embedded stack and used by various components in the stack. Only one request at a time is supported from the application. The application must wait until all responses from an outstanding request have been received.
 For more info see test apps and header files.
