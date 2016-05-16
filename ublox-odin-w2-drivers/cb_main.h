@@ -39,7 +39,7 @@ typedef void(*cbMAIN_initBtComplete)(void);
 /*===========================================================================
  * FUNCTIONS
  *=========================================================================*/
-
+extern void cbMAIN_initOS(void);
 extern void cbMAIN_initBt(cbBM_InitParams *pInitParameters, cbMAIN_initBtComplete callback);
 extern cb_int32 cbMAIN_initWlan(void);
 extern void cbMAIN_initEth(void);
