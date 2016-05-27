@@ -364,16 +364,6 @@ typedef void (*cbWLAN_scanIndication)(void *callbackContext, cbWLAN_ScanIndicati
  */
 cbRTSL_Status cbWLAN_init(void *callbackContext);
 
-/**
- * Start WLAN component.
- * Create WLAN driver instance, bind it to targetId and start the 
- * driver.
- *
- * @param targetId Port specific TARGET identifier.
- * @param params Start parameters passed to WLAN driver instance.
- * @return @ref cbSTATUS_OK if successful, otherwise cbSTATUS_ERROR.
- */
-cbRTSL_Status cbWLAN_start(cb_int32 targetId, cbWLAN_StartParameters *params);
 
 /**
  * Stop WLAN component.

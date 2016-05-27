@@ -298,7 +298,7 @@ static void StreamWriteCnf(cbBCM_Handle handle, cb_int32 status, cb_uint32 nByte
     printf("StreamWriteCnf status:%ld handle=%ld\n", status, handle);
     if (!thisApp.discDevices)
     {
-        minar::Scheduler::postCallback(&sendDataToDevices).delay(minar::milliseconds(bt_main_write_delay_ms));
+	    minar::Scheduler::postCallback(&sendDataToDevices).delay(minar::milliseconds(bt_main_write_delay_ms));
     }
 }
 

@@ -478,89 +478,12 @@ typedef void (*cbGATT_DisconnectEvt)(
     TConnHandle         handle, 
     TErrorCode          errorCode);
 
-/* @START_EXCLUDE_FROM_PLATFORM */
-/**
- * This is called when security has failed on the client i.e. a GATT request
- * has resulted in some authentication/encryption error. The app should 
- * enable security.
- * If the app wishes to automatically retry the GATT request it should return
- * TRUE in the callback and when security has finished the function 
- * cbGATT_clientSecurityRsp should be called regardless whether security 
- * succeeded or not. cbGATT_clientSecurityRsp should not be called if the
- * app does not want to retry the GATT request(return value is FALSE).
- * @param   connHandle  Connection handle
- * @param   errorCode   Authentication/encryption error code
- * @return  TRUE for retrying and FALSE for no retry
- */
-typedef cb_boolean (*cbGATT_ClientSecurityInd)(
-    TConnHandle         connHandle,
-    cbGATT_ErrorCode    errorCode);
-
-/**
- * This is called when security should be checked by the security manager
- * @param   connHandle  Connection handle
- * @param   attrHandle  Authentication/encryption error code
- * @param   security    Authentication/encryption error code
- * @return cbGATT_OK if succeeded or cbGATT_ERROR when failed.
- */
-typedef cbGATT_ErrorCode (*cbGATT_ServerSecurityInd)(
-    TConnHandle         connHandle,
-    cb_uint16           attrHandle,
-    cb_uint8            security);
-
-
-typedef struct
-{
-    cbGATT_ClientSecurityInd clientSecurityInd;
-    cbGATT_ServerSecurityInd serverSecurityInd;
-} cbGATT_SecurityCallBack;
-
-/* @END_EXCLUDE_FROM_PLATFORM */
 
 /*===========================================================================
  * FUNCTIONS
  *=========================================================================*/
 
 
-/* @START_EXCLUDE_FROM_PLATFORM */
-
-/**
- * Initializes the GATT component.
- * @return cbGATT_OK if succeeded or cbGATT_ERROR when failed.
- */
-cb_int32 cbGATT_init(void);
-
-/**
- * Sets the used roles.
- * @param   role    The role to use. Typically this will be cbGATT_ROLE_BOTH since
- *                  both roles are mandatory for most use cases.
- * @return cbGATT_OK if succeeded or cbGATT_ERROR when failed.
- */
-cb_int32 cbGATT_setRole(
-    cbGATT_Role     role);
-
-/**
- * Register a security handler.
- * @param   pCallBack   Callback to security handlers for client and server
- * @return cbGATT_OK if succeeded or cbGATT_ERROR when failed.
- */
-cb_int32 cbGATT_registerSecurityHandler(
-    const cbGATT_SecurityCallBack* pCallBack);
-
-/**
- * Reply with this command when security has been enabled and GATT should
- * retry with the GATT request triggering security. The app should only retry
- * with the GATT request if enabling security has succeeded.
- * @param   connHandle  Connection handle
- * @param   retry       TRUE = retry GATT request, FALSE = skip GATT request
- * @return  cbGATT_OK if succeeded or cbGATT_ERROR when failed.
- */
-cb_int32 cbGATT_clientSecurityRsp(
-    TConnHandle     connHandle, 
-    cb_boolean      retry);
-
-
-/* @END_EXCLUDE_FROM_PLATFORM */
 
 #ifdef __cplusplus
 }

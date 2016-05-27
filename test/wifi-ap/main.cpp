@@ -328,5 +328,5 @@ void app_start(int argc, char *argv[]) {
     minar::Scheduler::postCallback(scheduledStartInterfaces);
 
     cbWLAN_registerStatusCallback(handleStatusIndication, NULL);
-    cbWLAN_start(wlanTargetId,&startParams);
+    cbMAIN_startWlan(wlanTargetId,&startParams);
 }
