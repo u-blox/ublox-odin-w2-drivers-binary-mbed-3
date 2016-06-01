@@ -407,7 +407,7 @@ cbRTSL_Status cbWLAN_connectWPAPSK(cbWLAN_CommonConnectParameters *commonParams,
  * Connection progress is reported as @ref cbWLAN_statusIndication callbacks.
  *
  * @param commonParams Connection parameters.
- * @param wpaParams WPA Enterprise specific connection parameters.
+ * @param enterpriseParams WPA Enterprise specific connection parameters.
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
  */
 cbRTSL_Status cbWLAN_connectEnterprise(cbWLAN_CommonConnectParameters *commonParams, cbWLAN_EnterpriseConnectParameters *enterpriseParams);
@@ -495,7 +495,7 @@ cbRTSL_Status cbWLAN_registerStatusCallback(cbWLAN_statusIndication statusIndica
 /**
  * Register a status indication callback.
  *
- * @param cbWLAN_packetIndication Callback function.
+ * @param packetIndication Callback function.
  * @param callbackContext Context pointer, will be sent back in callback.
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
  */
@@ -504,7 +504,7 @@ cbRTSL_Status cbWLAN_registerPacketIndicationCallback(cbWLAN_packetIndication pa
 /**
  * Deregister the specified status indication callback.
  *
- * @param cbWLAN_packetIndication Callback function.
+ * @param statusIndication Callback function.
  * @param callbackContext Context pointer, will be sent back in callback.
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
  */
@@ -556,8 +556,8 @@ cbRTSL_Status cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
  * If an ioctl request is not supported cbSTATUS_ERROR is returned and 
  * the value parameter shall be ignored.
  *
- * @param ioctl parameter that shall be set. @ref cbWLAN_Ioctl lists all supported parameters.
- * @param ioctl value. @ref cbWLAN_Ioctl lists the type for all supported parameters.
+ * @param ioctl Parameter that shall be set. @ref cbWLAN_Ioctl lists all supported parameters.
+ * @param value Value. @ref cbWLAN_Ioctl lists the type for all supported parameters.
  *
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */

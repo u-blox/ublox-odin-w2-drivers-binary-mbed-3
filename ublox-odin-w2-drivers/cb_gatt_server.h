@@ -1,5 +1,3 @@
-#ifndef __CB_GATT_SERVER_H__
-#define __CB_GATT_SERVER_H__
 /*------------------------------------------------------------------------------
 * Copyright (c) 2016 u-blox AB, Sweden.
 * Any reproduction without written permission is prohibited by law.
@@ -13,10 +11,13 @@
 */
 
 /**
- * @cb_gatt_server.h
+ * @file cb_gatt_server.h
  *
  * @brief GATT server functionality
  */
+
+#ifndef _CB_GATT_SERVER_H_
+#define _CB_GATT_SERVER_H_
 
 #include "bt_types.h"
 #include "cb_gatt.h"

@@ -1,5 +1,3 @@
-#ifndef __CB_GATT_H__
-#define __CB_GATT_H__
 /*
  *---------------------------------------------------------------------------
  * Copyright (c) 2016 u-blox AB, Sweden.
@@ -14,11 +12,14 @@
  *-------------------------------------------------------------------------*/
 
 /**
- * @cb_gatt.h
+ * @file cb_gatt.h
  *
  * @brief Definitions and types for GATT(Generic Attribute Profile) 
  * that are in common for both client and server.
  */
+
+#ifndef _CB_GATT_H_
+#define _CB_GATT_H_
 
 #include "bt_types.h"
 

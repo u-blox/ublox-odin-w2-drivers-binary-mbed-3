@@ -1,5 +1,3 @@
-#ifndef _CB_BT_CONN_MAN_H_
-#define _CB_BT_CONN_MAN_H_
 /**
  *---------------------------------------------------------------------------
  * Copyright (c) 2016 u-blox AB, Sweden.
@@ -18,6 +16,9 @@
 * down Bluetooth connections. Profile services are also enabled
 * using this module.
  */
+
+#ifndef _CB_BT_CONN_MAN_H_
+#define _CB_BT_CONN_MAN_H_
 
 #include "cb_comdefs.h"
 #include "bt_types.h"
@@ -296,10 +297,10 @@ extern cb_int32 cbBCM_enableServerProfilePan(
  * to find representative icons or load associated support software. 
  * This information is published as Bluetooth SDP records, and optionally in the 
  * Extended Inquiry Response. 
- * @param   vendorId        Uniquely identifier for the vendor of the device. Used in conjunction with required attribute 0x0205, VendorIDSource, which determines which organization assigned the VendorID value. Note: The Bluetooth Special Interest Group assigns Device ID Vendor ID and the USB Implementer’s Forum assigns vendor IDs, either of which can be used for the VendorID value here. Device providers should procure the vendor ID from the USB Implementer’s Forum or the Company Identifier from the Bluetooth SIG. The VendorID ‘0xFFFF’ is reserved as the default VendorID when no Device ID Service Record is present in the device.
+ * @param   vendorId        Uniquely identifier for the vendor of the device. Used in conjunction with required attribute 0x0205, VendorIDSource, which determines which organization assigned the VendorID value. Note: The Bluetooth Special Interest Group assigns Device ID Vendor ID and the USB Implementer's Forum assigns vendor IDs, either of which can be used for the VendorID value here. Device providers should procure the vendor ID from the USB Implementer's Forum or the Company Identifier from the Bluetooth SIG. The VendorID '0xFFFF' is reserved as the default VendorID when no Device ID Service Record is present in the device.
  * @param   productId       This is intended to distinguish between different products made by the vendor above. These IDs are managed by the vendors themselves.
- * @param   version         A numeric expression identifying the device release number in Binary-Coded Decimal. This is a vendor-assigned field, which defines the version of the product identified by the VendorID and ProductID attributes. This attribute is intended to differentiate between versions of products with identical VendorIDs and ProductIDs. The value of the field is 0xJJMN for version JJ.M.N (JJ – major version number, M – minor version number, N – sub-minor version number); e.g., version 2.1.3 is represented with value 0x0213 and version 2.0.0 is represented with a value of 0x0200. When upward-compatible changes are made to the device, it is recommended that the minor version number be incremented. If incompatible changes are made to the device, it is recommended that the major version number be incremented.
- * @param   vendorIdSource  Organization that assigned the VendorID attribute. Use 0x0001 for  Bluetooth SIG assigned Device ID Vendor ID value from the Assigned Numbers document and 0x0002 for USB Implementer’s Forum assigned Vendor ID value
+ * @param   version         A numeric expression identifying the device release number in Binary-Coded Decimal. This is a vendor-assigned field, which defines the version of the product identified by the VendorID and ProductID attributes. This attribute is intended to differentiate between versions of products with identical VendorIDs and ProductIDs. The value of the field is 0xJJMN for version JJ.M.N (JJ - major version number, M - minor version number, N - sub-minor version number); e.g., version 2.1.3 is represented with value 0x0213 and version 2.0.0 is represented with a value of 0x0200. When upward-compatible changes are made to the device, it is recommended that the minor version number be incremented. If incompatible changes are made to the device, it is recommended that the major version number be incremented.
+ * @param   vendorIdSource  Organization that assigned the VendorID attribute. Use 0x0001 for  Bluetooth SIG assigned Device ID Vendor ID value from the Assigned Numbers document and 0x0002 for USB Implementer's Forum assigned Vendor ID value
  * @return  If the operation is successful cbBCM_OK is returned. Note that only one device id service record can be registered.
  */
 extern cb_int32 cbBCM_enableDeviceIdServiceRecord(
@@ -317,9 +318,10 @@ extern cb_int32 cbBCM_enableDeviceIdServiceRecord(
 extern void cbBCM_setBluetoothWatchdogValue(cb_uint32 disconnectReset);
 
 /**
-* Set max number of Bluetooth classic links. Reconfigures buffer management.
+* Set the packet types to use. Call cbBCM_cmdChangePacketType()
+* to start using the new packet types.
 *
-* @param   maxLinks Max number of Bluetooth classic connections.
+* @param  packetType   See packet types in bt_types.h
 * @return  If the operation is successful cbBCM_OK is returned.
 */
 extern cb_uint32 cbBCM_setPacketType(cb_uint16 packetType);
@@ -380,7 +382,7 @@ extern cb_uint16 cbBCM_getMaxLinksLE(void);
  * @param   serverChannel     RFCOMM server channel that shall be used. Set to
  *                            cbBCM_INVALID_SERVER_CHANNEL to perform automatic
  *                            service search to find the server channel.
- * @param   pConnectionParameters Link configuration including link supervision timeout 
+ * @param   pAclParameters    Link configuration including link supervision timeout 
  *                            and master slave policy. Pass NULL to use default connection 
  *                            parameters.
  * @param   pConnectionCallback Callback structure for connection management.
@@ -398,6 +400,7 @@ extern cbBCM_Handle cbBCM_reqConnectSpp(
  * Accept or reject an incoming SPP connection. This is a 
  * response to a cbBCM_ConnectInd connection indication.
  *
+ * @param handle    Connection handle
  * @param accept    TRUE to accept the incoming connection. 
                     FALSE to reject.
  * @return If the operation is successful cbBCM_OK is returned.
@@ -425,7 +428,7 @@ extern cb_int32 cbBCM_rspConnectSppCnf(
  * @param   serverChannel     RFCOMM server channel that shall be used. Set to
  *                            cbBCM_INVALID_SERVER_CHANNEL to perform automatic
  *                            service search to find the server channel.
- * @param   pConnectionParameters Link configuration including link supervision timeout 
+ * @param   pAclParameters    Link configuration including link supervision timeout 
  *                            and master slave policy. Pass NULL to use default connection 
  *                            parameters.
  * @param   pConnectionCallback Callback structure for connection management.
@@ -443,6 +446,7 @@ extern cbBCM_Handle cbBCM_reqConnectDun(
  * Accept or reject an incoming DUN connection. This is a 
  * response to a cbBCM_ConnectInd connection indication.
  *
+ * @param   handle  Connection handle 
  * @param accept    TRUE to accept the incoming connection. 
                     FALSE to reject.
  * @return If the operation is successful cbBCM_OK is returned.
@@ -471,7 +475,7 @@ extern cb_int32 cbBCM_rspConnectDunCnf(
  * @param   serverChannel     RFCOMM server channel that shall be used. Set to
  *                            cbBCM_INVALID_SERVER_CHANNEL to perform automatic
  *                            service search to find the server channel.
- * @param   pConnectionParameters Link configuration including link supervision timeout
+ * @param   pAclParameters    Link configuration including link supervision timeout
  *                            and master slave policy. Pass NULL to use default connection
  *                            parameters.
  * @param   pConnectionCallback Callback structure for connection management.
@@ -490,6 +494,7 @@ extern cbBCM_Handle cbBCM_reqConnectUuid(
  * Accept or reject an incoming SPP connection. This is a
  * response to a cbBCM_ConnectInd connection indication.
  *
+ * @param handle    Connection handle 
  * @param accept    TRUE to accept the incoming connection.
                     FALSE to reject.
  * @return If the operation is successful cbBCM_OK is returned.
@@ -506,8 +511,8 @@ extern cb_int32 cbBCM_rspConnectUuidCnf(
 * The error code in the callback is cbBCM_ERROR if the connection failed.
 *
 * @param   pAddress          Pointer to address of remote device.
-* @param   remoteRole        PAN role of the local device
 * @param   remoteRole        PAN role of the remote device
+* @param   localRole         PAN role of the local device
 * @param   pAclParams        Link configuration including link supervision timeout
 *                            and master slave policy. Pass NULL to use default connection
 *                            parameters.
@@ -526,6 +531,7 @@ extern cbBCM_Handle cbBCM_reqConnectPan(
 * Accept or reject an incoming PAN connection. This is a
 * response to a cbBCM_ConnectInd connection indication.
 *
+* @param handle    Connection handle 
 * @param accept    TRUE to accept the incoming connection.
 *                  FALSE to reject.
 * @return If the operation is successful cbBCM_OK is returned.
@@ -574,7 +580,7 @@ extern cb_int32 cbBCM_autoConnect(
  * The serial port service must be enabled using cbBCM_enableSps() before
  * auto connect request is made..
  * @param   pAddress    Address of remote device.
- * @param   cbBCM_ConnectionParametersLe Link configuration parameters
+ * @param   pAclLeParams Link configuration parameters
  * @param   pConnectionCallback Callback structure for connection management.
  * @return  If the operation is successful the connection handle is returned. If
  *          not cbBCM_INVALID_CONNECTION_HANDLE is returned.
@@ -602,8 +608,8 @@ extern cb_int32 cbBCM_rspConnectSpsCnf(
  * A connect confirm callback will be received when the connection is complete. The error 
  * code in the  callback is cbBCM_OK if the connection was successfully established.
  * The error code in the callback is cbBCM_ERROR if the connection failed.
- * @param  pAddress    Address of remote device.
- * @param  cbBCM_ConnectionParametersLe Link configuration parameters
+ * @param  pAddress     Address of remote device.
+ * @param  pAclLeParams Link configuration parameters
  * @param  pConnectionCallback Callback structure for connection management.
  * @return If the operation is successful the connection handle is returned. If
  *         not cbBCM_INVALID_CONNECTION_HANDLE is returned.
@@ -683,8 +689,8 @@ cb_int32 cbBCM_reqServiceSearchDeviceId(
 
 /**
 * @brief   Get local Master/Slave role in an active connection.
-* @param   bdAddr          address to the connection
-* @param   rssiCallback    Callback function used to notify the role
+* @param   bdAddr                 address to the connection
+* @param   roleDiscoveryCallback  Callback function used to notify the role
 * @return  If the operation is successful cbBCM_OK is returned.
 */
 extern cb_int32 cbBCM_RoleDiscovery(
@@ -713,7 +719,6 @@ extern cb_int32 cbBCM_GetLinkQuality(TBdAddr bdAddr, cbBCM_LinkQualityCallback  
  * @brief   Change the packet types currently used for an active Bluetooth
  *          Classic connection.
  * @param   handle          Connection handle
- * @param   packetType     Packet types bitmask
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_cmdChangePacketType(
@@ -738,7 +743,7 @@ extern cb_int32 cbBCM_getConnectionParams(
  * @brief   Update connection parameters for an active Bluetooth 
  *          Low Energy ACL connection.
  * @param   handle   Connection handle
- * @param   cbBCM_ConnectionParametersLe New Link configuration parameters
+ * @param   pAclLeParams New Link configuration parameters
  * @return  If the update is successfully initiated cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_updateConnectionParams(
@@ -754,6 +759,8 @@ extern cb_int32 cbBCM_updateConnectionParams(
  * @param   pManufacturer   String defining the manufacturer.
  * @param   pModel String   defining the device model.
  * @param   pFwVersion      String defining the firmware version.
+ * @param   startIndex      Start index of the attribute database for the device info service.
+ *                          Note that this must not change during the lifetime of the product.
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_enableDevInfoService(
@@ -787,7 +794,6 @@ extern cb_int32 cbBCM_registerDataCallback(
  * @brief   Get the protocol handle for an active connection. Shall not be used
  *          by the application. Only used by data managers.
  * 
- * @param   type Connection type
  * @param   handle Connection handle
  * @return  If the operation is not successful cbBCM_INVALID_CONNECTION_HANDLE
  *          is returned. If the operation is successful the protocol handle is 

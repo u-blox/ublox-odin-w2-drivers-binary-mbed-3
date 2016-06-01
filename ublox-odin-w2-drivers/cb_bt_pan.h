@@ -1,5 +1,3 @@
-#ifndef _cb_BT_PAN_H_
-#define _cb_BT_PAN_H_
 /**
 *---------------------------------------------------------------------------
 * Copyright (c) 2016 u-blox AB, Sweden.
@@ -11,6 +9,9 @@
 * Description : Data management for PAN profile
 *
 *-------------------------------------------------------------------------*/
+
+#ifndef _CB_BT_PAN_H_
+#define _CB_BT_PAN_H_
 
 #include "cb_comdefs.h"
 #include "bt_types.h"

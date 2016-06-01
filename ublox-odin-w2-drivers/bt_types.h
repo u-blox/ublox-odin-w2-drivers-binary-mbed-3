@@ -1,6 +1,3 @@
-#ifndef _BT_TYPES_H
-#define _BT_TYPES_H
-
 /*---------------------------------------------------------------------------
 * Copyright (c) 2016 u-blox AB, Sweden.
 * Any reproduction without written permission is prohibited by law.
@@ -15,6 +12,9 @@
  * @file bt_types.h
  * @brief Common Bluetooth types
  */
+
+#ifndef _BT_TYPES_H_
+#define _BT_TYPES_H_
 
 #include "cb_comdefs.h"
 

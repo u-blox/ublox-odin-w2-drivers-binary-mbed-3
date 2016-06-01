@@ -7,8 +7,9 @@
  *
  * Description : Common definitions.
  *-------------------------------------------------------------------------*/
-#ifndef _cb_COMDEFS_H_
-#define _cb_COMDEFS_H_
+
+#ifndef _CB_COMDEFS_H_
+#define _CB_COMDEFS_H_
 
 #include "cb_platform_basic_types.h"
 
@@ -118,8 +119,7 @@
  *
  * @note Won't work on pointer to array as the sizeof(pointer) is 4.
  *
- * @param array The array.
- * @param bit The bit to check if it set.
+ * @param _array The array.
  * @return Number of elements in array.
  */
 #define ELEMENTS_OF(_array) (sizeof((_array)) / sizeof((_array)[0]))

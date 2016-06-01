@@ -1,5 +1,3 @@
-#ifndef _cb_BT_SERIAL_H_
-#define _cb_BT_SERIAL_H_
 /**
  *---------------------------------------------------------------------------
  * Copyright (c) 2016 u-blox AB, Sweden.
@@ -19,6 +17,8 @@
  * Port Profile (SPP).
  */
 
+#ifndef _CB_BT_SERIAL_H_
+#define _CB_BT_SERIAL_H_
 
 #include "cb_comdefs.h"
 #include "bt_types.h"

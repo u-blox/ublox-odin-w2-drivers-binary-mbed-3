@@ -1,5 +1,3 @@
-#ifndef _CB_BT_MAN_H_
-#define _CB_BT_MAN_H_
 /*
  *---------------------------------------------------------------------------
  * Copyright (c) 2016 u-blox AB, Sweden.
@@ -20,6 +18,9 @@
  * name, scanning for other devices using inquiry or Bluetooth Low Energy 
  * scan and more.
  */
+
+#ifndef _CB_BT_MAN_H_
+#define _CB_BT_MAN_H_
 
 #include "cb_comdefs.h"
 #include "bt_types.h"
@@ -488,6 +489,7 @@ extern cb_int32 cbBM_getAutoconnScanParams(
  * The event callback is called for every device that is found during inquiry.
  * @param type              Type of discovery.
  * @param discoveryLength   Length of inquiry in seconds.
+ * @param scanType          Active or passive scan
  * @param eventCallback     Callback used to notify each found device
  * @param completeCallback  Callback used to notify when the inquiry is completed.
  * @return If the device discovery is successfully started cbBM_OK is returned.
@@ -508,8 +510,7 @@ extern cb_int32 cbBM_deviceDiscoveryLeCancel(void);
 /**
  * Perform a remote name request for Bluetooth Low Energy.
  * @param pAddress              Pointer to address of remote device.
- * @param createConnectionTmo   Length of connection attempt in milliseconds.
- * @param remoteNameCallb       Callback used to notify the the completion of the 
+ * @param remoteNameCallback    Callback used to notify the the completion of the 
  *                              name request.
  * @return If the operation is successfully initiated cbBM_OK is returned.
  */

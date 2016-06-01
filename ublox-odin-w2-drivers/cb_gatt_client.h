@@ -1,5 +1,3 @@
-#ifndef __CB_GATT_CLIENT_H__
-#define __CB_GATT_CLIENT_H__
 /*
  *---------------------------------------------------------------------------
  * Copyright (c) 2016 u-blox AB, Sweden.
@@ -13,7 +11,7 @@
  */
 
 /**
- * @cb_gatt_client.h
+ * @file cb_gatt_client.h
  *
  * This file contains all GATT client functionality. There are some restrictions 
  * on how this API is used.
@@ -31,6 +29,9 @@
  * https://www.bluetooth.org/en-us/specification/adopted-specifications
  *
  */
+
+#ifndef _CB_GATT_CLIENT_H_
+#define _CB_GATT_CLIENT_H_
 
 #include "bt_types.h"
 #include "cb_gatt.h"

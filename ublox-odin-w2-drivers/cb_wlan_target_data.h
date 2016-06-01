@@ -38,9 +38,8 @@ typedef struct cbWLANTARGET_Handle cbWLANTARGET_Handle;
 /**
  * Copy data from frame data memory to buffer.
  *
- * @param hTarget           Target context handle.
  * @param buffer            The destination buffer.
- * @param frame             Frame memory pointer (@ref cbTARGET_allocDataFrame).
+ * @param frame             Frame memory pointer (@ref cbWLANTARGET_allocDataFrame).
  * @param size              Number of bytes to copy.
  * @param offsetInFrame     Offset into frame memory.
  * @return                  @ref TRUE if successful, otherwise @ref FALSE.
@@ -50,8 +49,7 @@ typedef cb_boolean(*cbWLANTARGET_copyFromDataFrame)(cb_uint8* buffer, cbWLANTARG
 /**
  * Copy data from buffer to frame data memory.
  *
- * @param hTarget           Target context handle.
- * @param frame             Frame memory pointer (@ref cbTARGET_allocDataFrame).
+ * @param frame             Frame memory pointer (@ref cbWLANTARGET_allocDataFrame).
  * @param buffer            The destination buffer.
  * @param size              Number of bytes to copy.
  * @param offsetInFrame     Offset into frame memory.
@@ -62,20 +60,18 @@ typedef cb_boolean(*cbWLANTARGET_copyToDataFrame)(cbWLANTARGET_dataFrame* frame,
 /**
  * Allocate memory in frame data memory.
  *
- * @param hTarget           Target context handle.
  * @param size              Number of bytes to allocate.
  * @return                  Pointer to the frame memory.
  * 
- * @ref cbTARGET_freeDataFrame
+ * @ref cbWLANTARGET_freeDataFrame
  */
 typedef cbWLANTARGET_dataFrame*(*cbWLANTARGET_allocDataFrame)(cb_uint32 size);
 
 /**
  * Destroy memory in frame data memory.
  *
- * @param hTarget           Target context handle.
  * @param frame             Pointer to the frame memory that should be destroyed.
- * @ref cbTARGET_allocDataFrame
+ * @ref cbWLANTARGET_allocDataFrame
  */
 typedef void(*cbWLANTARGET_freeDataFrame)(cbWLANTARGET_dataFrame* frame);
 
@@ -97,9 +93,13 @@ typedef struct
  * FUNCTIONS
  *=========================================================================*/
 
-
+/**
+ * Register WLAN target callbacks. This should be done for packetization between
+ * the WLAN driver and an IP stack.
+ *
+ * @param callbacks           Callbacks
+ */
 void cbWLANTARGET_registerCallbacks(cbWLANTARGET_Callback* callbacks);
-
     
 #ifdef __cplusplus
 }

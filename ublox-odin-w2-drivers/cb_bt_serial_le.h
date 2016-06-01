@@ -1,5 +1,3 @@
-#ifndef _cb_BT_SERIAL_LE_H_
-#define _cb_BT_SERIAL_LE_H_
 /**
  *---------------------------------------------------------------------------
  * Copyright (c) 2016 u-blox AB, Sweden.
@@ -17,6 +15,8 @@
  * @brief Data management for Serial Port Service.
  */
 
+#ifndef _CB_BT_SERIAL_LE_H_
+#define _CB_BT_SERIAL_LE_H_
 
 #include "cb_comdefs.h"
 #include "bt_types.h"

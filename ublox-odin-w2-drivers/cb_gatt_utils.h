@@ -1,8 +1,6 @@
-#ifndef __CB_GATT_UTILS_H__
-#define __CB_GATT_UTILS_H__
 /*
  *---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : GATT
@@ -13,10 +11,13 @@
  *-------------------------------------------------------------------------*/
 
 /**
- * @cb_gatt_utils.h
+ * @file cb_gatt_utils.h
  *
  * @brief Helper functions for GATT
  */
+
+#ifndef _CB_GATT_UTILS_H_
+#define _CB_GATT_UTILS_H_
 
 #include "cb_comdefs.h"
 #include "bt_types.h"

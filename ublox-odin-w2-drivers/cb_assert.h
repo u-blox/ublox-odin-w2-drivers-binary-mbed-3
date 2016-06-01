@@ -7,11 +7,11 @@
  *
  * Description : ASSERT macro variations.
  *-------------------------------------------------------------------------*/
-#ifndef _cb_ASSERT_H_
-#define _cb_ASSERT_H_
+
+#ifndef _CB_ASSERT_H_
+#define _CB_ASSERT_H_
 
 #include "cb_comdefs.h"
-
 
 #ifdef __cplusplus
 extern "C" {
