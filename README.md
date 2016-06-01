@@ -14,8 +14,6 @@ Please note that this document is not intended as a complete system description.
 [https://www.u-blox.com/sites/default/files/ODIN-W2_DataSheet_%28UBX-14039949%29.pdf](https://www.u-blox.com/sites/default/files/ODIN-W2_DataSheet_%28UBX-14039949%29.pdf) - ODIN-W2 Data Sheet  
 [https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2](https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2) - IP stack(lwIP) for ODIN-W2  
 [https://github.com/u-blox/ublox-odin-w2-lwip-adapt](https://github.com/u-blox/ublox-odin-w2-lwip-adapt) - Adaptation layer between lwIP and u-blox Wi-Fi and Bluetooth drivers  
-[https://github.com/u-blox/target-ublox-odin-w2-gcc](https://github.com/u-blox/target-ublox-odin-w2-gcc) - Target description including pin map for ODIN-W2 module  
-[https://github.com/u-blox/target-ublox-evk-odin-w2-gcc](https://github.com/u-blox/target-ublox-evk-odin-w2-gcc) - Target description including pin map for EVK-ODIN-W2  
 [https://github.com/u-blox/mbed-examples-odin-w2](https://github.com/u-blox/mbed-examples-odin-w2) - Example applications  
 
 ## Overview
