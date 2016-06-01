@@ -1,6 +1,3 @@
-#ifndef _CB_MAIN_H_
-#define _CB_MAIN_H_
-
 /*---------------------------------------------------------------------------
  * Copyright (c) 2015 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
@@ -10,6 +7,9 @@
  *
  * Description : 
  *-------------------------------------------------------------------------*/
+
+#ifndef _CB_MAIN_H_
+#define _CB_MAIN_H_
 
 #include "bt_types.h"
 #include "cb_bt_man.h"
@@ -75,8 +75,11 @@ extern cb_int32 cbMAIN_startWlan(cb_int32 targetId, cbWLAN_StartParameters *para
 
 /**
 * Initialize Ethernet.
+*
+* @param pMacAddr Pointer to address to use. If NULL is passed the preprogrammed address will be used.
+* @return Pointer to the MAC address.
 */
-extern void cbMAIN_initEth(void);
+extern cb_uint8* cbMAIN_initEth(cb_uint8* pMacAddr);
 
 /**
 * Register error handler function.
