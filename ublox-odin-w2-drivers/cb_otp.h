@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
+ * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
  *
  * Component   : OTP
@@ -24,6 +24,10 @@
 
 #define cbOTP_MAX_SIZE          (30)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum
 {
     cbOTP_MAC_BLUETOOTH = 1,
@@ -45,5 +49,9 @@ typedef enum
  * @returns     The read length of the id is returned. If the read fails 0 is returned
  */
 cb_uint32 cbOTP_read(cbOTP_Id id, cb_uint32 len, cb_uint8 *buf);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
