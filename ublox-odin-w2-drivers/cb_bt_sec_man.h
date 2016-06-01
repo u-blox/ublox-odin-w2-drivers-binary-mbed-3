@@ -1,6 +1,3 @@
-#ifndef _CB_BT_SEC_MAN_H_
-#define _CB_BT_SEC_MAN_H_
-
 /*---------------------------------------------------------------------------
  * Copyright (c) 2016 u-blox AB, Sweden.
  * Any reproduction without written permission is prohibited by law.
@@ -16,6 +13,9 @@
  * @brief  Bluetooth security application support. This includes bonding,
  * security modes, passkey and pin code handling.
  */
+
+#ifndef _CB_BT_SEC_MAN_H_
+#define _CB_BT_SEC_MAN_H_
 
 #include "cb_comdefs.h"
 
@@ -175,6 +175,8 @@ typedef struct
     cbBSM_UserConfirmationInd userConfirmationInd;
     cbBSM_UserPasskeyInd userPasskeyInd;
     cbBSM_UserPasskeyEvt userPasskeyEvt;
+    cbBSM_BondCnf bondConfirmation;
+    cbBSM_BondCnf bondEvent;
 } cbBSM_Callbacks;
 
 /*===========================================================================
@@ -193,7 +195,7 @@ extern void cbBSM_init(void);
  * Register security callbacks. Callbacks in the struct that are not 
  * of any interest can be set to NULL.
  *
- * @param pCallback Pointer to the security callback struct
+ * @param pPairingCallbacks Pointer to the security callback struct
  * @return If the operation is successful cbBSM_OK is returned.
  */
 extern cb_int32 cbBSM_registerCallbacks(cbBSM_Callbacks* pPairingCallbacks);
@@ -203,6 +205,8 @@ extern cb_int32 cbBSM_registerCallbacks(cbBSM_Callbacks* pPairingCallbacks);
  * description of the different security modes.
  * 
  * @param securityMode Security mode. Default security is cbBSM_SECURITY_MODE_1_DISABLED
+ * @param allowPairingInNonBondableMode Normally FALSE. Set to TRUE if pairing should be allowed when not bondable.
+ *                                      No link keys will then be stored.
  * @return If the operation is successful cbBSM_OK is returned.
  */
 extern cb_int32 cbBSM_setSecurityMode(
@@ -237,13 +241,13 @@ extern cb_int32 cbBSM_getPairable(boolean* pPairable);
  * Performs bonding with a remote device. The cbBSM_BondCnf callback will
  * be called upon success/failure.
  *
- * @param pBdAddress Pointer to the remote BD address
+ * @param remoteDevice Remote BD address
+ * @param type Classic or LE
  * @return If the operation is successful cbBSM_OK is returned.
  */
 extern cb_int32 cbBSM_reqBond(
     TBdAddr remoteDevice,
-    TBluetoothType type,
-    cbBSM_BondCnf pCallback);
+    TBluetoothType type);
 
 /**
  * Responds on the cbBSM_RequestPinInd callback with a pin code
@@ -327,6 +331,7 @@ extern cb_int32 cbBSM_getAllNumberBondedDevices(
 *
 * @param deviceIndex Index of the bonded device
 * @param pBdAddr Pointer to remote BD address.
+* @param pIsLe   Should be TRUE for LE and FALSE for classic
 * @return If the operation is successful cbBSM_OK is returned.
 */
 extern cb_int32 cbBSM_getBondedDevice(
@@ -337,7 +342,7 @@ extern cb_int32 cbBSM_getBondedDevice(
 /**
  * Delete a bonded device and its link keys.
  * 
- * @param Pointer to the address of the device which bond shall be deleted.
+ * @param pBdAddress to the address of the device which bond shall be deleted.
  * @return If the operation is successful cbBSM_OK is returned.
  */
 extern cb_int32 cbBSM_deleteBondedDevice(TBdAddr* pBdAddress); 

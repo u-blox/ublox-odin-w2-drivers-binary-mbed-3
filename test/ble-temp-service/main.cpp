@@ -89,7 +89,9 @@ static const cbBSM_Callbacks _securityCallbacks =
     NULL, //handleRequestPinInd,
     NULL, //handleUserConfirmationInd,
     NULL, //handleUserPasskeyInd,
-    NULL, //handleUserPasskeyEvt
+    NULL, //handleUserPasskeyEvt,
+    NULL, //handleBondCnf,
+    NULL, //handleBondEvt,
 };
 
 static const cbGATT_ServerCallBack _gattServerCallBack =

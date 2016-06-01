@@ -132,7 +132,9 @@ static const cbBSM_Callbacks SecurityCallbacks =
     HandleRequestPinInd,
     HandleUserConfirmationInd,
     HandleUserPasskeyInd,
-    HandleUserPasskeyEvt
+    HandleUserPasskeyEvt,
+    HandleBondCnf,
+    HandleBondCnf
 };
 
 static const cbBCM_ConnectionCallback ConnectionCallbacks =
@@ -549,7 +551,7 @@ btcAPPe btcAPPreqBond(TBdAddr *pAddress)
 {
     btcAPPe result = BTC_APP_ERROR;
 
-    result = cbBSM_reqBond(*pAddress, BT_TYPE_CLASSIC, HandleBondCnf);
+    result = cbBSM_reqBond(*pAddress, BT_TYPE_CLASSIC);
     printf("cbBSM_reqBond, result=%ld \n", result);
 
     return result;

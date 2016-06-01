@@ -39,7 +39,7 @@
  */
 
 #include "mbed-drivers/mbed.h"
-#include "mbed-drivers/test_env.h"
+#include "greentea-client/test_env.h"
 #include "sockets/TCPStream.h"
 #include "sal/test/ctest_env.h"
 #include "minar/minar.h"
@@ -137,7 +137,9 @@ static const cbBSM_Callbacks _securityCallbacks =
     handleRequestPinInd,
     handleUserConfirmationInd,
     handleUserPasskeyInd,
-    handleUserPasskeyEvt
+    handleUserPasskeyEvt,
+    NULL,
+    NULL
 };
 
 static const cbBCM_ConnectionCallback _connectionCallbacks =
@@ -215,7 +217,7 @@ protected:
 static void terminate(bool status, UDPTimeClient* client)
 {
     delete client;
-    MBED_HOSTTEST_RESULT(status);
+    GREENTEA_TESTSUITE_RESULT(status);
 }
 
 static void controllerStartupComplete(void)
@@ -417,12 +419,10 @@ void app_start(int argc, char *argv[]) {
     initParams.nvdsStartIdLinkKeysLe = 1000 + 2500;
     initParams.maxLinkKeysLe = 25;
 
+    //GREENTEA_SETUP(60, "default_auto");
+
     cbMAIN_initBt(&initParams, controllerStartupComplete);
 
-    MBED_HOSTTEST_TIMEOUT(30);
-    MBED_HOSTTEST_SELECT(udp-time-client-pan-test);
-    MBED_HOSTTEST_DESCRIPTION(UDP time client PAN);
-    MBED_HOSTTEST_START("NET_4");
     socket_error_t err = lwipv4_socket_init();
     TEST_EQ(err, SOCKET_ERROR_NONE);
 

@@ -92,7 +92,7 @@ static cb_boolean handleReadCharacteristicByUuidCnf(
  * DEFINITIONS
  *=========================================================================*/
 
-static  TBdAddr _remoteAddr = { YOTTA_CFG_TEST_BT_REMOTE_LE_ADDR };
+static  TBdAddr _remoteAddr = { YOTTA_CFG_TEST_BT_REMOTE_LE_ADDR, BT_PUBLIC_ADDRESS };
 static Admin _admin;
 
 static cbBCM_ConnectionCallback _connectionCallbacks =
@@ -109,6 +109,8 @@ static const cbBSM_Callbacks _securityCallbacks =
     NULL, //handleUserConfirmationInd,
     NULL, //handleUserPasskeyInd,
     NULL, //handleUserPasskeyEvt
+    NULL, //handleBondCnf,
+    NULL, //handleBondEvt, 
 };
 
 static const cbGATT_ClientCallBack _gattClientCallBack =
