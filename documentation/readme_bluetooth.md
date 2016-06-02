@@ -37,8 +37,73 @@ The Bluetooth Serial component provides a generic data packet interface for SPP 
 ![](mbed_bt_spp_data_transfer.png)
 
 ## Bluetooth Security(cbBSM)
-** NOTE: The current security API is subject to change.**  
-TBA - See BT test app for usage
+There are 7 different security modes to support all kinds of use cases regarding the pairing procedure:
+```c
+typedef enum
+{
+    cbBSM_SECURITY_MODE_1_DISABLED = 1,
+    cbBSM_SECURITY_MODE_2_BT_2_0,
+    cbBSM_SECURITY_MODE_3_FIXED_PIN,
+    cbBSM_SECURITY_MODE_4_JUST_WORKS,
+    cbBSM_SECURITY_MODE_5_DISPLAY_ONLY,
+    cbBSM_SECURITY_MODE_6_DISPLAY_YES_NO,
+    cbBSM_SECURITY_MODE_7_KEYBOARD_ONLY
+} cbBSM_SecurityMode;
+```
+Each mode is specified for both Bluetooth 2.0+EDR and 2.1+EDR security since both must be supported depending on what the remote device supports.
+All security modes except Security Mode 1 (Security Disabled) for Bluetooth 2.0+EDR devices uses encryption. Hence, security mode 1 (Security Disabled) for Bluetooth 2.1+EDR still uses encryption.
+Please note that the Security Mode for the Odin W2 EVK does not directly correspond to the Security Mode of the Bluetooth specification.
+
+#### cbBSM_SECURITY_MODE_1_DISABLED
+- Remote Device BT 2.1: Auto accept (No man-in-the-middle attack protection, encryption enabled)
+- Remote Device BT 2.0: Authentication and encryption disabled.
+- Bluetooth Low Energy: Auto accept (No man-in-the-middle attack protection, encryption enabled)
+
+#### cbBSM_SECURITY_MODE_2_BT_2_0
+
+- Enforce BT 2.0 (Service level authentication and encryption enabled)
+
+Please note that the device is not BT 2.1 qualified for this setting. It is included for backward compatibility. Invalid for Bluetooth Low Energy.
+
+#### cbBSM_SECURITY_MODE_3_FIXED_PIN
+
+- Remote Device BT 2.1: Service level authentication and encryption enabled.
+- Remote Device BT 2.0: Service level authentication and encryption enabled.
+- Bluetooth Low Energy: Service level authentication and encryption enabled.
+
+Please note that this security mode will not work with a general BT 2.1 device. However, it will work between two connectBlue BT 2.1 Serial Port Adapters. Use security mode 4 to make the device work with a general BT 2.1 device.
+
+#### cbBSM_SECURITY_MODE_4_JUST_WORKS
+
+- Remote Device BT 2.1: Auto accept (no man-in-the-middle attack protection, encryption enabled) 
+- Remote Device BT 2.0: Service level authentication and encryption enabled. 
+- Bluetooth Low Energy: Auto accept (no man-in-the-middle attack protection, encryption enabled)
+
+This security mode is intended for pairing in safe environments. When this mode is set, pairability is automatically disabled.
+
+#### cbBSM_SECURITY_MODE_5_DISPLAY_ONLY
+
+- Remote Device BT 2.1: Service level authentication and encryption enabled. User should be presented a passkey. 
+- Remote Device BT 2.0: Service level authentication and encryption enabled. No user interaction required. 
+- Bluetooth Low Energy: Service level authentication and encryption enabled. User should be presented a passkey.
+
+This security mode is used when the device has a display that can present a 6-digit value that the user shall enter on the remote device.
+
+#### cbBSM_SECURITY_MODE_6_DISPLAY_YES_NO 
+
+- Remote Device BT 2.1: Service level authentication and encryption enabled. User should compare two values. 
+- Remote Device BT 2.0: Service level authentication and encryption enabled. No user interaction required.
+ 
+This security mode is used when the device has a display that can present a 6-digit value that the user shall verify with yes or no to the remote device's presented value. 
+Invalid for Bluetooth Low Energy.
+
+#### cbBSM_SECURITY_MODE_7_KEYBOARD_ONLY
+
+- Remote Device BT 2.1: Service level authentication and encryption enabled. User should enter a passkey. 
+- Remote Device BT 2.0: Service level authentication and encryption enabled. No user interaction required. 
+- Bluetooth Low Energy: Service level authentication and encryption enabled. User should enter a passkey.
+
+This security mode is used when the device only has a keyboard where the user can enter a 6-digit value that is presented on the remote device.
 
 ## Bluetooth Personal-Area Network(cbBTPAN)
 The PAN profile is used for sending and receiving ethernet frames over a Bluetooth connection. This is typically supported by mobile phones and laptops.

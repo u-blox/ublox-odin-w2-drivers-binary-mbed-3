@@ -33,6 +33,7 @@ The exported components and corresponding files in the u-blox ODIN-W2 driver is 
 - cb\_comdefs.h - Commonly used definitions like TRUE/FALSE
 - cb\_status.h - Common status codes
 - cb\_watchdog.h - Hardware watchdog
+- cb\_otp.h - Read One-Time Programmable(OTP) parameters like MAC addresses. 
 
 ### Bluetooth
 - **BT Manager**(cb\_bt\_man.h) - Bluetooth Generic Access Profile(GAP) functionality like inquiry, device name etc
@@ -77,7 +78,6 @@ A subset of the functionality provided by the ST firmware library is accessible 
 ### Deprecated API
 - cb_assert.h - use mbed assert instead
 - cb_hw.h - use mbed functions instead
-- cb_timer.h - use mbed functions instead
 
 The module fulfills the ETSI regulations and modular approved for FCC and IC. It is also Bluetooth qualified as a Bluetooth controller subsystem. The embedded Bluetooth stack is pre-qualified as a Bluetooth host subsystem. This allows for customer specific Bluetooth applications developed directly for the STM32F439 microcontroller.
 
