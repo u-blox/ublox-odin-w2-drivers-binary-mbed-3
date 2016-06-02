@@ -311,13 +311,11 @@ void app_start(int argc, char *argv[]) {
     (void)argc;
     (void)argv;
 
-    cbBM_InitParams initParams;
+    cbMAIN_BtInitParams initParams;
     cbBT_UTILS_setInvalidBdAddr(&initParams.address);
     initParams.leRole = cbBM_LE_ROLE_CENTRAL;
     initParams.maxOutputPower = cbBM_MAX_OUTPUT_POWER;
-    initParams.nvdsStartIdLinkKeysClassic = 1000 + 2300;
     initParams.maxLinkKeysClassic = 25;
-    initParams.nvdsStartIdLinkKeysLe = 1000 + 2500;
     initParams.maxLinkKeysLe = 25;
     cbMAIN_initBt(&initParams, controllerStartupComplete);
 

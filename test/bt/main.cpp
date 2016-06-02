@@ -454,7 +454,7 @@ void app_start(int argc, char *argv[]) {
     (void)argv;
 
     int i;
-    cbBM_InitParams initParams;
+    cbMAIN_BtInitParams initParams;
 
     button_SW1.fall(&button_SW1_PressedInt);
     thisApp.app_state = btMAIN_initializing;
@@ -475,9 +475,7 @@ void app_start(int argc, char *argv[]) {
     cbBT_UTILS_setInvalidBdAddr(&initParams.address);
     initParams.leRole = cbBM_LE_ROLE_CENTRAL;
     initParams.maxOutputPower = cbBM_MAX_OUTPUT_POWER;
-    initParams.nvdsStartIdLinkKeysClassic = 1000 + 2300;
     initParams.maxLinkKeysClassic = 25;
-    initParams.nvdsStartIdLinkKeysLe = 1000 + 2500;
     initParams.maxLinkKeysLe = 25;
     cbMAIN_initBt(&initParams, controllerStartupComplete);
 }

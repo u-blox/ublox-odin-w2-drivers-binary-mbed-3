@@ -26,6 +26,14 @@ extern "C" {
 /*===========================================================================
  * TYPES
  *=========================================================================*/
+typedef struct
+{
+    TBdAddr         address;                    /** Bluetooth address that shall be assigned to controller. Pass invalidBdAddress to use controller default address*/
+    cbBM_LeRole     leRole;                     /** Bluetooth low energy role */
+    cb_int8         maxOutputPower;             /** Maximum output power. */
+    cb_uint32       maxLinkKeysClassic;         /** Max number of CLASSIC link keys */
+    cb_uint32       maxLinkKeysLe;              /** Max number of link keys BLE*/
+} cbMAIN_BtInitParams;
 
 typedef void(*cbMAIN_ErrorHandler)(
     cb_int32            errorCode,
@@ -56,7 +64,7 @@ extern void cbMAIN_initOS(void);
 * @param callback Will be invoked when initialisation is done.
 * @return void
 */
-extern void cbMAIN_initBt(cbBM_InitParams *pInitParameters, cbMAIN_initBtComplete callback);
+extern void cbMAIN_initBt(cbMAIN_BtInitParams *pInitParameters, cbMAIN_initBtComplete callback);
 
 /**
 * Initialize WLAN component.
