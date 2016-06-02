@@ -19,8 +19,10 @@
 * This Bluetooth low energy example does the following:
 * 1. Start Bluetooth stack as BLE peripheral
 * 2. Start advertising
-* 3. Start device info service
+* 3. Start temp service(emulates temperature rise)
 * 4. Accept connections
+* 
+* The u-blox BLE iPhone app or OBS421 with GATT commands can be used as a central/client
 */
 
 #include "mbed-drivers/mbed.h"

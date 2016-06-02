@@ -18,7 +18,7 @@
 /*
  * This test verifies that it's possible to do the following:
  * - Initialize Bluetooth stack
- * - Connect PANU to NAP
+ * - Connect PANU to NAP(Network Access Point)
  * - Start LWIP
  * - Get IP address with DHCP
  * - Resolve time server host name
@@ -36,6 +36,8 @@
  *  
  *   TODO: Remove interface and disconnect after receiving the time
  *   TODO: Add minimal state machine
+ *
+ *   An iPhone or Android phone with Internet sharing/tethering can be used as NAP
  */
 
 #include "mbed-drivers/mbed.h"

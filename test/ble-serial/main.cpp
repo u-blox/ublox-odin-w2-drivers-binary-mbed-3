@@ -22,6 +22,8 @@
 * 3. Start u-blox serial port service
 * 4. Accept incoming connections
 * 5. Print received ascii data
+*
+* The u-blox BLE iPhone app or ODIN-W2 module can be used as a central/client
 */
 
 #include "mbed-drivers/mbed.h"
@@ -109,8 +111,8 @@ static void setState(State state)
 
     // Log state change
     if     (state == STATE_NOT_INITIALIZED)         printf("State change to: STATE_NOT_INITIALIZED\n");
-    else if(state == STATE_SPS_NOT_CONNECTED)           printf("State change to: STATE_SPS_NOT_CONNECTED\n");
-    else if(state == STATE_SPS_CONNECTED)               printf("State change to: STATE_SPS_CONNECTED\n");
+    else if(state == STATE_SPS_NOT_CONNECTED)       printf("State change to: STATE_SPS_NOT_CONNECTED\n");
+    else if(state == STATE_SPS_CONNECTED)           printf("State change to: STATE_SPS_CONNECTED\n");
     else
     {
         MBED_ASSERT(0);

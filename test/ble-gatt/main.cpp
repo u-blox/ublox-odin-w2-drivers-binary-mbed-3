@@ -23,6 +23,8 @@
 * 4. Disconnect link
 * 5. Wait 10sec
 * 6. Goto 2
+*
+* The test can be run towards a u-blox OLP425 or the corresponding ble-temp-service test
 */
 
 #include "mbed-drivers/mbed.h"

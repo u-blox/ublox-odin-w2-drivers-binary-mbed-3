@@ -13,7 +13,7 @@ The application wifi-ap will demonstrate how to:
 ## Required hardware
 * EVK-ODIN-W26 development board for the u-blox ODIN-W2 module
 * USB micro cable
-* Computer (or phone)
+* Computer (or phone) acting as Wi-Fi client
 
 ## Required software
 * Yotta build environment, see *udp-time-client-wifi-example* section [*Required software*](https://github.com/u-blox/mbed-examples-odin-w2/tree/master/udp-time-client-wifi#required-software).  

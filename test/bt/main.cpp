@@ -22,29 +22,26 @@
 * - Makes the device pairable and connectable
 * - Start Inquiry
 * - Pair with up to 6 (btcAPP_MAX_CONNECTIONS) remote devices
-* - Connect to u-blox SPP service of (up to 6) remote devices
+* - Connect to SPP profiles of (up to 6) remote devices
 * - Send data to the connected device through the SPP service
 * - Disconnect the connected devices
 *
 *   To run the test the remote devices Bluetooth Address needs to be
 *   defined in the array "remoteDevices". The test steps are triggered by
-*   pressing the SW1 button on the board, see ublox-c029-gcc\target.json
+*   pressing the SW1 button on the EVK-ODIN-W2.
+*   
+*   ODIN-W2 modules can be used as remote devices
 */
 
 #include "mbed-drivers/mbed.h"
 #include "minar/minar.h"
 
-// Force float printf support
-asm(".global _printf_float");
-
-extern "C" {
 #include "btc_app.h"
 #include "ublox-odin-w2-drivers/bt_types.h"
 #include "ublox-odin-w2-drivers/cb_bt_utils.h"
 #include "ublox-odin-w2-drivers/cb_bt_man.h"
 #include "ublox-odin-w2-drivers/cb_main.h"
 #include "ublox-odin-w2-drivers/cb_bt_serial.h"
-}
 
 #define BT_MAIN_TEST_DATA_SIZE (512)
 #define bt_main_write_tag (666)
@@ -132,13 +129,10 @@ static const btcAPP_EventCallBack appEventCallback =
     StreamWriteCnf
 };
 
-//DigitalIn button_SW1(SW1);
 InterruptIn button_SW1(SW1);
 static btAPP_CLASS thisApp;
 
 //===============================================================>
-/*Minar callback handlers*/
-//minar::callback_handle_t _post_handle(NULL);
 
 static void addHandle(int16_t handle)
 {

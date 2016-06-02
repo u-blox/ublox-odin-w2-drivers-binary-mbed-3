@@ -189,17 +189,6 @@ static btcAPPe foundDevListAdd(TBdAddr *pBDAddr)
     return result;
 }
 
-//static void deviceListDeleteAll(void)
-//{
-//    struct devListNode *node;
-//    while (btcAPP.devicesList != NULL)
-//    {
-//        node = btcAPP.devicesList;
-//        btcAPP.devicesList = btcAPP.devicesList->next;
-//        free(node);
-//    }
-//}
-
 static btcAPPe deviceListAdd(btcAPP_Connection *pDevice)
 {
     btcAPPe result = BTC_APP_ERROR;
@@ -281,20 +270,6 @@ static btcAPP_Connection *deviceListFind(TBdAddr *pBDAddr, cbBCM_Handle handle)
     }
     return NULL;
 }
-
-//static bool getConHandleByAddress(TBdAddr* pBdAddress, int *connHandle)
-//{
-//    btcAPP_Connection* pDevice;
-//    bool found = FALSE;
-//
-//    pDevice = deviceListFind(pBdAddress, 0);
-//    if (pDevice != NULL)
-//    {
-//        *connHandle = pDevice->connHandle;
-//        found = TRUE;
-//    }
-//    return found;
-//}
 
 static int devieListCount(void)
 {

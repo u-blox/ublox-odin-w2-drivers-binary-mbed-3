@@ -33,6 +33,9 @@
  *  
  *   TODO: Remove interface and disconnect after receiving the time
  *   TODO: Add minimal state machine
+ *
+ *   Any access point supporting WPA2 security can be used to test with
+ *   for example an iPhone or Android phone with Internet sharing/tethering
  */
 
 #include <stdio.h>

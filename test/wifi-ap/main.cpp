@@ -21,7 +21,9 @@
  * - Initialize WiFi driver
  * - Start WiFi driver
  * - Start LWIP
- * - Start AP with WPA2 security and dhcp server
+ * - Start access point mode with WPA2 security and DHCP server
+ * - Provide an IP address to the connected Wi-Fi client
+ * - Reply to ping requests
  */
 
 #include <stdio.h>

@@ -21,6 +21,10 @@
 #include <stdint.h>
 #include "ublox-odin-w2-drivers/bt_types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*===========================================================================
 * DEFINES
 *=========================================================================*/
@@ -85,5 +89,9 @@ btcAPPe btcAPPregisterCallBacks(btcAPP_EventCallBack* pCallBacks);
 btcAPPe btcAPPrequestConnectSPP(TBdAddr *pAddress);
 btcAPPe btcAPPwrite(uint32_t handle, uint8_t *pBuf, uint32_t nBytes, int32_t tag);
 btcAPPe btcAPPdisconnect(uint32_t handle);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /*_BTC_APP_H_*/
