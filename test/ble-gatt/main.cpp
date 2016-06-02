@@ -47,7 +47,7 @@
 
 #ifndef YOTTA_CFG_TEST_BT_REMOTE_LE_ADDR
 #warning YOTTA_CFG_TEST_BT_REMOTE_LE_ADDR must be defined in a config.json file
-#define YOTTA_CFG_TEST_BT_REMOTE_LE_ADDR { 0x00,0x12,0xf3,0x1e,0x53,0x7f }, BT_PUBLIC_ADDRESS
+#define YOTTA_CFG_TEST_BT_REMOTE_LE_ADDR 0x00,0x12,0xf3,0x1e,0x53,0x7f
 #endif
 
 /*===========================================================================
