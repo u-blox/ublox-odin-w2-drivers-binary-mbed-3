@@ -125,6 +125,10 @@ The GATT API is almost a one to one mapping of the GATT profile specification. T
 GATT is part of the Bluetooth embedded stack and used by various components in the stack. Only one request at a time is supported from the application. The application must wait until all responses from an outstanding request have been received.
 For more info see test apps and header files.
 
+Note that service changed indications for the GATT server/peripheral are not supported. Thus the product must not alter it's attribute database during it's lifetime. The following functions affect the database:
+- cbBCM_enableSps
+- cbBCM_enableDevInfoService To avoid any changes in the database the functions should either be included or excluded in the application and this should not change during the lifetime of the product. The order must not change either.
+
 ## Bluetooth Test Manager(cbBTM)
 This component is used for testing different radio characteristics and assure that radio approvals are followed.
 
