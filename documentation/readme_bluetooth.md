@@ -52,7 +52,7 @@ typedef enum
 ```
 Each mode is specified for both Bluetooth 2.0+EDR and 2.1+EDR security since both must be supported depending on what the remote device supports.
 All security modes except Security Mode 1 (Security Disabled) for Bluetooth 2.0+EDR devices uses encryption. Hence, security mode 1 (Security Disabled) for Bluetooth 2.1+EDR still uses encryption.
-Please note that the Security Mode for the Odin W2 EVK does not directly correspond to the Security Mode of the Bluetooth specification.
+Please note that the Security Mode for the ODIN-W2 does not directly correspond to the Security Mode of the Bluetooth specification.
 
 #### cbBSM_SECURITY_MODE_1_DISABLED
 - Remote Device BT 2.1: Auto accept (No man-in-the-middle attack protection, encryption enabled)
@@ -113,14 +113,14 @@ The PAN profile defines three roles:
 - Network Access Point (NAP) and NAP Service – A Bluetooth device that supports the NAP service is a Bluetooth device that provides some of the features of an Ethernet bridge to support network services.
 - Group Ad-hoc Network (GN) and GN Service – A Bluetooth device that supports the GN service is able to forward Ethernet packets to each of the connected Bluetooth devices, the PAN users, as needed.
 
-PANU and NAP are supported by the ODIN-W2 drivers.
+PANU and NAP are supported by the ODIN-W2 drivers. See PAN test for more info on how it's used.
 
 ## Bluetooth low energy Serial Port Service(cbBSL)
 The Bluetooth low energy Serial component provides a generic data packet interface on top of GATT. After a connection has been set up using the Connection Manager a data packet channel can be opened. The data packet channel will be automatically closed when a disconnection occurs. The usage is similar to cbBSE.
 
 ## Bluetooth low energy Generic Attribute Profile(cbBTGATT)
 GATT is a profile used for setting and getting attribute data from a remote Bluetooth low energy enabled device. It is used by almost all profiles and services used in Bluetooth low energy. GATT for Classic Bluetooth is not supported by this platform.
-The GATT API is almost a one to one mapping of the GATT profile specification. The header files cb_gatt.h, cb_gatt_client.h, and cb_gatt_server.h should work as a reference for the different GATT requests and responses. Also the Bluetooth 4.0 specification is a useful resource.
+The GATT API is almost a one to one mapping of the GATT profile specification. The header files cb_gatt.h, cb_gatt_client.h, and cb_gatt_server.h should work as a reference for the different GATT requests and responses. For all details see the Bluetooth 4.0 specification and for a GATT overview see https://developer.bluetooth.org/TechnologyOverview/Pages/GATT.aspx
 
 GATT is part of the Bluetooth embedded stack and used by various components in the stack. Only one request at a time is supported from the application. The application must wait until all responses from an outstanding request have been received.
 For more info see test apps and header files.
