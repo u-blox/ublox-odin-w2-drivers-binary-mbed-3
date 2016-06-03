@@ -10,7 +10,7 @@ The Wi-Fi driver is initialized with a call to cbMAIN\_initWlan. Note that cbWLA
 
 In order to get status updates it's necessary to register via the cbWLAN\_registerStatusCallback function.
 
-Once the driver has been initialized and a status handler been registered it can be started with cbWLAN\_start. When starting is finished a status event/callback is received.
+Once the driver has been initialized and a status handler been registered it can be started with cbMAIN\_startWlan. When starting is finished a status event/callback is received.
 
 If the driver is not intended to be in use anymore it is wise to stop it with cbWLAN\_Stop to lower power consumption.
 
