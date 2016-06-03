@@ -79,7 +79,8 @@ A subset of the functionality provided by the ST firmware library is accessible 
 - cb_assert.h - use mbed assert instead
 - cb_hw.h - use mbed functions instead
 
-The module fulfills the ETSI regulations and modular approved for FCC and IC. It is also Bluetooth qualified as a Bluetooth controller subsystem. The embedded Bluetooth stack is pre-qualified as a Bluetooth host subsystem. This allows for customer specific Bluetooth applications developed directly for the STM32F439 microcontroller.
+## Qualification and approvals
+The module fulfills the ETSI regulations and modular approved for FCC and IC. It is also Bluetooth qualified as a Bluetooth controller subsystem. The embedded Bluetooth stack is pre-qualified as a Bluetooth host subsystem. This allows for customer specific Bluetooth applications developed directly for the STM32F439 microcontroller. For more info see Qualification and approvals chapter in [ODIN-W2 Data Sheet](https://www.u-blox.com/sites/default/files/ODIN-W2_DataSheet_%28UBX-14039949%29.pdf).
 
 ## Development and Debugging Environment
 The build tool used for compiling and linking the driver is [yotta](https://www.mbed.com/en/development/software/mbed-yotta/).
