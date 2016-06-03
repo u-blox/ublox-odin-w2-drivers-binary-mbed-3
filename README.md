@@ -62,7 +62,7 @@ For more info about the Bluetooth components see [documentation/readme_bluetooth
 For more info about the Wi-Fi component look [here](documentation/readme_wifi.md).
 
 ### Ethernet
-- **Ethernet API**(cb\_ethernet.h) - Ethernet driver. NOTE, this API is subject to change for the next release since the functionality is experimental.
+- **Ethernet API**(cb\_ethernet.h) - Ethernet driver. NOTE, this API is subject to change for the next release since the functionality is experimental. See test app for usage.
 
 ### TCP/IP stack
 Any TCP/IP stack can be used together with the driver but a ready to use [lwIP stack](http://savannah.nongnu.org/projects/lwip/) has been tested and is provided as a separate module [here](https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2). It has been slightly modified to better suite the Wi-Fi driver.
