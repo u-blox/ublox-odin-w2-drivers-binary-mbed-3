@@ -3,7 +3,7 @@ The Wi-Fi driver provides functionality to initialize, configure and manage a Wi
 
 The Wi-Fi support conforms to IEEE 802.11a/b/g/n and has dual-band 2.4 GHz and 5GHz operation. The driver can either operate as a Station or an Access Point.
 
-The Wi-Fi driver is typically used together with a TCP/IP stack. For the ODIN-W2 drivers we have added two additional yotta modules that holds the [lwIP stack](https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2) and an [adaptation layer](https://github.com/u-blox/ublox-odin-w2-lwip-adapt). There is also a [Wi-Fi example](https://github.com/u-blox/mbed-examples-odin-w2) that shows how to use all three modules.
+The Wi-Fi driver is typically used together with a TCP/IP stack. For the ODIN-W2 drivers we have added two additional yotta modules that holds the [lwIP stack](https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2) and an [adaptation layer](https://github.com/u-blox/ublox-odin-w2-lwip-adapt). There is also a [Wi-Fi example](https://github.com/u-blox/mbed-examples-odin-w2/tree/master/udp-time-client-wifi) that shows how to use all three modules.
 
 ## General initialization
 The Wi-Fi driver is initialized with a call to cbMAIN\_initWlan. Note that cbWLAN\_init must not be called since this is done from inside cbMAIN\_initWlan.
