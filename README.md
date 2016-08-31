@@ -93,7 +93,7 @@ Examples of how to set-up and debug an application can be found here [https://gi
 
 ![](documentation/mbed_odin_w2_flash.png)
 
-The flash memory configuration above shows how the utilization can look like when two 128k sectors are used as non-volatile storage of link keys. How much space the ARM mbed OS and ODIN-W2 drivers occupy is very dependent on how much functionality is used. The [Wi-Fi example](https://github.com/u-blox/mbed-examples-odin-w2) will occupy around 1MByte.
+The flash memory configuration above shows how the utilization can look like when two 128k sectors are used as non-volatile storage of link keys. How much space the ARM mbed OS and ODIN-W2 drivers occupy is very dependent on how much functionality is used. The [Wi-Fi example](https://github.com/u-blox/mbed-examples-odin-w2/tree/master/udp-time-client-wifi) will occupy around 1MByte.
 
 No boot, starting at address 0, is used in this flash configuration as this is typically overwritten when using the ST-LINK mass storage flashing on the EVK-ODIN-W2.
 
