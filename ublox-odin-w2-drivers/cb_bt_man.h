@@ -138,6 +138,17 @@ typedef enum
     cbBM_LE_ROLE_PERIPHERAL = 2,
 } cbBM_LeRole;
 
+typedef struct
+{
+    cb_uint8  flags;
+    cb_uint8  flowDirection;
+    cb_uint8  serviceType;
+    cb_uint32 tokenRate;
+    cb_uint32 tokenBucketSize;
+    cb_uint32 peakBandwidth;
+    cb_uint32 latency;
+} cbBM_FlowSpecParams;
+
 /** 
  * Bluetooth Manager initialization parameters.
 */
@@ -178,6 +189,16 @@ extern void cbBM_init(
  * This function needs to be called before the cbBM_init.
 */
 extern void cbBM_setDefaultValuesLeParams(void);
+
+/**
+* This function executes HCI_cmdWrScanEnable command according to parameters.
+* @param discoverableMode discoverable mode
+* @param connectableMode connectable mode
+* @return true if HCI command could be executed.
+*/
+extern cb_int32 cbBM_updateScan(
+    cbBM_DiscoverableMode discoverableMode,
+    cbBM_ConnectableMode connectableMode);
 
 /**
  * Get the current Bluetooth address of the device.

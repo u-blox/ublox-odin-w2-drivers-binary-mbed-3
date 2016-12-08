@@ -118,6 +118,17 @@ typedef struct
     cb_char                 serviceName[cbBCM_SERVICE_NAME_MAX_LEN];
 } cbBCM_ConnectionInfo;
 
+typedef struct
+{
+    cb_uint8  flags;            /** Reserved for future use. */
+    cb_uint8  flowDirection;    /** 0x00 for Outgoing Flow and 0x01 for Incoming Flow */
+    cb_uint8  serviceType;      /** 0x00 No Traffic; 0x01 Best Effort; 0x02 Guaranteed */
+    cb_uint32 tokenRate;        /** Token Rate in octets per second */
+    cb_uint32 tokenBucketSize;  /** Token Bucket Size in octets */
+    cb_uint32 peakBandwidth;    /** Peak Bandwidth in octets per second */
+    cb_uint32 latency;          /** Latency in microseconds */
+} cbBCM_FlowSpecParams;
+
 typedef void (*cbBCM_ConnectInd)(
     cbBCM_Handle handle,
     cbBCM_ConnectionInfo info);
@@ -214,6 +225,11 @@ typedef void (*cbBCM_ServiceSearchDeviceIdCallback)(
 typedef void(*cbBCM_LinkQualityCallback)(
     cbBCM_LinkQualityEvt linkQualityEvt,
     uint8               linkQuality);
+
+typedef void(*cbBCM_SetFlowSpecCallback)(
+    cb_uint8 status,
+    cbBCM_Handle handle,
+    cbBCM_FlowSpecParams parameters);
 
 /*===========================================================================
  * FUNCTIONS
@@ -801,6 +817,24 @@ extern cb_int32 cbBCM_registerDataCallback(
  */
 extern cbBCM_Handle cbBCM_getProtocolHandle(
     cbBCM_Handle handle);
+
+/**
+* This will send cbHCI_cmdFlowSpecification command for the specified link
+*   with the specified parameters.
+* @param   handle           Connection handle
+* @param   connectConfig    Decides whether to turn off connectability and discoverability
+*                           when max links are reached. Values: 0x00 don't change, 0x01 turn off page and
+*                           inquiry scans when max number of classic links are reached.
+* @param   parameters       Flow Specification parameters. For details see Bluetooth Core
+*                           Specification [Vol 3] Part A, Section 5.3
+* @param   flowSpecCallback Callback contains the data in Flow Specification Complete event
+* @return  If the operation is successful cbBCM_OK is returned.
+*/
+extern cb_int32 cbBCM_setFlowSpecification(
+    cbBCM_Handle handle,
+    cb_uint8 connectConfig,
+    cbBCM_FlowSpecParams parameters,
+    cbBCM_SetFlowSpecCallback flowSpecCallback);
 
 #ifdef __cplusplus
 }
