@@ -185,6 +185,49 @@ extern void cbBM_init(
     cbBM_InitComplete initCompleteCallback);
 
 /**
+* This function sets the default link supervision timeout. The specified timeout will
+* apply for new connections.
+* @param  linkSupervisionTimeout timeout in milliseconds
+* @return If the operation is successful cbBM_OK is returned.
+*/
+extern cb_int32 cbBM_setLinkSupervisionTimeout(
+    cb_uint16 linkSupervisionTimeout);
+
+/**
+* This function gets the default link supervision timeout.
+* @return link supervision timeout in milliseconds.
+*/
+extern cb_uint16 cbBM_getLinkSupervisionTimeout(void);
+
+/**
+* This function enables or disables the fast connect feature (interlaced page scan).
+* @param   fastConnect
+* @return cbBM_OK if in parameter is valid.
+*/
+extern cb_int32 cbBM_setFastConnect(
+    cb_boolean fastConnect);
+
+/**
+* This function gets whether the fast connect feature is enabled or disabled.
+* @return TRUE if feature is enabled
+*/
+extern cb_boolean cbBM_getFastConnect(void);
+
+/**
+* This function enables or disables the fast discovery feature (interlaced inquiry scan).
+* @param   fastDiscovery
+* @return cbBM_OK if in parameter is valid.
+*/
+extern cb_int32 cbBM_setFastDiscovery(
+    cb_boolean fastDiscovery);
+
+/**
+* This function gets whether the fast discovery feature is enabled or disabled.
+* @return TRUE if feature is enabled
+*/
+extern cb_boolean cbBM_getFastDiscovery(void);
+
+/**
  * This function sets all default parameters for LE. 
  * This function needs to be called before the cbBM_init.
 */
