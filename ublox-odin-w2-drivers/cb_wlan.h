@@ -189,9 +189,9 @@ typedef struct cbWLAN_CommonApParameters {
 * @ingroup wlan
 */
 typedef struct cbWLAN_WPAPSKApParameters {
-    cbWLAN_CipherSuite      rsnCiphers; /**< Bit field indicating which ciphers that shall be displayed in RSN information elements. If 0 no RSN information elements is added to beacons and probe responses. */
-    cbWLAN_CipherSuite      wpaCiphers; /**< Bit field indicating which ciphers that shall be displayed in WPA information elements. If 0 no WPA information elements is added to beacons and probe responses. */
-    cbWLAN_WPAPSK           psk; /**< WPA pre-shared key*/
+    cbWLAN_CipherSuite      rsnCiphers;         /**< Bit field indicating which ciphers that shall be displayed in RSN information elements. If 0 no RSN information elements is added to beacons and probe responses. */
+    cbWLAN_CipherSuite      wpaCiphers;         /**< Bit field indicating which ciphers that shall be displayed in WPA information elements. If 0 no WPA information elements is added to beacons and probe responses. */
+    cbWLAN_WPAPSK           psk;                /**< WPA pre-shared key*/
 } cbWLAN_WPAPSKApParameters;
 
 
