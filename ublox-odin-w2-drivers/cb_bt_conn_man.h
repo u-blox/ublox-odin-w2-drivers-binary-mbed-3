@@ -819,8 +819,8 @@ extern cbBCM_Handle cbBCM_getProtocolHandle(
     cbBCM_Handle handle);
 
 /**
-* This will send cbHCI_cmdFlowSpecification command for the specified link
-*   with the specified parameters.
+* @brief   This will send cbHCI_cmdFlowSpecification command for the specified link
+*          with the specified parameters.
 * @param   handle           Connection handle
 * @param   parameters       Flow Specification parameters. For details see Bluetooth Core
 *                           Specification [Vol 3] Part A, Section 5.3
@@ -831,6 +831,16 @@ extern cb_int32 cbBCM_setFlowSpecification(
     cbBCM_Handle handle,
     cbBCM_FlowSpecParams parameters,
     cbBCM_SetFlowSpecCallback flowSpecCallback);
+
+/**
+* @brief   Change which packet types can be used for the connection identified by the handle
+* @param   handle           Connection handle
+* @param   aclPacketType    bit map according to packet types defined in bt_types.h
+* @return  If the operation is successful cbBCM_OK is returned.
+*/
+extern cb_int32 cbBCM_changeConnectionPacketType(
+    cbBCM_Handle handle,
+    TPacketType aclPacketType);
 
 #ifdef __cplusplus
 }
