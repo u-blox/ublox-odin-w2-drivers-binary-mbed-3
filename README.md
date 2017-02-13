@@ -99,6 +99,8 @@ No boot, starting at address 0, is used in this flash configuration as this is t
 
 **NOTE 3: The One Time Programmable(OTP) area is reserved for the ODIN-W2 drivers and must not be written to. The OTP area keeps all the MAC addresses.**
 
+**NOTE 4: The two flash sectors are not included in the linker script which means that there will be no warning if the BT link keys flash area collides with the application. The binary must be checked afterwards to ensure it fits together with the two last sectors of 128*2=256KByte.**
+
 ## RAM
 The ODIN-W2 drivers use both static RAM and dynamically allocated heap memory via the mbed OS module [ualloc](https://github.com/ARMmbed/ualloc). The heap usage is heavily dependent on the use case.
 
