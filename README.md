@@ -1,6 +1,6 @@
 # u-blox ODIN-W2 Wi-Fi, Bluetooth and Ethernet drivers 
 
-This is a pre-compiled binary module including u-blox Wi-Fi, Bluetooth and Ethernet drivers for [mbed OS](https://mbed.com).
+This is a pre-compiled binary module including u-blox Wi-Fi, Bluetooth and Ethernet drivers for [Mbed OS](https://mbed.com).
 
 The binary is intended for a u-blox ODIN-W2 module.
 
@@ -22,7 +22,7 @@ The ODIN-W2 module supports a variety of interfaces such as WLAN, Bluetooth, Blu
 
 The embedded Bluetooth Stack and the embedded WLAN driver are optimized for small embedded industrial systems with high requirements on performance and robustness. The Bluetooth stack contains the classic SPP, DUN, PAN, DID and GAP profiles and the low energy GATT, GAP and u-blox Serial Port Service. The Wi-Fi driver contains station as well as access point. A supplicant is also included.
 
-The drivers are not thread safe. This means that all calls to and from the drivers must be serialized to ensure that there are never more than one concurrent entry point called in the drivers. This can be achieved by posting function calls to the [minar scheduler](https://github.com/ARMmbed/minar). All callbacks of the drivers run in the context of minar unless stated otherwise. The entry point, app_start, of an mbed OS application is also called from minar.
+The drivers are not thread safe. This means that all calls to and from the drivers must be serialized to ensure that there are never more than one concurrent entry point called in the drivers. This can be achieved by posting function calls to the [minar scheduler](https://github.com/ARMmbed/minar). All callbacks of the drivers run in the context of minar unless stated otherwise. The entry point, app_start, of an Mbed OS application is also called from minar.
 
 ![](documentation/mbed_odin_w2.png)
 
@@ -69,15 +69,15 @@ Any TCP/IP stack can be used together with the driver but a ready to use [lwIP s
 
 To make it easier to customize the usage of the lwIP stack an adaptation module has been added and can be found here [https://github.com/u-blox/ublox-odin-w2-lwip-adapt](https://github.com/u-blox/ublox-odin-w2-lwip-adapt). For example, if layer 2 routing is needed it is highly recommended to fork the adaptation module or completely replace it.
 
-### mbed OS
-This is the ARM mbed OS framework and is a collection of OS-related modules and includes the [minar scheduler](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/Full_Guide/MINAR/), control of GPIOs, UART, SPI, I2C, security etc. A thorough description can be found [here](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/)
+### Mbed OS
+This is the Arm Mbed OS framework and is a collection of OS-related modules and includes the [minar scheduler](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/Full_Guide/MINAR/), control of GPIOs, UART, SPI, I2C, security etc. A thorough description can be found [here](https://docs.mbed.com/docs/getting-started-mbed-os/en/latest/)
 
 ### ST firmware library
-A subset of the functionality provided by the ST firmware library is accessible from mbed OS. If more control is needed it's also possible to access the drivers directly via the [mbed-hal-st-stm32cubef4 module](https://github.com/ARMmbed/mbed-hal-st-stm32cubef4). Note that it must be used with care since any misusage might break the driver and/or mbed OS.
+A subset of the functionality provided by the ST firmware library is accessible from Mbed OS. If more control is needed it's also possible to access the drivers directly via the [mbed-hal-st-stm32cubef4 module](https://github.com/ARMmbed/mbed-hal-st-stm32cubef4). Note that it must be used with care since any misusage might break the driver and/or Mbed OS.
 
 ### Deprecated API
-- cb_assert.h - use mbed assert instead
-- cb_hw.h - use mbed functions instead
+- cb_assert.h - use Mbed assert instead
+- cb_hw.h - use Mbed functions instead
 
 ## Qualification and approvals
 The module fulfills the ETSI regulations and modular approved for FCC and IC. It is also Bluetooth qualified as a Bluetooth controller subsystem. The embedded Bluetooth stack is pre-qualified as a Bluetooth host subsystem. This allows for customer specific Bluetooth applications developed directly for the STM32F439 microcontroller. For more info see Qualification and approvals chapter in [ODIN-W2 Data Sheet](https://www.u-blox.com/sites/default/files/ODIN-W2_DataSheet_%28UBX-14039949%29.pdf).
@@ -93,7 +93,7 @@ Examples of how to set-up and debug an application can be found here [https://gi
 
 ![](documentation/mbed_odin_w2_flash.png)
 
-The flash memory configuration above shows how the utilization can look like when two 128k sectors are used as non-volatile storage of link keys. How much space the ARM mbed OS and ODIN-W2 drivers occupy is very dependent on how much functionality is used. The [Wi-Fi example](https://github.com/u-blox/mbed-examples-odin-w2/tree/master/udp-time-client-wifi) will occupy around 1MByte.
+The flash memory configuration above shows how the utilization can look like when two 128k sectors are used as non-volatile storage of link keys. How much space the Arm Mbed OS and ODIN-W2 drivers occupy is very dependent on how much functionality is used. The [Wi-Fi example](https://github.com/u-blox/mbed-examples-odin-w2/tree/master/udp-time-client-wifi) will occupy around 1MByte.
 
 No boot, starting at address 0, is used in this flash configuration as this is typically overwritten when using the ST-LINK mass storage flashing on the EVK-ODIN-W2.
 
@@ -102,7 +102,7 @@ No boot, starting at address 0, is used in this flash configuration as this is t
 **NOTE 4: The two flash sectors are not included in the linker script which means that there will be no warning if the BT link keys flash area collides with the application. The binary must be checked afterwards to ensure it fits together with the two last sectors of 128*2=256KByte.**
 
 ## RAM
-The ODIN-W2 drivers use both static RAM and dynamically allocated heap memory via the mbed OS module [ualloc](https://github.com/ARMmbed/ualloc). The heap usage is heavily dependent on the use case.
+The ODIN-W2 drivers use both static RAM and dynamically allocated heap memory via the Mbed OS module [ualloc](https://github.com/ARMmbed/ualloc). The heap usage is heavily dependent on the use case.
 
 ## Hardware watchdog
 The hardware watchdog is neither initialized nor enabled by default but can be added via the cb_watchdog.h API.
