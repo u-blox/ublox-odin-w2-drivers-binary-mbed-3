@@ -19,7 +19,7 @@
 */
 
 #include <stdint.h>
-#include "ublox-odin-w2-drivers/bt_types.h"
+#include "bt_types.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -109,6 +109,8 @@ typedef enum
 typedef struct
 {
     TBdAddr                 address;
+    TNameOutgoing           remoteName;
+    cb_int8                 remoteRssi;
     cbBCM_ConnectionType    type;
     TConnHandle             aclHandle;
     TBluetoothType          btType;
@@ -117,17 +119,6 @@ typedef struct
     cb_boolean              uuidValid;
     cb_char                 serviceName[cbBCM_SERVICE_NAME_MAX_LEN];
 } cbBCM_ConnectionInfo;
-
-typedef struct
-{
-    cb_uint8  flags;            /** Reserved for future use. */
-    cb_uint8  flowDirection;    /** 0x00 for Outgoing Flow and 0x01 for Incoming Flow */
-    cb_uint8  serviceType;      /** 0x00 No Traffic; 0x01 Best Effort; 0x02 Guaranteed */
-    cb_uint32 tokenRate;        /** Token Rate in octets per second */
-    cb_uint32 tokenBucketSize;  /** Token Bucket Size in octets */
-    cb_uint32 peakBandwidth;    /** Peak Bandwidth in octets per second */
-    cb_uint32 latency;          /** Latency in microseconds */
-} cbBCM_FlowSpecParams;
 
 typedef void (*cbBCM_ConnectInd)(
     cbBCM_Handle handle,
@@ -156,7 +147,7 @@ typedef struct
 typedef void(*cbBCM_RoleDiscoveryCallback)(
     cbBCM_Handle handle,
     cb_int8 status,
-    cb_int8 role);
+    cb_uint8 role);
 
 typedef void (*cbBCM_RssiCallback)(
     cbBCM_Handle handle,
@@ -226,11 +217,7 @@ typedef void(*cbBCM_LinkQualityCallback)(
     cbBCM_LinkQualityEvt linkQualityEvt,
     uint8               linkQuality);
 
-typedef void(*cbBCM_SetFlowSpecCallback)(
-    cb_uint8 status,
-    cbBCM_Handle handle,
-    cbBCM_FlowSpecParams parameters);
-
+typedef void(*cbBCM_ServiceClassEnabled)(cb_uint8 serviceChannel);
 /*===========================================================================
  * FUNCTIONS
  *=========================================================================*/
@@ -250,12 +237,14 @@ extern void cbBCM_init(void);
  * @param   pServerChannel Pointer to return variable. The server channel is used to identify 
  *          incoming connections.
  * @param   pConnectionCallback Callback structure for connection management.
+ * @param   pServiceClassEnabled Callback structure to inform when service is running.
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_enableServerProfileSpp(
     cb_char *pServiceName,
     cb_uint8 *pServerChannel,
-    cbBCM_ConnectionCallback *pConnectionCallback);
+    cbBCM_ConnectionCallback *pConnectionCallback,
+    cbBCM_ServiceClassEnabled pServiceClassEnabled);
 
 /**
  * Enable a Dial Up Networking Profile (DUN)service record to 
@@ -265,12 +254,14 @@ extern cb_int32 cbBCM_enableServerProfileSpp(
  * @param   pServerChannel Pointer to return variable. The server channel is used to identify 
  *          incoming connections.
  * @param   pConnectionCallback Callback structure for connection management.
+ * @param   pServiceClassEnabled Callback structure to inform when service is running.
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_enableServerProfileDun(
     cb_char *pServiceName,
     cb_uint8 *pServerChannel,
-    cbBCM_ConnectionCallback *pConnectionCallback);
+    cbBCM_ConnectionCallback *pConnectionCallback,
+    cbBCM_ServiceClassEnabled pServiceClassEnabled);
 
 /**
  * Enable a service record with an application specific UUID.
@@ -281,13 +272,15 @@ extern cb_int32 cbBCM_enableServerProfileDun(
  * @param   pServerChannel Pointer to return variable. The server channel is used to identify 
  *          incoming connections.
  * @param   pConnectionCallback Callback structure for connection management.
+ * @param   pServiceClassEnabled Callback structure to inform when service is running.
  * @return  If the operation is successful cbBCM_OK is returned.
  */
 extern cb_int32 cbBCM_enableServerProfileUuid128(
     cb_uint8 *pUuid128,
     cb_char *pServiceName,
     cb_uint8 *pServerChannel,
-    cbBCM_ConnectionCallback *pConnectionCallback);
+    cbBCM_ConnectionCallback *pConnectionCallback, 
+    cbBCM_ServiceClassEnabled pServiceClassEnabled);
 
 
 /**
@@ -300,12 +293,14 @@ extern cb_int32 cbBCM_enableServerProfileUuid128(
 * @param   pServiceName        The name of the service
 * @param   role                The PAN role of the local device
 * @param   pConnectionCallback Callback structure for connection management.
+* @param   pServiceClassEnabled Callback structure to inform when service is running.
 * @return  If the operation is successful cbBCM_OK is returned.
 */
 extern cb_int32 cbBCM_enableServerProfilePan(
     cb_char *pServiceName,
     cbBCM_PAN_Role role,
-    cbBCM_ConnectionCallback *pConnectionCallback);
+    cbBCM_ConnectionCallback *pConnectionCallback,
+    cbBCM_ServiceClassEnabled pServiceClassEnabled);
 
 /**
  * Enable device id service record.The device id service record is  a method by which 
@@ -388,7 +383,7 @@ extern cb_uint16 cbBCM_getMaxLinksLE(void);
  * callback is cbBCM_OK if the connection was successfully established.
  * The error code in the callback is cbBCM_ERROR if the connection failed.
  * @param   pAddress          Pointer to address of remote device.
- * @param   pServiceName      Name of SPP service. Automatic service search
+  * @param   pServiceName      Name of SPP service. Automatic service search
  *                            is performed to find a service with matching name.
  *                            If set to NULL then the last of the SPP services
  *                            on the remote device will be used. If serverChannel
@@ -398,7 +393,8 @@ extern cb_uint16 cbBCM_getMaxLinksLE(void);
  * @param   serverChannel     RFCOMM server channel that shall be used. Set to
  *                            cbBCM_INVALID_SERVER_CHANNEL to perform automatic
  *                            service search to find the server channel.
- * @param   pAclParameters    Link configuration including link supervision timeout 
+ * @param   pRemoteName       Pointer used in case user connects to the Bluetooth name
+ * @param   pAclParameters    Link configuration including link supervision timeout
  *                            and master slave policy. Pass NULL to use default connection 
  *                            parameters.
  * @param   pConnectionCallback Callback structure for connection management.
@@ -409,7 +405,9 @@ extern cbBCM_Handle cbBCM_reqConnectSpp(
     TBdAddr *pAddress,
     cb_char *pServiceName,
     cb_uint8 serverChannel,
+    cb_char *pRemoteName,
     cbBCM_ConnectionParameters *pAclParameters,
+    cb_boolean qosEnable,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
 /**
@@ -444,7 +442,7 @@ extern cb_int32 cbBCM_rspConnectSppCnf(
  * @param   serverChannel     RFCOMM server channel that shall be used. Set to
  *                            cbBCM_INVALID_SERVER_CHANNEL to perform automatic
  *                            service search to find the server channel.
- * @param   pAclParameters    Link configuration including link supervision timeout 
+ * @param   pAclParameters    Link configuration including link supervision timeout
  *                            and master slave policy. Pass NULL to use default connection 
  *                            parameters.
  * @param   pConnectionCallback Callback structure for connection management.
@@ -456,13 +454,14 @@ extern cbBCM_Handle cbBCM_reqConnectDun(
     cb_char *pServiceName,
     cb_uint8 serverChannel,
     cbBCM_ConnectionParameters *pAclParameters,
+    cb_boolean qosEnable,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
 /**
  * Accept or reject an incoming DUN connection. This is a 
  * response to a cbBCM_ConnectInd connection indication.
  *
- * @param   handle  Connection handle 
+ * @param   handle  Connection handle
  * @param accept    TRUE to accept the incoming connection. 
                     FALSE to reject.
  * @return If the operation is successful cbBCM_OK is returned.
@@ -504,13 +503,14 @@ extern cbBCM_Handle cbBCM_reqConnectUuid(
     cb_char *pServiceName,
     cb_uint8 serverChannel,
     cbBCM_ConnectionParameters *pAclParameters,
+    cb_boolean qosEnable,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
 /**
  * Accept or reject an incoming SPP connection. This is a
  * response to a cbBCM_ConnectInd connection indication.
  *
- * @param handle    Connection handle 
+ * @param handle    Connection handle
  * @param accept    TRUE to accept the incoming connection.
                     FALSE to reject.
  * @return If the operation is successful cbBCM_OK is returned.
@@ -547,7 +547,7 @@ extern cbBCM_Handle cbBCM_reqConnectPan(
 * Accept or reject an incoming PAN connection. This is a
 * response to a cbBCM_ConnectInd connection indication.
 *
-* @param handle    Connection handle 
+* @param handle    Connection handle
 * @param accept    TRUE to accept the incoming connection.
 *                  FALSE to reject.
 * @return If the operation is successful cbBCM_OK is returned.
@@ -603,13 +603,14 @@ extern cb_int32 cbBCM_autoConnect(
  */
 extern cbBCM_Handle cbBCM_reqConnectSps(
     TBdAddr *pAddress,
+    cb_char *pRemoteName,
     cbBCM_ConnectionParametersLe *pAclLeParams,
     cbBCM_ConnectionCallback *pConnectionCallback);
 
 /**
  * Accept or reject an incoming SPS connection. This is a 
  * response to a cbBCM_ConnectInd connection indication.
- * @param   handle  Connection handle 
+ * @param   handle  Connection handle
  * @param   accept  TRUE to accept the incoming connection. 
  *                  FALSE to reject.
  * @return  If the operation is successful cbBCM_OK is returned.
@@ -819,18 +820,33 @@ extern cbBCM_Handle cbBCM_getProtocolHandle(
     cbBCM_Handle handle);
 
 /**
-* @brief   This will send cbHCI_cmdFlowSpecification command for the specified link
-*          with the specified parameters.
-* @param   handle           Connection handle
-* @param   parameters       Flow Specification parameters. For details see Bluetooth Core
-*                           Specification [Vol 3] Part A, Section 5.3
-* @param   flowSpecCallback Callback contains the data in Flow Specification Complete event
-* @return  If the operation is successful cbBCM_OK is returned.
+* @brief   Get the bcm id from acl handle for an active connection. 
+*
+* @param   handle Connection handle
+* @return  bcm handle.
 */
-extern cb_int32 cbBCM_setFlowSpecification(
-    cbBCM_Handle handle,
-    cbBCM_FlowSpecParams parameters,
-    cbBCM_SetFlowSpecCallback flowSpecCallback);
+extern cbBCM_Handle cbBCM_getIdFromAclHandle(TConnHandle aclHandle);
+
+/**
+* @brief   Get the acl handle from bcm handle.
+* 
+* @param   handle bcm handle
+* @return  acl handle
+*/
+extern TConnHandle cbBCM_getAclFromIdHandle(cbBCM_Handle  bcmHandle);
+
+/**
+* @brief   Set active poll mode to introduce periodic BT classic link polling.
+* @param   mode   Active poll mode  0=disable, 1=enable (default period), 2-UINT16_MAX: period of poll
+* @return  If the update is successfully initiated cbBCM_OK is returned.
+*/
+extern cb_int32 cbBCM_setActivePollMode(cb_uint16 mode);
+
+/**
+* @brief   Get active poll mode.
+* @return   Active poll mode  0=disable, 1=enable
+*/
+extern cb_uint16 cbBCM_getActivePollMode(void);
 
 /**
 * @brief   Change which packet types can be used for the connection identified by the handle
@@ -841,10 +857,12 @@ extern cb_int32 cbBCM_setFlowSpecification(
 extern cb_int32 cbBCM_changeConnectionPacketType(
     cbBCM_Handle handle,
     TPacketType aclPacketType);
+	
 
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif /* _CB_BT_CONN_MAN_H_ */
 

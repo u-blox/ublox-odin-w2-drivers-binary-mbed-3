@@ -50,14 +50,20 @@ extern "C" {
 
 #define cbWLAN_OUI_SIZE                    3
 
-#define cbRATE_MASK_B   (cbRATE_MASK_01 | cbRATE_MASK_02 | cbRATE_MASK_5_5 | cbRATE_MASK_11)
-#define cbRATE_MASK_G   (cbRATE_MASK_06 | cbRATE_MASK_09 | cbRATE_MASK_12 | cbRATE_MASK_18 | cbRATE_MASK_24 | cbRATE_MASK_36 | cbRATE_MASK_48 | cbRATE_MASK_54)
-#define cbRATE_MASK_N   (cbRATE_MASK_MCS0 | cbRATE_MASK_MCS1 | cbRATE_MASK_MCS2 | cbRATE_MASK_MCS3 | cbRATE_MASK_MCS4 | cbRATE_MASK_MCS5 | cbRATE_MASK_MCS6 | cbRATE_MASK_MCS7)
-#define cbRATE_MASK_ALL (cbRATE_MASK_B | cbRATE_MASK_G | cbRATE_MASK_N)
+#define cbRATE_MASK_B    (cbRATE_MASK_01 | cbRATE_MASK_02 | cbRATE_MASK_5_5 | cbRATE_MASK_11)
+#define cbRATE_MASK_G    (cbRATE_MASK_06 | cbRATE_MASK_09 | cbRATE_MASK_12 | cbRATE_MASK_18 | cbRATE_MASK_24 | cbRATE_MASK_36 | cbRATE_MASK_48 | cbRATE_MASK_54)
+#define cbRATE_MASK_A    (cbRATE_MASK_G)
+#define cbRATE_MASK_N    (cbRATE_MASK_MCS0 | cbRATE_MASK_MCS1 | cbRATE_MASK_MCS2 | cbRATE_MASK_MCS3 | cbRATE_MASK_MCS4 | cbRATE_MASK_MCS5 | cbRATE_MASK_MCS6 | cbRATE_MASK_MCS7)
+#define cbRATE_TX_MIMO   (cbRATE_MASK_MCS8 | cbRATE_MASK_MCS9 | cbRATE_MASK_MCS10 | cbRATE_MASK_MCS11 | cbRATE_MASK_MCS12 | cbRATE_MASK_MCS13 | cbRATE_MASK_MCS14 | cbRATE_MASK_MCS15)
+#define cbRATE_TX_WIDE   (cbRATE_MASK_WIDE)
+#define cbRATE_MASK_ALL  (cbRATE_MASK_B | cbRATE_MASK_G | cbRATE_MASK_N | cbRATE_TX_MIMO | cbRATE_TX_WIDE)
 
 #define cbWLAN_MAX_CHANNEL_LIST_LENGTH      38
 
 #define cbWLAN_TX_POWER_AUTO    0xFF
+
+#define cbWLAN_PMF_MFPR                       cb_BIT_6 // Bit 6: Management Frame Protection Required (MFPR)
+#define cbWLAN_PMF_MFPC                       cb_BIT_7 // Bit 7: Management Frame Protection Capable (MFPC).
 
 /*===========================================================================
  * TYPES
@@ -74,7 +80,28 @@ typedef enum cbWLAN_EncryptionMode_e {
     cbWLAN_ENC_WEP128,
     cbWLAN_ENC_TKIP,
     cbWLAN_ENC_AES,
+    cbWLAN_ENC_BIP,
 } cbWLAN_EncryptionMode;
+
+typedef enum cbWLAN_CipherSuite {
+    cbWLAN_CIPHER_SUITE_NONE        = 0x00,
+    cbWLAN_CIPHER_SUITE_WEP64       = 0x01,
+    cbWLAN_CIPHER_SUITE_WEP128      = 0x02,
+    cbWLAN_CIPHER_SUITE_TKIP        = 0x04,
+    cbWLAN_CIPHER_SUITE_AES_CCMP    = 0x08,
+    cbWLAN_CIPHER_SUITE_BIP         = 0x10,
+} cbWLAN_CipherSuite;
+
+typedef enum cbWLAN_AuthenticationSuite {
+    cbWLAN_AUTHENTICATION_SUITE_NONE                = 0x00,
+    cbWLAN_AUTHENTICATION_SUITE_SHARED_SECRET       = 0x01,
+    cbWLAN_AUTHENTICATION_SUITE_PSK                 = 0x02,
+    cbWLAN_AUTHENTICATION_SUITE_8021X               = 0x04,
+    cbWLAN_AUTHENTICATION_SUITE_USE_WPA             = 0x08,
+    cbWLAN_AUTHENTICATION_SUITE_USE_WPA2            = 0x10,
+    cbWLAN_AUTHENTICATION_SUITE_PSK_SHA256          = 0x20,
+    cbWLAN_AUTHENTICATION_SUITE_8021X_SHA256        = 0x40,
+} cbWLAN_AuthenticationSuite;
 
 
 /**  
@@ -195,6 +222,8 @@ enum cbWLAN_Rate_e {
     cbWLAN_RATE_MCS13,  // 26
     cbWLAN_RATE_MCS14,  // 27
     cbWLAN_RATE_MCS15,  // 28
+    cbWLAN_RATE_MAX,    // 29
+    cbWLAN_RATE_UNSUPPORTED = 0xff
 };
 
 /**
@@ -231,6 +260,7 @@ enum cbWLAN_RateMask_e {
     cbRATE_MASK_MCS5 = 0x00020000,
     cbRATE_MASK_MCS6 = 0x00040000,
     cbRATE_MASK_MCS7 = 0x00080000,
+    //TX MIMO RATES
     cbRATE_MASK_MCS8 = 0x00100000,
     cbRATE_MASK_MCS9 = 0x00200000,
     cbRATE_MASK_MCS10 = 0x00400000,
@@ -239,7 +269,10 @@ enum cbWLAN_RateMask_e {
     cbRATE_MASK_MCS13 = 0x02000000,
     cbRATE_MASK_MCS14 = 0x04000000,
     cbRATE_MASK_MCS15 = 0x08000000,
+    //TX RATE USE WIDE CHANNEL
+    cbRATE_MASK_WIDE = 0x80000000
 };
+
 
 /**
  * Access categories
@@ -259,8 +292,6 @@ typedef enum cbWLAN_AccessCategory_e {
     cbWLAN_AC_VO = 6, /**< Voice */
     cbWLAN_AC_NC = 7, /**< Voice (Network Control)*/
 } cbWLAN_AccessCategory;
-
-
 
 /**
 * connectBlue Hardware Identification
@@ -326,6 +357,7 @@ typedef enum cbWLAN_OperationalMode_e {
 typedef enum cbWLAN_KeyType_e {
     cbWLAN_KEY_UNICAST,
     cbWLAN_KEY_BROADCAST,
+    cbWLAN_KEY_IGTK,
 } cbWLAN_KeyType;
 
 typedef enum {
@@ -341,6 +373,28 @@ typedef enum {
     cbWLAN_AP_MODE_WPA_PSK,
     cbWLAN_AP_MODE_ENTERPRISE,
 } cbWLAN_ApMode;
+
+#if defined(CB_FEATURE_802DOT11W)
+typedef enum {
+    cbWLAN_PMF_DISABLE  = 0,     /**< MFPC = 0, MFPR = 0  */
+    cbWLAN_PMF_OPTIONAL = 1,     /**< MFPC = 1, MFPR = 0  */
+    cbWLAN_PMF_REQUIRED = 2,     /**< MFPC = 1, MFPR = 1  */
+} cbWLAN_PMF;
+#endif
+typedef enum cbAP_KdeType_e {
+    RESERVED,
+    GTK_KDE,
+    RESERVED_2,
+    MAC_ADDRESS_KDE,
+    PMKID_KDE,
+    SMK_KDE,
+    NONCE_KDE,
+    LIFETIME_KDE,
+    ERROR_KDE,
+    IGTK_KDE,
+    KEY_ID_KDE,
+} cbAP_KdeType;
+
 
 /** 
  * Ethernet header
@@ -457,6 +511,17 @@ typedef struct cbWM_TxPowerSettings_s {
 } cbWM_TxPowerSettings;
 
 /**
+* Describes the startup settings needed to boot properly.
+*
+* @ingroup types
+*/
+typedef struct cbWM_BootParameters_s {
+    cbWM_TxPowerSettings txPowerSettings;
+    cb_uint8  primaryAntenna;
+    cb_uint8 numberOfAntennas;
+} cbWM_BootParameters;
+
+/**
 * Describes an access point.
 *
 * @ingroup types
@@ -487,7 +552,6 @@ extern const cb_uint8 OUI_Epigram[cbWLAN_OUI_SIZE];
 extern const cb_uint8 OUI_ConnectBlue[cbWLAN_OUI_SIZE];
 extern const cb_uint8 OUI_IEEE8021[cbWLAN_OUI_SIZE];
 
-extern const cb_uint8 PATTERN_HTInformationDraft[1];
 extern const cb_uint8 PATTERN_TKIP[2];
 extern const cb_uint8 PATTERN_WME_IE[3];
 extern const cb_uint8 PATTERN_WME_PE[3];
@@ -516,7 +580,7 @@ cbWLAN_Band cbWLAN_getBandFromChannel(cbWLAN_Channel channel);
 * @param channel The channel to be queried for rates.
 * @return The valid rates @ref cbWLAN_RateMask for the requested channel.
 */
-cbWLAN_RateMask cbWLAN_getRatesForChannel(cbWLAN_Channel channel);
+cbWLAN_RateMask cbWLAN_getRatesForChannel(cbWLAN_Channel channel, cb_uint8 numberOfAntennas);
 
 /**
  * Checks is the input rate is a 802.11n rate or not.
@@ -532,6 +596,20 @@ cb_boolean cbWLAN_isNRate(cbWLAN_Rate rate);
  * @return @ref TRUE if the channel is valid. @ref FALSE otherwise.
  */
 cb_boolean cbWLAN_isValidChannel(cbWLAN_Channel channel);
+
+/**
+ * Checks if a channel is valid for HT40-
+ *
+ * @return @ref TRUE if the channel is valid. @ref FALSE otherwise.
+ */
+cb_boolean cbWLAN_isValidHT40MinusChannel(cbWLAN_Channel channel);
+
+/**
+ * Checks if a channel is valid for HT40+
+ *
+ * @return @ref TRUE if the channel is valid. @ref FALSE otherwise.
+ */
+cb_boolean cbWLAN_isValidHT40PlusChannel(cbWLAN_Channel channel);
 
 #ifdef __cplusplus
 }

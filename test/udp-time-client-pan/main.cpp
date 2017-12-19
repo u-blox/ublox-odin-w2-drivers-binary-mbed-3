@@ -49,15 +49,16 @@
 #include "sockets/UDPSocket.h"
 
 #include "sal-stack-lwip-ublox-odin-w2/lwipv4_init.h"
-#include "ublox-odin-w2-drivers/cb_main.h"
+#include "cb_main.h"
 #include "ublox-odin-w2-lwip-adapt/cb_ip.h"
-#include "ublox-odin-w2-drivers/cb_assert.h"
-#include "ublox-odin-w2-drivers/bt_types.h"
-#include "ublox-odin-w2-drivers/cb_bt_utils.h"
-#include "ublox-odin-w2-drivers/cb_bt_pan.h"
-#include "ublox-odin-w2-drivers/cb_bt_man.h"
-#include "ublox-odin-w2-drivers/cb_bt_conn_man.h"
-#include "ublox-odin-w2-drivers/cb_bt_sec_man.h"
+
+#include "cb_assert.h"
+#include "bt_types.h"
+#include "cb_bt_utils.h"
+#include "cb_bt_pan.h"
+#include "cb_bt_man.h"
+#include "cb_bt_conn_man.h"
+#include "cb_bt_sec_man.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -77,7 +78,7 @@ using namespace mbed::Sockets::v0;
 #define UDP_TIME_CLIENT_BUFFER_SIZE 64
 
 #ifndef YOTTA_CFG_TEST_TIME_SRV_NAME
-#define YOTTA_CFG_TEST_TIME_SRV_NAME "nist-time-server.eoni.com"
+#define YOTTA_CFG_TEST_TIME_SRV_NAME "time-b-g.nist.gov"
 #endif
 
 #ifndef YOTTA_CFG_TEST_BT_REMOTE_NAP_ADDR
@@ -127,6 +128,11 @@ static void handleConnectEvt(cbBCM_Handle handle, cbBCM_ConnectionInfo info);
 static void handleConnectCnf(cbBCM_Handle handle, cbBCM_ConnectionInfo info, cb_int32 status);
 static void handleDisconnectEvt(cbBCM_Handle handle);
 
+static void handleBondConfirmation(cbBSM_BondStatus status, TBdAddr* pBdAddress);
+static void handleBondEvent(cbBSM_BondStatus status, TBdAddr* pBdAddress);
+
+static void handleServiceClassEnabled(cb_uint8 serviceChannel);
+
 /*===========================================================================
 * DEFINITIONS
 *=========================================================================*/
@@ -140,8 +146,8 @@ static const cbBSM_Callbacks _securityCallbacks =
     handleUserConfirmationInd,
     handleUserPasskeyInd,
     handleUserPasskeyEvt,
-    NULL,
-    NULL
+    handleBondConfirmation,
+    handleBondEvent
 };
 
 static const cbBCM_ConnectionCallback _connectionCallbacks =
@@ -316,7 +322,7 @@ static void initBt(void)
     result = cbBSM_registerCallbacks((cbBSM_Callbacks *)&_securityCallbacks);
     cb_ASSERT(result == cbBSM_OK);
 
-    result = cbBCM_enableServerProfilePan((cb_char*)"ublx-mbed-pan", cbBCM_PAN_ROLE_PANU , (cbBCM_ConnectionCallback *)&_connectionCallbacks);
+    result = cbBCM_enableServerProfilePan((cb_char*)"ublx-mbed-pan", cbBCM_PAN_ROLE_PANU , (cbBCM_ConnectionCallback *)&_connectionCallbacks,handleServiceClassEnabled);
 
     result = cbBM_setLocalName((cb_char*)"ublx-odin-mbed");
     cb_ASSERT(result == cbBM_OK);
@@ -378,6 +384,18 @@ static void handleConnectInd(cbBCM_Handle handle, cbBCM_ConnectionInfo info)
     /* Ignored, not accepting incoming connections */
 }
 
+static void handleBondConfirmation(cbBSM_BondStatus status, TBdAddr* pBdAddress)
+{
+    (void)pBdAddress;
+    printf("%s(status=%d)\n", __FUNCTION__,status);
+}
+
+static void handleBondEvent(cbBSM_BondStatus status, TBdAddr* pBdAddress)
+{
+    (void)pBdAddress;
+    printf("%s(status=%d)\n", __FUNCTION__, status);
+}
+
 static void handleConnectEvt(cbBCM_Handle handle, cbBCM_ConnectionInfo info)
 {
     (void)handle;
@@ -406,6 +424,11 @@ static void handleDisconnectEvt(cbBCM_Handle handle)
     _admin.connHandle = cbBCM_INVALID_CONNECTION_HANDLE;
 }
 
+static void handleServiceClassEnabled(cb_uint8 serviceChannel)
+{
+    printf("%s(%lu)\n",__FUNCTION__,serviceChannel);
+}
+
 
 void app_start(int argc, char *argv[]) {
     (void)argc;
@@ -425,8 +448,6 @@ void app_start(int argc, char *argv[]) {
 
     socket_error_t err = lwipv4_socket_init();
     TEST_EQ(err, SOCKET_ERROR_NONE);
-
-    cbIP_init();
 
     _timeClient = new UDPTimeClient(SOCKET_STACK_LWIP_IPV4);
 }
