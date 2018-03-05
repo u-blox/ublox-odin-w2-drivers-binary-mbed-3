@@ -14,6 +14,9 @@
 #include "bt_types.h"
 #include "cb_bt_man.h"
 #include "cb_wlan.h"
+#ifdef CB_SUPPORT_ETH
+#include "cb_ethernet.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,7 +77,8 @@ extern cb_int32 cbMAIN_initWlan(void);
 /**
 * Start WLAN component.
 * Create WLAN driver instance, bind it to targetId and start the driver.
-*
+* A default configuration is used.
+* 
 * @param targetId Port specific TARGET identifier.
 * @param params Start parameters passed to WLAN driver instance.
 * @return cbSTATUS_OK if successful, otherwise cbSTATUS_ERROR.
@@ -82,13 +86,35 @@ extern cb_int32 cbMAIN_initWlan(void);
 extern cb_int32 cbMAIN_startWlan(cb_int32 targetId, cbWLAN_StartParameters *params);
 
 /**
+* Start WLAN component with no default config. This should be used if there is
+* a need for a non-default configuration on startup e.g. force world mode.
+* Prior to calling this function the user must set a configuration e.g. with cbTARGET_configuration_create
+* Create WLAN driver instance, bind it to targetId and start the driver.
+*
+* @param targetId Port specific TARGET identifier.
+* @param params Start parameters passed to WLAN driver instance.
+* @return cbSTATUS_OK if successful, otherwise cbSTATUS_ERROR.
+*/
+extern cb_int32 cbMAIN_startWlanNoConfig(cb_int32 targetId, cbWLAN_StartParameters *params);
+
+#ifdef CB_SUPPORT_ETH
+/**
 * Initialize Ethernet.
 *
-* @param pMacAddr Pointer to address to use. If NULL is passed the preprogrammed address will be used.
-* @return Pointer to the MAC address.
+* @param pConfig    Pointer to config to use. If NULL is passed a default config 
+                    is used with the preprogrammed address.
+* @return cbSTATUS_OK if successful, otherwise cbSTATUS_ERROR.
 */
-extern cb_uint8* cbMAIN_initEth(cb_uint8* pMacAddr);
+extern cb_int32 cbMAIN_initEth(cbETH_Config* pConfig);
 
+/**
+* Get ethernet default config.
+*
+* @return   Pointer to default config 
+*/
+extern const cbETH_Config* cbMAIN_getDefaultEthConfig(void);
+
+#endif /* CB_SUPPORT_ETH */
 /**
 * Register error handler function.
 *
@@ -96,6 +122,19 @@ extern cb_uint8* cbMAIN_initEth(cb_uint8* pMacAddr);
 * @return void
 */
 extern void cbMAIN_registerErrorHandler(cbMAIN_ErrorHandler errHandler);
+
+/**
+* Changes the log level for debug prints. Can be called after init.
+*
+* @param level Log level: 0  Logging is turned off
+*                         1  Only errors are logged
+*                         2  All functions/callbacks except data are logged
+*                         3  All functions/callbacks including data are logged
+*                         4  Everything. To be used with care, flood warning
+*
+* @return void
+*/
+extern void cbMAIN_setLogLevel(cb_uint8 level);
 
 #ifdef __cplusplus
 }
