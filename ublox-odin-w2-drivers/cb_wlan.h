@@ -61,6 +61,17 @@ extern "C" {
  */
 #define cbWLAN_MAX_DOMAIN_LENGTH        64
 
+/**
+* Size of the misc buffer in @ref cbWM_ChangeBSS and @ref cbWM_StartFT.
+*
+* @ingroup types
+*/
+#define MISC_BUFFER_SIZE 255
+
+#define cbWLAN_FTIE_SIZE 255
+#define cbWLAN_RSNIE_SIZE 44
+#define cbWLAN_MDIE_SIZE 5
+
 /*===========================================================================
  * TYPES
  *=========================================================================*/
@@ -71,7 +82,6 @@ extern "C" {
  */
 typedef struct cbWLAN_StartParameters {
     cbWLAN_MACAddress      mac;        /**< MAC of WLAN interface, set to all zeros if hardware programmed address should be used. */
-    cb_boolean disable80211d;
     cbWM_ModuleType  deviceType;      /**< Specify current device type. */
     union {
         struct {
@@ -122,6 +132,22 @@ typedef struct cbWLAN_WPAPSKConnectParameters {
 #if defined(CB_FEATURE_802DOT11W)
 #endif
 } cbWLAN_WPAPSKConnectParameters;
+
+#if defined(CB_FEATURE_802DOT11R)
+/**
+ * Associate information elements with FT elements.
+ *
+ * @ingroup wlan
+ */
+typedef struct cbWLAN_AssociateInformationElements{
+    cb_uint8   wpaIe[cbWLAN_RSNIE_SIZE];
+    cb_uint32  wpaIeLen;                            
+    cb_uint8   mdIe[cbWLAN_MDIE_SIZE];
+    cb_uint32  mdIeLen;
+    cb_uint8   ftIe[cbWLAN_FTIE_SIZE];
+    cb_uint32  ftIeLen;
+}cbWLAN_AssociateInformationElements;
+#endif
 
 #if defined(CB_FEATURE_802DOT11W)
 /**
@@ -207,12 +233,14 @@ typedef struct cbWLAN_ScanIndicationInfo {
     cbWLAN_AuthenticationSuite authenticationSuites; /**< Supported authentication suites */
     cbWLAN_CipherSuite unicastCiphers;              /**< Supported unicast cipher suites */
     cbWLAN_CipherSuite groupCipher;                 /**< Supported group cipher suites */
-
+#if defined(CB_FEATURE_802DOT11R)
+    cbWLAN_MDInformation mobilityDomainId;          /**< Mobility Domain Id and Ft capability policy>*/
+#endif
     cbWLAN_RateMask basicRateSet;                   /**< Basic rate set, i.e. required rates. */
     cbWLAN_RateMask supportedRateSet;               /**< Supported rate set, super set of basic rate set. */
     cb_uint32 beaconPeriod;                         /**< Beacon period in ms. */
     cb_uint32 DTIMPeriod;                           /**< DTIM period in beacon intervals */
-    cb_uint8 countryCode[3];                        /**< Three letter country code */
+    cb_uint8 countryCode[2];                        /**< Two letter country code */
     cb_uint32 flags;                                /**< QoS, short preamble, DFS, privacy */
     cb_uint16 RSNCapabilities;                      /**< Protected management frames capabilities*/
 } cbWLAN_ScanIndicationInfo;
@@ -234,6 +262,8 @@ typedef enum {
     cbWLAN_STATUS_AP_DOWN,
     cbWLAN_STATUS_AP_STA_ADDED,
     cbWLAN_STATUS_AP_STA_REMOVED,
+    cbWLAN_STATUS_80211r_REASSOCIATING,
+    cbWLAN_STATUS_80211r_REASSOCIATED,
 } cbWLAN_StatusIndicationInfo;
 
 /**
@@ -278,6 +308,7 @@ typedef struct cbWLAN_StatusStartedInfo {
 typedef struct cbWLAN_StatusConnectedInfo {
     cbWLAN_MACAddress bssid;           /**< BSSID of the BSS connected to. */
     cbWLAN_Channel channel;             /**< Operating channels of the BSS connected to. */
+    cb_uint16 mobilityDomainId;
 } cbWLAN_StatusConnectedInfo;
 
 /**
@@ -307,7 +338,7 @@ typedef void (*cbWLAN_statusIndication)(void *callbackContext, cbWLAN_StatusIndi
 /**
  * Indication of received Ethernet data packet.
  *
- * @param callbackContext Context pointer provided in @ref cbWLAN_init.
+ * @param callbackContext Context pointer provided in @ref cbWLAN_registerPacketIndicationCallback.
  * @param packetInfo Pointer to struct containing packet information and data pointers.
  */
 typedef void (*cbWLAN_packetIndication)(void *callbackContext, cbWLAN_PacketIndicationInfo *packetInfo);
@@ -315,7 +346,7 @@ typedef void (*cbWLAN_packetIndication)(void *callbackContext, cbWLAN_PacketIndi
 /**
 * Scan result indication from WLAN component.
 *
-* @param callbackContext Context pointer provided in @ref cbWLAN_init.
+* @param callbackContext Context pointer provided in @ref cbWLAN_scan.
 * @param bssDescriptor Pointer to struct containing scan result information.
 * @param isLastResult @ref TRUE if scan scan is finished.
 */
@@ -528,6 +559,17 @@ cbRTSL_Status cbWLAN_ioctl(cbWLAN_Ioctl ioctl, void* value);
 
 cbRTSL_Status cbWLAN_getVersion(cbWM_Version* version);
 
+#if defined(CB_FEATURE_802DOT11R)
+
+/**
+ * Called for changing the BSS
+ *
+ * @param params Parameter containing the BSS parameters.
+ *
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
+ */
+cbRTSL_Status cbWLAN_changeBSS(cbWLAN_BSSChangeParameters params);
+#endif
 #ifdef __cplusplus
 }
 #endif

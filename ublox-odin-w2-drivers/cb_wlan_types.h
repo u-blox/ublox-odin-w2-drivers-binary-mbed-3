@@ -93,14 +93,16 @@ typedef enum cbWLAN_CipherSuite {
 } cbWLAN_CipherSuite;
 
 typedef enum cbWLAN_AuthenticationSuite {
-    cbWLAN_AUTHENTICATION_SUITE_NONE                = 0x00,
-    cbWLAN_AUTHENTICATION_SUITE_SHARED_SECRET       = 0x01,
-    cbWLAN_AUTHENTICATION_SUITE_PSK                 = 0x02,
-    cbWLAN_AUTHENTICATION_SUITE_8021X               = 0x04,
-    cbWLAN_AUTHENTICATION_SUITE_USE_WPA             = 0x08,
-    cbWLAN_AUTHENTICATION_SUITE_USE_WPA2            = 0x10,
-    cbWLAN_AUTHENTICATION_SUITE_PSK_SHA256          = 0x20,
-    cbWLAN_AUTHENTICATION_SUITE_8021X_SHA256        = 0x40,
+    cbWLAN_AUTHENTICATION_SUITE_NONE                = 0x0000,
+    cbWLAN_AUTHENTICATION_SUITE_SHARED_SECRET       = 0x0001,
+    cbWLAN_AUTHENTICATION_SUITE_PSK                 = 0x0002,
+    cbWLAN_AUTHENTICATION_SUITE_8021X               = 0x0004,
+    cbWLAN_AUTHENTICATION_SUITE_USE_WPA             = 0x0008,
+    cbWLAN_AUTHENTICATION_SUITE_USE_WPA2            = 0x0010,
+    cbWLAN_AUTHENTICATION_SUITE_PSK_SHA256          = 0x0020,
+    cbWLAN_AUTHENTICATION_SUITE_8021X_SHA256        = 0x0040,
+    cbWLAN_AUTHENTICATION_SUITE_8021X_FT            = 0x0080,
+    cbWLAN_AUTHENTICATION_SUITE_PSK_FT              = 0x0100,
 } cbWLAN_AuthenticationSuite;
 
 
@@ -294,6 +296,16 @@ typedef enum cbWLAN_AccessCategory_e {
 } cbWLAN_AccessCategory;
 
 /**
+* Fast Transition (802.11r) modes.
+*
+* @ingroup wlantypes
+*/
+typedef enum cbWLAN_FTMode_e {
+    cbWLAN_FT_OFF,
+    cbWLAN_FT_OVER_AIR,
+    cbWLAN_FT_OVER_DS,
+} cbWLAN_FTMode;
+/**
 * connectBlue Hardware Identification
 *
 * @ingroup types
@@ -374,13 +386,65 @@ typedef enum {
     cbWLAN_AP_MODE_ENTERPRISE,
 } cbWLAN_ApMode;
 
-#if defined(CB_FEATURE_802DOT11W)
+#if defined(CB_FEATURE_802DOT11R)
+/**
+ * Description of the Mobility Domain Information Element
+ *
+ * @ingroup wlantypes
+ */
+
+cb_PACKED_STRUCT_BEGIN(cbWLAN_MDInformation) {
+    cb_uint8                eId;
+    cb_uint8                len;
+    cb_uint16               MDID;
+    cb_uint8                FtCapabilityPolicy;
+} cb_PACKED_STRUCT_END(cbWLAN_MDInformation);
+
+/**
+ * Description of the Timeout Interval Information Element
+ *
+ * @ingroup wlantypes
+ */
+
+cb_PACKED_STRUCT_BEGIN(cbWLAN_TimeOutInformation){
+    cb_uint8                eId;
+    cb_uint8                len;
+    cb_uint8                timeOutType;
+    cb_uint32               value;
+} cb_PACKED_STRUCT_END(cbWLAN_TimeOutInformation);
+/**
+* Description of the Mobility Domain Information Element
+*
+* @ingroup wlantypes
+*/
+
+cb_PACKED_STRUCT_BEGIN(cbWLAN_FtInformation){
+    cb_uint8                eId;
+    cb_uint8                len;
+    cb_uint16               micControl;
+    cb_uint8                mic[16];
+    cb_uint8                ANonce[32];
+    cb_uint8                SNonce[32];
+    cb_uint8                optionalParams[174]; // length field can maximum be 256, therefore optional params can be max 172 bytes
+} cb_PACKED_STRUCT_END(cbWLAN_FtInformation);
+
+
+
+typedef struct cbWLAN_BSSChangeParameters  {
+    cbWLAN_MACAddress      currentBssid;            /**< BSSID of connected AP. > */
+    cbWLAN_MACAddress      targetBssid;             /**< BSSID to connect to. > */
+    cbWLAN_Channel         channel;                 /**< The channel the BSS is located on. > */
+    cb_uint32              reAssocDeadline;         /**< Reassociation Deadline time*/
+} cbWLAN_BSSChangeParameters;
+#endif
+
+//#if defined(CB_FEATURE_802DOT11W)
 typedef enum {
     cbWLAN_PMF_DISABLE  = 0,     /**< MFPC = 0, MFPR = 0  */
     cbWLAN_PMF_OPTIONAL = 1,     /**< MFPC = 1, MFPR = 0  */
     cbWLAN_PMF_REQUIRED = 2,     /**< MFPC = 1, MFPR = 1  */
 } cbWLAN_PMF;
-#endif
+//#endif
 typedef enum cbAP_KdeType_e {
     RESERVED,
     GTK_KDE,
@@ -541,6 +605,10 @@ typedef struct cbWLAN_ApStaInformation {
     cbWLAN_MACAddress MAC;
 } cbWLAN_ApStaInformation;
 
+typedef struct cbWLAN_HTCapabilities_st {
+    cbWLAN_RateMask rates;
+    cb_uint16 info;
+}cbWLAN_HTCapabilities;
 /*---------------------------------------------------------------------------
  * VARIABLE DECLARATIONS
  *-------------------------------------------------------------------------*/
