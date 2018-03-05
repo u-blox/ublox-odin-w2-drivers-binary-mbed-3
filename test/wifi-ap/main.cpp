@@ -324,7 +324,6 @@ void app_start(int argc, char *argv[]) {
 
     cbWLAN_StartParameters startParams;
     memset(&startParams, 0, sizeof(startParams));
-    startParams.disable80211d = FALSE; // The driver must always support this feature
     startParams.deviceType = cbWM_MODULE_ODIN_W26X; // ODIN-W2 is the only applicable for ARM mbed
     startParams.deviceSpecific.ODIN_W26X.txPowerSettings.lowTxPowerLevel = cbWLAN_TX_POWER_AUTO;
     startParams.deviceSpecific.ODIN_W26X.txPowerSettings.medTxPowerLevel = cbWLAN_TX_POWER_AUTO;
