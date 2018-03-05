@@ -24,6 +24,10 @@
 
 #include "cb_wlan_types.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
@@ -154,5 +158,9 @@ cb_boolean cbTARGET_f0_readByte(cbTARGET_Handle *hTarget, cb_uint32 address, cb_
 
 
 cb_uint16 cbTARGET_getBlockSize(cbTARGET_Handle *hTarget);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
