@@ -1,7 +1,7 @@
 {
   "name": "ublox-odin-w2-drivers",
   "version": "2.0.0",
-  "description": "u-blox ODIN-W2 Bluetooth/Wi-Fi/Ethernet drivers",
+  "description": "u-blox ODIN-W2 Bluetooth/Wi-Fi drivers",
   "private": true,
   "keywords": [
     "ublox",
