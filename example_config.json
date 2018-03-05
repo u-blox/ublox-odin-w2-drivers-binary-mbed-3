@@ -1,0 +1,27 @@
+{
+  "minar": {
+    "no_runtime_warnings": true
+  },
+  "test": {
+    "wifi_ssid": "\"my_ssid\"",
+    "wifi_passphrase": "\"my_pass\"",
+	"bt_remote_nap_addr": "0x98, 0x00, 0xc6, 0x46, 0x23, 0xde",
+    "bt_remote_le_addr" : "0xd4 , 0xca , 0x6e , 0x70 , 0x4e , 0x3c",
+    "bt_remote_device_1" : "0x78 , 0xa5 , 0x04 , 0x2f , 0x4a , 0xde",
+    "wifi_ap_ssid": "\"mbed ap example\"",
+    "wifi_ap_passphrase": "\"12345678\"",
+    "wifi_ap_channel": "40",
+    "ip_addr": "\"192.168.2.1\"",
+    "ip_netmask": "\"255.255.255.0\"",
+    "ip_gateway": "\"192.168.2.1\"",
+    "ip_static_dns_0": "\"0.0.0.0\"",
+    "ip_static_dns_1": "\"0.0.0.0\""
+
+  },
+  "hardware": {
+    "pins": {
+      "USBRX": "D2",
+      "USBTX": "D8"
+    }
+  }
+}
