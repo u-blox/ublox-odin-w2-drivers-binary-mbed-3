@@ -53,6 +53,8 @@
 #include "cb_main.h"
 #include "ublox-odin-w2-lwip-adapt/cb_ip.h"
 
+#include "cb_target.h"
+
 using namespace mbed::util;
 using namespace mbed::Sockets::v0;
 
@@ -367,7 +369,6 @@ void app_start(int argc, char *argv[]) {
 
     cbWLAN_StartParameters startParams;
     memset(&startParams, 0, sizeof(startParams));
-    startParams.disable80211d = FALSE; // The driver must always support this feature
     startParams.deviceType = cbWM_MODULE_ODIN_W26X; // ODIN-W2 is the only applicable for ARM mbed
     startParams.deviceSpecific.ODIN_W26X.txPowerSettings.lowTxPowerLevel = cbWLAN_TX_POWER_AUTO;
     startParams.deviceSpecific.ODIN_W26X.txPowerSettings.medTxPowerLevel = cbWLAN_TX_POWER_AUTO;
@@ -379,7 +380,14 @@ void app_start(int argc, char *argv[]) {
     //GREENTEA_SETUP(60, "default_auto");
 
     cbWLAN_registerStatusCallback(handleStatusIndication, NULL);
-    cbMAIN_startWlan(wlanTargetId,&startParams);
+
+    // Configure driver with non-default config. This will force
+    // world mode to speed up first connection setup time.
+    cbTARGET_configuration_create();
+    cbTARGET_Handle *targetHandle;
+    targetHandle = cbTARGET_targetResolve(wlanTargetId);
+    cbTARGET_gSet(targetHandle, cbTARGET_GSETTING_FORCE_WORLD_MODE, 1);    
+    cbMAIN_startWlanNoConfig(wlanTargetId,&startParams);
 
     _timeClient = new UDPTimeClient(SOCKET_STACK_LWIP_IPV4);
 }
