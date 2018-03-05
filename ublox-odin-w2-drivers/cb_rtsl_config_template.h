@@ -36,7 +36,7 @@
 
 // Using cb_lwip_heap.c and lwip heap, see lwippools.h and cc.h
 // We are using fast_malloc for not DMA-able data
-#define cbHEAP_FAST_SIZE                 ((65530) - (cbHEAPSTATIC_SIZE)) // Matching ODIN-W2 CCM memory size
+#define cbHEAP_FAST_SIZE                 ((65520) - (cbHEAPSTATIC_SIZE)) // Matching ODIN-W2 CCM memory size
 #define cbHEAP_FAST_N_BUFFER_SIZES       (9)
 #define cbHEAP_FAST_BUFFER_CONFIG        {56,104,144, 320,560,1200,2500,4200,8196}
 
