@@ -24,14 +24,19 @@
 extern "C" {
 #endif
 
-
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
+#define cbWLAN_ENABLE_802_11b
+#define cbWLAN_ENABLE_802_11g
+#define cbWLAN_ENABLE_802_11n
 
 /*===========================================================================
  * TYPES
  *=========================================================================*/
+
+#define cbTARGET_GSETTING_4_ADDRESS_MODE_STATION_DYNAMIC cb_BIT_0
+#define cbTARGET_GSETTING_4_ADDRESS_MODE_STATION_ALWAYS cb_BIT_1
 /**
 * General settings and tuning parameters .
 *
@@ -77,6 +82,8 @@ typedef enum wm_gsetting_e {
     cbTARGET_GSETTING_HIDDEN_SSID, /** Hidden ssid, 0 disable else enable. */
     cbTARGET_GSETTING_AP_STA_INACTIVITY_TIMEOUT, /**< Aging period for Station in seconds */
     cbTARGET_GSETTING_ROAMING_AREA_HYSTERESIS, /** Threshold between good and bad connection. */
+    cbTARGET_GSETTING_FT_MODE, /** 802.11r (FT) mode, 0 - Disabled, 1 - FT over air, 2 - FT over DS */
+    cbTARGET_GSETTING_4_ADDRESS_MODE, /** Bit0 - enable dynamic mode for station. Bit1 - always enable for station. */
     cbTARGET_GSETTING_MAX,
 } cbWM_GSETTING;
 
@@ -253,6 +260,7 @@ cbRTSL_Status cbTARGET_configure(cbTARGET_Handle* hTarget, cbTARGET_ConfigParams
 #define W_CONST_BLACKLIST_LAST_BSSID_TIMEOUT        (20) // Seconds
 #define W_CONST_ROAMING_AREA_HYSTERESIS             (3)
 #define W_CONST_TX_PACKET_ACK_TIMEOUT               (10000)
+#define W_CONST_FT_MODE                             (2)
 
 #define W_CONST_DEFAULT_FORCE_WORLD_MODE            (0)
 
