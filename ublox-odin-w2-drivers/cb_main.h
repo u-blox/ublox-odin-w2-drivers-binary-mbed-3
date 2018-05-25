@@ -97,6 +97,22 @@ extern cb_int32 cbMAIN_startWlan(cb_int32 targetId, cbWLAN_StartParameters *para
 */
 extern cb_int32 cbMAIN_startWlanNoConfig(cb_int32 targetId, cbWLAN_StartParameters *params);
 
+/**
+* Reset the driver and Wi-Fi chip. This can be used if the application receives a cbWLAN_STATUS_ERROR event.
+* The recovery procedure is as follows:
+* - Application receives cbWLAN_STATUS_ERROR
+* - Application calls cbWLAN_stop
+* - Application calls cbMAIN_resetWlan after the cbWLAN_STATUS_STOPPED is received
+* - Application calls cbMAIN_startWlan
+* - If we're station then reconnect if needed
+* If the application acts as station it will also receive a cbWLAN_STATUS_DISCONNECTED
+* before the cbWLAN_STATUS_ERROR if it was previously connected.
+* 
+* @param targetId Port specific TARGET identifier.
+* @return new targetId.
+*/
+extern cb_int32 cbMAIN_resetWlan(cb_int32 targetId);
+
 #ifdef CB_SUPPORT_ETH
 /**
 * Initialize Ethernet.
