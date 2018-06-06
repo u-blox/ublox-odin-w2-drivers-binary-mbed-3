@@ -17,12 +17,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "cb_inet.h"
-#include "cb_heap.h"
-#include "cb_timer.h"
-#include "cb_random.h"
-#include "cb_hw.h"
-#include "cb_log.h"
 #include "cb_target.h"
 #include "cb_status.h"
 
@@ -37,11 +31,6 @@ extern "C" {
 #define cbWLAN_ENABLE_802_11g
 #define cbWLAN_ENABLE_802_11n
 
-//#define cbWLAN_ENABLE_STA_WDS
-
-#ifndef NDEBUG
-#  define WLAN_ENABLE_FW_LOG
-#endif
 /*===========================================================================
  * TYPES
  *=========================================================================*/
@@ -234,88 +223,6 @@ void cbTARGET_tSet(cbTARGET_Handle* hTarget, cbWM_TSETTING setting, cb_uint32 va
 struct cb_wlan_configuration*  cbTARGET_configuration_create();
 
 cbRTSL_Status cbTARGET_configure(cbTARGET_Handle* hTarget, cbTARGET_ConfigParams parameter, void* value);
-
-/*--------------------------------------------------------------------------
- * Timer functions
- *-------------------------------------------------------------------------*/
-
-/**
- * Delays the current execution ms milliseconds.
- */
-#define W_DELAY(ms)                 cbHW_delay((ms)*1000)
-
-/**
- * Set to the the cbWM_tick() call interval. Every 100ms (10Hz) is a good 
- * value.
- *
- * @ingroup types
- */
-#define cbWM_TICK_FREQ_HZ           (10)
-
-/**
- * Depending on the LPO used this should be adjusted to the stabilization time of the 
- * oscillator or crystal.
- * 
- * Recommended values are:
- * Internal RC net: 1000 (all modules)
- * External crystal: 3000 (OWL221a, OWL222a)
- * External oscillator: 5000 (OWL253)
- *
- * If the driver tries to enter deep sleep before the LPO is stable firmware can hang. 
- */
-#define W_STARTUP_DEEP_SLEEP_DELAY (3000)
-
-/*--------------------------------------------------------------------------
- * Byte-flipping functions
- *-------------------------------------------------------------------------*/
-#define W_HTON16(x)     cb_HTON16(x)
-#define W_NTOH16(x)     cb_NTOH16(x)
-#define W_HTON32(x)     cb_HTON32(x)
-#define W_NTOH32(x)     cb_NTOH32(x)
-
-
-/*--------------------------------------------------------------------------
- * Memory functions
- *-------------------------------------------------------------------------*/
-
-//@{
-/**
- * Mappings for memory handling functions.
- */
-#define W_MEMSET(ptr, value, size)  memset(ptr, value, size)
-#define W_MEMCPY(dst, src, size)    memcpy(dst, src, size)
-#define W_MEMMOV(dst, src, size)    memmove(dst, src, size)
-#define W_MEMCMP(buf1, buf2, size)  memcmp(buf1, buf2, size)
-//@}
-
-//@{
-/**
- * Generic data management.
- */
-#define W_MALLOC(size)     cbHEAP_malloc(size)
-#define W_FREE(ptr)        cbHEAP_free(ptr)
-#define W_MALLOC_FAST(size)     cbHEAP_fast_malloc(size)
-#define W_FREE_FAST(ptr)        cbHEAP_fast_free(ptr)
-//@}
-
-/*--------------------------------------------------------------------------
- * Debug
- *-------------------------------------------------------------------------*/
-#define W_ZONE_MASK                 (cbDEBUG_ZONE_ALL & ~(cbDEBUG_ZONE_RX | cbDEBUG_ZONE_TX | cbDEBUG_ZONE_TXQUEUE))
-#define W_LEVEL                     (cbDEBUG_LEVEL_NORMAL)
-#define W_PRINT(...)                cbLOG_PRINT(__VA_ARGS__)
-#define W_ASSERT(exp)               cb_ASSERT(exp)
-
-/*--------------------------------------------------------------------------
- * Random related functions
- *-------------------------------------------------------------------------*/
-#define W_RANDOM()                  cbRANDOM_getInt()
-
-/*--------------------------------------------------------------------------
- * Settings
- *-------------------------------------------------------------------------*/
-/* Size of pre-allocated FIFO for ME (management) messages to TARGET */
-#define W_ME_QUEUESIZE              (15)
 
 
 /*--------------------------------------------------------------------------
