@@ -23,6 +23,17 @@ The sequence diagram below shows a typical scenario from an uninitialized driver
 
 ![](mbed_wifi_sequence.png)
 
+### 802.11r Wifi Roaming
+Wifi roaming feature is supported for station mode and is enabled by default. Following parameters can be used to tune the roaming feature according to desired use case :
+
+    cbTARGET_GSETTING_RSSI_GOOD                        , /**< When to abort scanning and initiate connection */
+    cbTARGET_GSETTING_RSSI_BAD                         , /**< When to use BAD_RSSI_SCAN_YIELD_TIMEOUT for scanning between each channel for roaming */
+    cbTARGET_GSETTING_GOOD_RSSI_SCAN_YIELD_TIMEOUT     , /**< Gap between each channel when doing background scan with a good connection */
+    cbTARGET_GSETTING_BAD_RSSI_SCAN_YIELD_TIMEOUT      , /**< Gap between each channel when doing background scan with a bad connection */
+    cbTARGET_GSETTING_ROAM_BLACKLIST_LAST_BSSID_TIMEOUT, /**< How long a new connection to the last connected AP should be banned */
+    cbTARGET_GSETTING_ROAMING_AREA_HYSTERESIS,           /** Threshold between good and bad connection. */
+
+
 ## Access Point mode
 The access point mode is entered by calling any of the cbWLAN_apStart* functions. Whenever a connection is established an event cbWLAN_STATUS_AP_ADDED is received. A corresponding cbLWAN_STATUS_AP_REMOVED is called when the station disconnects.
 
