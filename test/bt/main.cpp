@@ -37,11 +37,12 @@
 #include "minar/minar.h"
 
 #include "btc_app.h"
-#include "ublox-odin-w2-drivers/bt_types.h"
-#include "ublox-odin-w2-drivers/cb_bt_utils.h"
-#include "ublox-odin-w2-drivers/cb_bt_man.h"
-#include "ublox-odin-w2-drivers/cb_main.h"
-#include "ublox-odin-w2-drivers/cb_bt_serial.h"
+
+#include "bt_types.h"
+#include "cb_bt_utils.h"
+#include "cb_bt_man.h"
+#include "cb_main.h"
+#include "cb_bt_serial.h"
 
 #define BT_MAIN_TEST_DATA_SIZE (512)
 #define bt_main_write_tag (666)

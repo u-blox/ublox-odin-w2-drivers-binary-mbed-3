@@ -34,9 +34,10 @@
 #include "sockets/UDPSocket.h"
 
 #include "sal-stack-lwip-ublox-odin-w2/lwipv4_init.h"
-#include "ublox-odin-w2-drivers/cb_wlan.h"
-#include "ublox-odin-w2-drivers/cb_wlan_types.h"
-#include "ublox-odin-w2-drivers/cb_main.h"
+#include "cb_wlan.h"
+#include "cb_wlan_driver_config.h"
+#include "cb_wlan_types.h"
+#include "cb_main.h"
 #include "ublox-odin-w2-lwip-adapt/cb_ip.h"
 
 using namespace mbed::util;
@@ -132,12 +133,16 @@ static void scheduledApStartWpa2()
     memcpy(apParameters.ssid.ssid, _ssid, apParameters.ssid.ssidLength);
     apParameters.channel = _channel;
     apParameters.basicRates = cbRATE_MASK_01 | APP_MASK_SHIFTUP(cbRATE_MASK_01, cbRATE_MASK_G);
-
+    apParameters.allowedRates = cbRATE_MASK_N | cbRATE_MASK_B | cbRATE_MASK_G | cbRATE_TX_MIMO;
     memset(&wpaApParameters, 0, sizeof(wpaApParameters));
     wpaApParameters.rsnCiphers = cbWLAN_CIPHER_SUITE_AES_CCMP;
     memset(tempPassphrase, 0, cbWLAN_MAX_PASSPHRASE_LENGTH);
     memcpy(tempPassphrase, _passphrase, strlen(_passphrase));
     cbWLAN_Util_PSKFromPWD(tempPassphrase, apParameters.ssid, wpaApParameters.psk.key);
+
+    wpaApParameters.pmfParameters.pmf = cbWLAN_PMF_OPTIONAL;
+    wpaApParameters.pmfParameters.comeBackTime = 1;
+    wpaApParameters.pmfParameters.saQueryTimeOut = 500;
 
     cbWLAN_apStartWPAPSK(&apParameters, &wpaApParameters);
 }
@@ -319,13 +324,12 @@ void app_start(int argc, char *argv[]) {
 
     cbWLAN_StartParameters startParams;
     memset(&startParams, 0, sizeof(startParams));
-    startParams.disable80211d = FALSE; // The driver must always support this feature
     startParams.deviceType = cbWM_MODULE_ODIN_W26X; // ODIN-W2 is the only applicable for ARM mbed
     startParams.deviceSpecific.ODIN_W26X.txPowerSettings.lowTxPowerLevel = cbWLAN_TX_POWER_AUTO;
     startParams.deviceSpecific.ODIN_W26X.txPowerSettings.medTxPowerLevel = cbWLAN_TX_POWER_AUTO;
     startParams.deviceSpecific.ODIN_W26X.txPowerSettings.maxTxPowerLevel = cbWLAN_TX_POWER_AUTO;
-
-    cbIP_init();
+    startParams.deviceSpecific.ODIN_W26X.primaryAntenna = cbWLAN_PRIMARY_ANTENNA_ONE;
+    startParams.deviceSpecific.ODIN_W26X.numberOfAntennas = cbWLAN_ONE_ANTENNA;
 
     minar::Scheduler::postCallback(scheduledStartInterfaces);
 

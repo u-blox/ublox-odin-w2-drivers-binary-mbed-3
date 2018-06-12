@@ -3,7 +3,7 @@
 * Copyright (c) 2016 u-blox AB, Sweden.
 * Any reproduction without written permission is prohibited by law.
 *
-* Component   : Bluetooth Serial
+* Component   : Bluetooth PAN Data Manager
 * File        : cb_bt_pan.h
 *
 * Description : Data management for PAN profile

@@ -25,7 +25,8 @@
 #define SIZE_OF_BD_ADDR                               (6)
 #define SIZE_OF_COD                                   (3)
 #define SIZE_OF_LINK_KEY                              (16)
-#define SIZE_OF_NAME                                  (248)
+#define SIZE_OF_NAME_INCOMING                         (248)
+#define SIZE_OF_NAME_OUTGOING                         (64)
 #define SIZE_OF_PIN_CODE                              ((cb_uint8)16)
 #define SIZE_OF_LAP                                   (3)
 #define SIZE_OF_AFH_LMP_HCI_CHANNEL_MAP               (10)
@@ -54,6 +55,11 @@
 
 #define PACKET_TYPE_ALL (PACKET_TYPE_DM1 | PACKET_TYPE_DH1 | PACKET_TYPE_DM3 | PACKET_TYPE_DH3 | PACKET_TYPE_DM5 | PACKET_TYPE_DH5)
 
+#define BD_ADDR_IS_STATIC_RANDOM(BdAddress)     ((BdAddress[0] & 0xC0) == 0xC0)
+#define BD_ADDR_IS_NON_RESOLVABLE(BdAddress)    ((BdAddress[0] & 0xC0) == 0x00)
+#define BD_ADDR_IS_RESOLVABLE(BdAddress)        ((BdAddress[0] & 0xC0) == 0x40)
+
+#define BT_INVALID_STATIC_LINK_KEY (0)
 /*===========================================================================
  * TYPES
  *=========================================================================*/
@@ -134,9 +140,15 @@ typedef struct
 
 typedef struct
 {
-  cb_uint8 Name[SIZE_OF_NAME];
+  cb_uint8 Name[SIZE_OF_NAME_INCOMING];
 
 } TName;
+
+typedef struct
+{
+    cb_uint8 Name[SIZE_OF_NAME_OUTGOING];
+
+} TNameOutgoing;
 
 typedef struct
 {

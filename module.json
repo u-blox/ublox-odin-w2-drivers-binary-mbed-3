@@ -1,7 +1,7 @@
 {
   "name": "ublox-odin-w2-drivers",
-  "version": "1.3.1",
-  "description": "u-blox ODIN-W2 Bluetooth/Wi-Fi/Ethernet drivers",
+  "version": "2.0.0",
+  "description": "u-blox ODIN-W2 Bluetooth/Wi-Fi drivers",
   "private": true,
   "keywords": [
     "ublox",
@@ -27,21 +27,21 @@
     "core-util": "1.8.0",
     "compiler-polyfill": "1.3.0",
     "cmsis-core-st": "1.0.1",
-    "cmsis-core-stm32f4": "1.2.0",
+    "cmsis-core-stm32f4": "u-blox/cmsis-core-stm32f4#1.3.0",
     "uvisor-lib": "2.1.2",
-    "cmsis-core-stm32f429xi": "1.0.3",
-    "mbed-hal-st-stm32f429zi": "1.1.0",
+    "cmsis-core-stm32f429xi": "u-blox/cmsis-core-stm32f429xi#1.1.0",
+    "mbed-hal-st-stm32f429zi": "u-blox/mbed-hal-st-stm32f429zi#1.2.0",
     "dlmalloc": "1.1.0",
     "utest": "1.12.2",
     "minar-platform": "1.1.0",
     "minar-platform-mbed": "1.3.0",
-    "mbed-hal-st-stm32f4": "1.3.5",
-    "mbed-hal-st-stm32cubef4": "1.2.0"
+    "mbed-hal-st-stm32f4": "u-blox/mbed-hal-st-stm32f4#1.3.6",
+    "mbed-hal-st-stm32cubef4": "u-blox/mbed-hal-st-stm32cubef4#1.3.0"
   },
   "targetDependencies": {},
   "testDependencies": {
-    "sal-stack-lwip-ublox-odin-w2": "1.0.0",
-    "ublox-odin-w2-lwip-adapt": "1.0.0",
+    "sal-stack-lwip-ublox-odin-w2": "u-blox/sal-stack-lwip-ublox-odin-w2#1.0.0",
+    "ublox-odin-w2-lwip-adapt": "u-blox/ublox-odin-w2-lwip-adapt#2.0.1",
     "sal": "1.3.1",
     "sockets": "1.3.0"
   },

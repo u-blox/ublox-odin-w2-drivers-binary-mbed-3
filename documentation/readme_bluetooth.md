@@ -9,7 +9,7 @@ The top modules cbBM, cbBSM, cbBCM, cbBSE, cbBSL, cbGATT and cbBTPAN above are e
 
 ## General initialization
 The Bluetooth stack is started by calling cbMAIN\_initBt. Note that cbBM_init must not be called from the application since this is done from inside cbMAIN\_initBt.
-After cbBM_init has been called the application must wait for the complete callback before issuing any other function calls to the driver.
+After cbMAIN\_initBt has been called the application must wait for the complete callback before issuing any other function calls to the driver.
 
 ## Bluetooth Manager(cbBM)
 The Bluetooth Manager takes care of static configuration of the Bluetooth stack e.g. local name, class of device, connectable modes etc. Procedures for inquiry and device name are also found here.

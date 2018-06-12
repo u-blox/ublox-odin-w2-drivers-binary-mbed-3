@@ -20,6 +20,7 @@
 
 #include "cb_types.h"
 #include "cb_wlan_types.h"
+#include "cb_cert_utils.h"
 #include "cb_status.h"
 
 #ifdef __cplusplus
@@ -36,7 +37,7 @@ extern "C" {
  *
  * @ingroup wlan
  */
-#define cbWLAN_MAX_USERNAME_LENGTH      64
+#define cbWLAN_MAX_USERNAME_LENGTH      32
 
 /**
  * Max password length in @ref cbWLAN_Util_PSKFromPWD and @ref cbWLAN_EnterpriseConnectParameters
@@ -60,29 +61,20 @@ extern "C" {
  */
 #define cbWLAN_MAX_DOMAIN_LENGTH        64
 
+/**
+* Size of the misc buffer in @ref cbWM_ChangeBSS and @ref cbWM_StartFT.
+*
+* @ingroup types
+*/
+#define MISC_BUFFER_SIZE 255
+
+#define cbWLAN_FTIE_SIZE 255
+#define cbWLAN_RSNIE_SIZE 44
+#define cbWLAN_MDIE_SIZE 5
 
 /*===========================================================================
  * TYPES
  *=========================================================================*/
-
-typedef struct cbWLAN_Stream_s cbWLAN_Stream;
-typedef cb_uint32 cbWLAN_StreamPosition;
-
-/**
- * Stream vtable interface used by WLAN supplicant to access SSL certificates
- * for WPA Enterprise authentication.
- *
- * @ingroup wlan
- */
-struct cbWLAN_Stream_s {
-    cb_int32 (*read)(const cbWLAN_Stream *stream, void *buf, cb_uint32 count);  /**< Read function pointer, place count bytes in buf. */
-    cb_int32 (*write)(const cbWLAN_Stream *stream, void *buf, cb_uint32 count);  /**< Read function pointer, place count bytes in buf. */
-    void (*rewind)(const cbWLAN_Stream *stream); /**< Rewind function pointer, rewind stream internal iterator to the beginning. Mandatory for all streams. */
-    void (*setPosition)(const cbWLAN_Stream *stream, cbWLAN_StreamPosition position); /**< Set absolute position. */
-    cbWLAN_StreamPosition (*getPosition)(const cbWLAN_Stream *stream); /**< Get current position. */
-    cb_uint32 (*getSize)(const cbWLAN_Stream *stream);  /**< GetSize function pointer, return total size of stream contents. */
-};
-
 /**
  * Start parameters passed to WLAN driver.
  *
@@ -90,11 +82,12 @@ struct cbWLAN_Stream_s {
  */
 typedef struct cbWLAN_StartParameters {
     cbWLAN_MACAddress      mac;        /**< MAC of WLAN interface, set to all zeros if hardware programmed address should be used. */
-    cb_boolean disable80211d;
     cbWM_ModuleType  deviceType;      /**< Specify current device type. */
     union {
         struct {
             cbWM_TxPowerSettings txPowerSettings;   /**< Transmission power settings. */
+            cb_uint8 numberOfAntennas;              /**< Number of antennas use for wifi (MIMO supports 2x2). */
+            cb_uint8 primaryAntenna;                /**< Primary antenna selection. */
         } ODIN_W26X;
     } deviceSpecific;
 } cbWLAN_StartParameters;
@@ -136,26 +129,38 @@ typedef struct cbWLAN_WPAPSK {
  */
 typedef struct cbWLAN_WPAPSKConnectParameters {
     cbWLAN_WPAPSK           psk; /**< WPA pre-shared key*/
+#if defined(CB_FEATURE_802DOT11W)
+#endif
 } cbWLAN_WPAPSKConnectParameters;
 
+#if defined(CB_FEATURE_802DOT11R)
+/**
+ * Associate information elements with FT elements.
+ *
+ * @ingroup wlan
+ */
+typedef struct cbWLAN_AssociateInformationElements{
+    cb_uint8   wpaIe[cbWLAN_RSNIE_SIZE];
+    cb_uint32  wpaIeLen;                            
+    cb_uint8   mdIe[cbWLAN_MDIE_SIZE];
+    cb_uint32  mdIeLen;
+    cb_uint8   ftIe[cbWLAN_FTIE_SIZE];
+    cb_uint32  ftIeLen;
+}cbWLAN_AssociateInformationElements;
+#endif
 
-typedef enum cbWLAN_CipherSuite {
-    cbWLAN_CIPHER_SUITE_NONE        = 0x00,
-    cbWLAN_CIPHER_SUITE_WEP64       = 0x01,
-    cbWLAN_CIPHER_SUITE_WEP128      = 0x02,
-    cbWLAN_CIPHER_SUITE_TKIP        = 0x04,
-    cbWLAN_CIPHER_SUITE_AES_CCMP    = 0x08,
-} cbWLAN_CipherSuite;
-
-typedef enum cbWLAN_AuthenticationSuite {
-    cbWLAN_AUTHENTICATION_SUITE_NONE            = 0x00,
-    cbWLAN_AUTHENTICATION_SUITE_SHARED_SECRET   = 0x01,
-    cbWLAN_AUTHENTICATION_SUITE_PSK             = 0x02,
-    cbWLAN_AUTHENTICATION_SUITE_8021X           = 0x04,
-    cbWLAN_AUTHENTICATION_SUITE_USE_WPA         = 0x08,
-    cbWLAN_AUTHENTICATION_SUITE_USE_WPA2        = 0x10,
-} cbWLAN_AuthenticationSuite;
-
+#if defined(CB_FEATURE_802DOT11W)
+/**
+* 80211w PMF specific connect parameters.
+*
+* @ingroup wlan
+*/
+typedef struct cbWLAN_PMFApParameters {
+    cbWLAN_PMF  pmf;                 /**< MFPR, MFPC RSN capabilties*/
+    cb_uint8    comeBackTime;        /**< 1 - 10 sec */
+    cb_uint16   saQueryTimeOut;      /**< 100 - 500 msec */
+} cbWLAN_PMFApParameters;
+#endif
 
 /**
  * WPA Enterprise specific connect parameters.
@@ -167,8 +172,10 @@ typedef struct cbWLAN_EnterpriseConnectParameters {
     cb_uint8                username[cbWLAN_MAX_USERNAME_LENGTH];       /**< Username string. */
     cb_uint8                passphrase[cbWLAN_MAX_PASSPHRASE_LENGTH];   /**< Passphrase string. */
     cb_uint8                domain[cbWLAN_MAX_DOMAIN_LENGTH];           /**< Domain string. */
-    cbWLAN_Stream           *clientCertificate;     /**< Stream handle to provide SSL certificate for authentication. */
-    cbWLAN_Stream           *clientPrivateKey;      /**< STream handle to provide SSL private key for authentication. */
+    cbCERT_Stream           *clientCertificate;     /**< Stream handle to provide SSL certificate for authentication. */
+    cbCERT_Stream           *clientPrivateKey;      /**< Stream handle to provide SSL private key for authentication. */
+    cbCERT_Stream           *CACertificate;      /**< Stream handle to provide CA certificate for server certificate validation, 
+                                                        Can be NULL if server certificate shouldn't be validated. */
 } cbWLAN_EnterpriseConnectParameters;
 
 /**
@@ -177,9 +184,11 @@ typedef struct cbWLAN_EnterpriseConnectParameters {
  * @ingroup wlan
  */
 typedef struct cbWLAN_CommonApParameters {
-    cbWLAN_Ssid             ssid;       /**< SSID to connect to. */
-    cbWLAN_Channel          channel;    /**< Active channel. */
-    cbWLAN_RateMask         basicRates; /**< Basic rates. */
+    cbWLAN_Ssid             ssid;           /**< SSID to connect to. */
+    cbWLAN_Channel          channel;        /**< Active channel. */
+    cbWLAN_RateMask         basicRates;     /**< Basic rates. */
+    cbWLAN_RateMask         allowedRates;   /**< BSS allowed rates. */
+    cb_uint8                dtimInterval;     /**< Dtim Interval. */
 }cbWLAN_CommonApParameters;
 
 
@@ -192,8 +201,11 @@ typedef struct cbWLAN_WPAPSKApParameters {
     cbWLAN_CipherSuite      rsnCiphers;         /**< Bit field indicating which ciphers that shall be displayed in RSN information elements. If 0 no RSN information elements is added to beacons and probe responses. */
     cbWLAN_CipherSuite      wpaCiphers;         /**< Bit field indicating which ciphers that shall be displayed in WPA information elements. If 0 no WPA information elements is added to beacons and probe responses. */
     cbWLAN_WPAPSK           psk;                /**< WPA pre-shared key*/
+#if defined(CB_FEATURE_802DOT11W)
+    cbWLAN_PMFApParameters  pmfParameters;
+#endif
+    cb_uint32               gtkRekeyInterval;   /**< Group rekey interval in seconds */
 } cbWLAN_WPAPSKApParameters;
-
 
 /**
  * Scan parameters
@@ -202,6 +214,7 @@ typedef struct cbWLAN_WPAPSKApParameters {
  */
 typedef struct cbWLAN_ScanParameters {
     cbWLAN_Ssid             ssid;       /**< SSID to scan for, set to zero length for broadcast scan. */
+    cbWLAN_Channel          channel;
 } cbWLAN_ScanParameters;
 
 /**
@@ -220,13 +233,16 @@ typedef struct cbWLAN_ScanIndicationInfo {
     cbWLAN_AuthenticationSuite authenticationSuites; /**< Supported authentication suites */
     cbWLAN_CipherSuite unicastCiphers;              /**< Supported unicast cipher suites */
     cbWLAN_CipherSuite groupCipher;                 /**< Supported group cipher suites */
-
+#if defined(CB_FEATURE_802DOT11R)
+    cbWLAN_MDInformation mobilityDomainId;          /**< Mobility Domain Id and Ft capability policy>*/
+#endif
     cbWLAN_RateMask basicRateSet;                   /**< Basic rate set, i.e. required rates. */
     cbWLAN_RateMask supportedRateSet;               /**< Supported rate set, super set of basic rate set. */
     cb_uint32 beaconPeriod;                         /**< Beacon period in ms. */
     cb_uint32 DTIMPeriod;                           /**< DTIM period in beacon intervals */
-    cb_uint8 countryCode[3];                        /**< Three letter country code */
-    cb_uint32 flags;              // QoS, short preamble, DFS, privacy,
+    cb_uint8 countryCode[2];                        /**< Two letter country code */
+    cb_uint32 flags;                                /**< QoS, short preamble, DFS, privacy */
+    cb_uint16 RSNCapabilities;                      /**< Protected management frames capabilities*/
 } cbWLAN_ScanIndicationInfo;
 
 /**
@@ -246,6 +262,8 @@ typedef enum {
     cbWLAN_STATUS_AP_DOWN,
     cbWLAN_STATUS_AP_STA_ADDED,
     cbWLAN_STATUS_AP_STA_REMOVED,
+    cbWLAN_STATUS_80211r_REASSOCIATING,
+    cbWLAN_STATUS_80211r_REASSOCIATED,
 } cbWLAN_StatusIndicationInfo;
 
 /**
@@ -258,6 +276,7 @@ typedef enum {
     cbWLAN_STATUS_DISCONNECTED_NO_BSSID_FOUND,
     cbWLAN_STATUS_DISCONNECTED_AUTH_TIMEOUT,
     cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE, 
+    cbWLAN_STATUS_DISCONNECTED_ROAMING,
 } cbWLAN_StatusDisconnectedInfo;
 
 /**
@@ -266,29 +285,9 @@ typedef enum {
  * @ingroup wlan
  */
 typedef enum {
-    cbWLAN_IOCTL_FIRST,
-    cbWLAN_IOCTL_SET_POWER_SAVE_MODE = cbWLAN_IOCTL_FIRST,       //!< Set power mode  @ref cbWLAN_IoctlPowerSaveMode
-    cbWLAN_IOCTL_GET_POWER_SAVE_MODE,                            //!< Get power mode  @ref cbWLAN_IoctlPowerSaveMode
-    cbWLAN_IOCTL_SET_LISTEN_INTERVAL,                            //!< Set listen interval, integer value 0 - 16 
-    cbWLAN_IOCTL_GET_LISTEN_INTERVAL,                            //!< Get listen interval, integer value 0 - 16 
-    cbWLAN_IOCTL_SET_DTIM_ENABLE,                                //!< Set DTIM enable 0, disable 1 enable
-    cbWLAN_IOCTL_GET_DTIM_ENABLE,                                //!< Get DTIM enable 0, disable 1 enable
-    cbWLAN_IOCTL_SET_SLEEP_TIMEOUT,                              //!< Set enter power save entry delay (in ms). Power save mode will be entered only if there no activity during this delay
-    cbWLAN_IOCTL_GET_SLEEP_TIMEOUT,                              //!< Get enter power save entry delay (in ms). Power save mode will be entered only if there no activity during this delay
-
-    cbWLAN_IOCTL_LAST,
+    cbWLAN_IOCTL_FIRST
 } cbWLAN_Ioctl;
 
-/**
- * Power save modes set using  @ref cbWLAN_ioctl
- *
- * @ingroup wlan
- */
-typedef enum {
-    cbWLAN_IOCTL_POWER_SAVE_MODE_OFF,
-    cbWLAN_IOCTL_POWER_SAVE_MODE_SLEEP,
-    cbWLAN_IOCTL_POWER_SAVE_MODE_DEEP_SLEEP
-} cbWLAN_IoctlPowerSaveMode;
 
 /**
  * Start parameters indicated from WLAN driver for status indication 
@@ -309,6 +308,7 @@ typedef struct cbWLAN_StatusStartedInfo {
 typedef struct cbWLAN_StatusConnectedInfo {
     cbWLAN_MACAddress bssid;           /**< BSSID of the BSS connected to. */
     cbWLAN_Channel channel;             /**< Operating channels of the BSS connected to. */
+    cb_uint16 mobilityDomainId;
 } cbWLAN_StatusConnectedInfo;
 
 /**
@@ -338,7 +338,7 @@ typedef void (*cbWLAN_statusIndication)(void *callbackContext, cbWLAN_StatusIndi
 /**
  * Indication of received Ethernet data packet.
  *
- * @param callbackContext Context pointer provided in @ref cbWLAN_init.
+ * @param callbackContext Context pointer provided in @ref cbWLAN_registerPacketIndicationCallback.
  * @param packetInfo Pointer to struct containing packet information and data pointers.
  */
 typedef void (*cbWLAN_packetIndication)(void *callbackContext, cbWLAN_PacketIndicationInfo *packetInfo);
@@ -346,7 +346,7 @@ typedef void (*cbWLAN_packetIndication)(void *callbackContext, cbWLAN_PacketIndi
 /**
 * Scan result indication from WLAN component.
 *
-* @param callbackContext Context pointer provided in @ref cbWLAN_init.
+* @param callbackContext Context pointer provided in @ref cbWLAN_scan.
 * @param bssDescriptor Pointer to struct containing scan result information.
 * @param isLastResult @ref TRUE if scan scan is finished.
 */
@@ -359,10 +359,9 @@ typedef void (*cbWLAN_scanIndication)(void *callbackContext, cbWLAN_ScanIndicati
 /**
  * Initialize WLAN component.
  *
- * @param callbackContext Context handle used in indication callbacks.
  * @return @ref cbSTATUS_OK if successful, otherwise cbSTATUS_ERROR.
  */
-cbRTSL_Status cbWLAN_init(void *callbackContext);
+cbRTSL_Status cbWLAN_init();
 
 
 /**
@@ -513,11 +512,6 @@ cbRTSL_Status cbWLAN_deregisterStatusCallback(cbWLAN_statusIndication statusIndi
 
 cbRTSL_Status cbWLAN_Util_PSKFromPWD(cb_char passphrase[cbWLAN_MAX_PASSPHRASE_LENGTH], cbWLAN_Ssid ssid, cb_uint8 psk[cbWLAN_PSK_LENGTH]);
 
-cbRTSL_Status cbWLAN_Util_parseDERCert(cbWLAN_Stream const * const certificate, cbWLAN_Stream const * const outputStream);
-cbRTSL_Status cbWLAN_Util_parseDERKey(cbWLAN_Stream const * const key, cbWLAN_Stream const * const outputStream);
-cbRTSL_Status cbWLAN_Util_parsePEMCert(cbWLAN_Stream const * const certificate, cbWLAN_Stream const * const outputStream);
-cbRTSL_Status cbWLAN_Util_parsePEMKey(cbWLAN_Stream const * const certificate, cb_uint8 const * const key, cb_uint32 keyLength, cbWLAN_Stream const * const outputStream);
-
 /**
  * Set the channel list to be used for connection and scanning.
  * The list will be filtered according to the allowed channel list
@@ -563,6 +557,19 @@ cbRTSL_Status cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
  */
 cbRTSL_Status cbWLAN_ioctl(cbWLAN_Ioctl ioctl, void* value);
 
+cbRTSL_Status cbWLAN_getVersion(cbWM_Version* version);
+
+#if defined(CB_FEATURE_802DOT11R)
+
+/**
+ * Called for changing the BSS
+ *
+ * @param params Parameter containing the BSS parameters.
+ *
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
+ */
+cbRTSL_Status cbWLAN_changeBSS(cbWLAN_BSSChangeParameters params);
+#endif
 #ifdef __cplusplus
 }
 #endif

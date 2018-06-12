@@ -19,12 +19,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "btc_app.h"
-#include "ublox-odin-w2-drivers/bt_types.h"
-#include "ublox-odin-w2-drivers/cb_bt_utils.h"
-#include "ublox-odin-w2-drivers/cb_bt_serial.h"
-#include "ublox-odin-w2-drivers/cb_bt_man.h"
-#include "ublox-odin-w2-drivers/cb_bt_conn_man.h"
-#include "ublox-odin-w2-drivers/cb_bt_sec_man.h"
+
+#include "bt_types.h"
+#include "cb_bt_utils.h"
+#include "cb_bt_serial.h"
+#include "cb_bt_man.h"
+#include "cb_bt_conn_man.h"
+#include "cb_bt_sec_man.h"
 
 /*===========================================================================
 * DEFINES
@@ -120,6 +121,7 @@ static void HandleConnectInd(cbBCM_Handle handle, cbBCM_ConnectionInfo info);
 static void HandleConnectEvt(cbBCM_Handle handle, cbBCM_ConnectionInfo info);
 static void HandleConnectCnf(cbBCM_Handle handle, cbBCM_ConnectionInfo info, cb_int32 status);
 static void HandleDisconnectEvt(cbBCM_Handle handle);
+static void handleServiceClassEnabled(cb_uint8 serviceChannel);
 
 /*===========================================================================
 * DEFINITIONS
@@ -463,7 +465,7 @@ void btcAPPinit(void)
     //register callbacks
     result = cbBSM_registerCallbacks((cbBSM_Callbacks *)&SecurityCallbacks);
 
-    result = cbBCM_enableServerProfileSpp("ublx-mbed-spp", &channel, (cbBCM_ConnectionCallback *)&ConnectionCallbacks);
+    result = cbBCM_enableServerProfileSpp("ublx-mbed-spp", &channel, (cbBCM_ConnectionCallback *)&ConnectionCallbacks,handleServiceClassEnabled);
 
     result = cbBM_setLocalName("ublx-odin-mbed");
 
@@ -543,7 +545,7 @@ btcAPPe btcAPPrequestConnectSPP(TBdAddr *pAddress)
         return result;
     }
 
-    device.connHandle = cbBCM_reqConnectSpp(pAddress, NULL, cbBCM_INVALID_SERVER_CHANNEL, NULL, (cbBCM_ConnectionCallback*)&ConnectionCallbacks);
+    device.connHandle = cbBCM_reqConnectSpp(pAddress, NULL, cbBCM_INVALID_SERVER_CHANNEL, NULL, NULL,TRUE,(cbBCM_ConnectionCallback*)&ConnectionCallbacks);
 
     if (device.connHandle != cbBCM_INVALID_CONNECTION_HANDLE)
     {
@@ -581,4 +583,9 @@ btcAPPe btcAPPdisconnect(uint32_t handle)
         result = cbBCM_cmdDisconnect(handle);
     }
     return result;
+}
+
+static void handleServiceClassEnabled(cb_uint8 serviceChannel)
+{
+    printf("%s(%lu)\n",__FUNCTION__,serviceChannel);
 }

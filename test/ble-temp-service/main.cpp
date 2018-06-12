@@ -28,14 +28,15 @@
 #include "mbed-drivers/mbed.h"
 #include "mbed-drivers/mbed_assert.h"
 
-#include "ublox-odin-w2-drivers/bt_types.h"
-#include "ublox-odin-w2-drivers/cb_bt_utils.h"
-#include "ublox-odin-w2-drivers/cb_bt_conn_man.h"
-#include "ublox-odin-w2-drivers/cb_bt_man.h"
-#include "ublox-odin-w2-drivers/cb_bt_sec_man.h"
-#include "ublox-odin-w2-drivers/cb_main.h"
-#include "ublox-odin-w2-drivers/cb_gatt.h"
-#include "ublox-odin-w2-drivers/cb_gatt_server.h"
+#include "bt_types.h"
+#include "cb_bt_utils.h"
+#include "cb_bt_conn_man.h"
+#include "cb_bt_man.h"
+#include "cb_bt_sec_man.h"
+#include "cb_main.h"
+#include "cb_gatt.h"
+#include "cb_gatt_server.h"
+
 
 #include "cb_temp_service.h"
 
