@@ -11,9 +11,7 @@ Please note that this document is not intended as a complete system description.
 
 **NOTE 1: Bluetooth low energy is currently only experimental.**
 
-**NOTE 2: The Ethernet interface is currently only experimental since it's not possible to set any configuration of an external PHY chip.**
-
-## Related documents
+## Related documentset
 [https://www.u-blox.com/sites/default/files/ODIN-W2_DataSheet_%28UBX-14039949%29.pdf](https://www.u-blox.com/sites/default/files/ODIN-W2_DataSheet_%28UBX-14039949%29.pdf) - ODIN-W2 Data Sheet  
 [https://www.u-blox.com/sites/default/files/EVK-ODIN-W2_UserGuide_%28UBX-16007132%29.pdf](https://www.u-blox.com/sites/default/files/EVK-ODIN-W2_UserGuide_%28UBX-16007132%29.pdf) - EVK-ODIN-W2 Evaluation Kit for ODIN-W2 Arm® Mbed™ User Guide
 
@@ -34,7 +32,7 @@ The drivers are not thread safe. This means that all calls to and from the drive
 The exported components and corresponding files in the u-blox ODIN-W2 driver is shortly described below.
 
 ### Common
-- **Main**(cb\_main.h) - Initialization of Wi-Fi, Bluetooth and Ethernet drivers
+- **Main**(cb\_main.h) - Initialization of Wi-Fi and Bluetooth
 - cb\_comdefs.h - Commonly used definitions like TRUE/FALSE
 - cb\_status.h - Common status codes
 - cb\_watchdog.h - Hardware watchdog
@@ -65,9 +63,6 @@ For more info about the Bluetooth components see [documentation/readme_bluetooth
 - cb\_types.h - Common types
 
 For more info about the Wi-Fi component look [here](documentation/readme_wifi.md).
-
-### Ethernet
-- **Ethernet API**(cb\_ethernet.h) - Ethernet driver. NOTE, this API is subject to change for the next release since the functionality is experimental. See test app for usage.
 
 ### TCP/IP stack
 Any TCP/IP stack can be used together with the driver but a ready to use [lwIP stack](http://savannah.nongnu.org/projects/lwip/) has been tested and is provided as a separate module [here](https://github.com/u-blox/sal-stack-lwip-ublox-odin-w2). It has been slightly modified to better suite the Wi-Fi driver.
