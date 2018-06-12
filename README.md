@@ -1,6 +1,9 @@
-# u-blox ODIN-W2 Wi-Fi, Bluetooth and Ethernet drivers 
+# u-blox ODIN-W2 Wi-Fi and Bluetooth drivers 
 
-This is a pre-compiled binary module including u-blox Wi-Fi, Bluetooth and Ethernet drivers for [Mbed OS](https://mbed.com).
+This is a pre-compiled binary module including u-blox Wi-Fi and Bluetooth drivers for [Mbed OS](https://mbed.com).
+
+The binary is compiled with the following gcc version:
+(GNU Tools for ARM Embedded Processors) 4.9.3 20150529 (release) [ARM/embedded-4_9-branch revision 227977]
 
 The binary is intended for a u-blox ODIN-W2 module.
 
