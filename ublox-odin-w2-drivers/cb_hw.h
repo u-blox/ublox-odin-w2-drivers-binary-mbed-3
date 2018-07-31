@@ -21,6 +21,8 @@ extern "C" {
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
+#define cbHW_UNIQUE_ID_SIZE          12
+ 
 typedef enum {
     cbHW_PCB_VERSION_UNKNOWN,
     cbHW_PCB_VERSION_1,
