@@ -256,7 +256,7 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
                 char *pInfoTxt = NULL;
                 cbWLAN_StatusDisconnectedInfo info;
                 std::memcpy(&info, &data, sizeof info);
-                switch (info)
+                switch (info.reason)
                 {
                 case cbWLAN_STATUS_DISCONNECTED_UNKNOWN:
                     pInfoTxt = (char*)"UNKNOWN";
