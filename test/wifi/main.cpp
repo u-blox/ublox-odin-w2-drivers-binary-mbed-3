@@ -304,6 +304,16 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
             break;
         case cbWLAN_STATUS_AP_STA_REMOVED:
             printf("cbWLAN_STATUS_AP_STA_REMOVED\n");
+            break;    
+        case cbWLAN_STATUS_80211d_SCAN_IN_PROGRESS:
+            {
+                //scan11dOngoing = TRUE; // TODO: add handling of it
+            }
+            break;
+        case cbWLAN_STATUS_80211d_SCAN_NOT_IN_PROGRESS:
+            {
+                cb_uint32 *region = (cb_uint32*)data; // TODO: add handling of it
+            }
             break;
         default:
             CORE_UTIL_ASSERT(0);

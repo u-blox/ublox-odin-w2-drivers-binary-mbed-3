@@ -270,6 +270,16 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
                     staInfo->mac[4], staInfo->mac[5]);
             }
             break;
+        case cbWLAN_STATUS_80211d_SCAN_IN_PROGRESS:
+            {
+                //scan11dOngoing = TRUE; // TODO: add handling of it
+            }
+            break;
+        case cbWLAN_STATUS_80211d_SCAN_NOT_IN_PROGRESS:
+            {
+                cb_uint32 *region = (cb_uint32*)data; // TODO: add handling of it
+            }
+            break;
         default:
             CORE_UTIL_ASSERT(0);
             break;
