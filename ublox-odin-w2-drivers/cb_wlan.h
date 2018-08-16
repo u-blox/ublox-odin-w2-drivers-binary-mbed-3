@@ -609,18 +609,6 @@ cbRTSL_Status cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
 cbRTSL_Status cbWLAN_ioctl(cbWLAN_Ioctl ioctl, void* value);
 
 cbRTSL_Status cbWLAN_getVersion(cbWM_Version* version);
-
-#if defined(CB_FEATURE_802DOT11R)
-
-/**
- * Called for changing the BSS
- *
- * @param params Parameter containing the BSS parameters.
- *
- * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
- */
-cbRTSL_Status cbWLAN_changeBSS(cbWLAN_BSSChangeParameters params);
-#endif
 #ifdef __cplusplus
 }
 #endif
