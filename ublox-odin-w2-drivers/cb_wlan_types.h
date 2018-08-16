@@ -585,26 +585,6 @@ typedef struct cbWM_BootParameters_s {
     cb_uint8 numberOfAntennas;
 } cbWM_BootParameters;
 
-/**
-* Describes an access point.
-*
-* @ingroup types
-*/
-typedef struct cbWLAN_ApInformation {
-    cbWLAN_Ssid                 ssid;                   /**< SSID */
-    cbWLAN_MACAddress           bssid;                  /**< BSSID */
-    cbWLAN_Channel              channel;                /**< Channel */
-} cbWLAN_ApInformation;
-
-/**
-* Describes a station connected to an access point.
-*
-* @ingroup types
-*/
-typedef struct cbWLAN_ApStaInformation {
-    cbWLAN_MACAddress MAC;
-} cbWLAN_ApStaInformation;
-
 typedef struct cbWLAN_HTCapabilities_st {
     cbWLAN_RateMask rates;
     cb_uint16 info;

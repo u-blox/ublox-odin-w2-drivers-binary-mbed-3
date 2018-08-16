@@ -256,7 +256,7 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
                 char *pInfoTxt = NULL;
                 cbWLAN_StatusDisconnectedInfo info;
                 std::memcpy(&info, &data, sizeof info);
-                switch (info)
+                switch (info.reason)
                 {
                 case cbWLAN_STATUS_DISCONNECTED_UNKNOWN:
                     pInfoTxt = (char*)"UNKNOWN";
@@ -304,6 +304,16 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
             break;
         case cbWLAN_STATUS_AP_STA_REMOVED:
             printf("cbWLAN_STATUS_AP_STA_REMOVED\n");
+            break;    
+        case cbWLAN_STATUS_80211d_SCAN_IN_PROGRESS:
+            {
+                //scan11dOngoing = TRUE; // TODO: add handling of it
+            }
+            break;
+        case cbWLAN_STATUS_80211d_SCAN_NOT_IN_PROGRESS:
+            {
+                cb_uint32 *region = (cb_uint32*)data; // TODO: add handling of it
+            }
             break;
         default:
             CORE_UTIL_ASSERT(0);

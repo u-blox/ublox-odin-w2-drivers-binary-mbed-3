@@ -79,6 +79,8 @@ using namespace mbed::util;
 #define YOTTA_CFG_TEST_IP_STATIC_DNS_1 "0.0.0.0"
 #endif
 
+#define cbWLAN_DEFAULT_HANDLE           ((cbWLAN_Handle)1)
+
 /*===========================================================================
 * TYPES
 *=========================================================================*/
@@ -127,6 +129,7 @@ static void scheduledApStartWpa2()
     cbWLAN_CommonApParameters apParameters;
     char tempPassphrase[cbWLAN_MAX_PASSPHRASE_LENGTH];
     cbWLAN_WPAPSKApParameters wpaApParameters;
+    cbWLAN_Handle handle = cbWLAN_INVALID_HANDLE;
 
     memset(&apParameters, 0, sizeof(apParameters));
     apParameters.ssid.ssidLength = strlen(_ssid);
@@ -144,7 +147,8 @@ static void scheduledApStartWpa2()
     wpaApParameters.pmfParameters.comeBackTime = 1;
     wpaApParameters.pmfParameters.saQueryTimeOut = 500;
 
-    cbWLAN_apStartWPAPSK(&apParameters, &wpaApParameters);
+    handle = cbWLAN_apStartWPAPSK(&apParameters, &wpaApParameters);
+    MBED_ASSERT(handle == cbWLAN_DEFAULT_HANDLE);
 }
 
 static void scheduledStartInterfaces()
@@ -198,7 +202,7 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
                 char *pInfoTxt = NULL;
                 cbWLAN_StatusDisconnectedInfo info;
                 std::memcpy(&info, &data, sizeof info);
-                switch (info)
+                switch (info.reason)
                 {
                 case cbWLAN_STATUS_DISCONNECTED_UNKNOWN:
                     pInfoTxt = (char*)"UNKNOWN";
@@ -233,7 +237,7 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
             break;
         case cbWLAN_STATUS_AP_UP:
             {
-                cbWLAN_ApInformation* apInfo = (cbWLAN_ApInformation*)data;
+                cbWLAN_StatusApUpInfo* apInfo = (cbWLAN_StatusApUpInfo*)data;
                 cb_char _ssid[cbWLAN_SSID_MAX_LENGTH + 1];
                 memset(_ssid, '\0', sizeof(_ssid));
                 memcpy(_ssid, apInfo->ssid.ssid, apInfo->ssid.ssidLength);
@@ -250,20 +254,30 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
             break;
         case cbWLAN_STATUS_AP_STA_ADDED:
             {
-                cbWLAN_ApStaInformation* staInfo = (cbWLAN_ApStaInformation*)data;
+                cbWLAN_StatusStationInfo* staInfo = (cbWLAN_StatusStationInfo*)data;
                 printf("cbWLAN_STATUS_AP_STA_ADDED - 0x%02x:%02x:%02x:%02x:%02x:%02x\n",
-                    staInfo->MAC[0], staInfo->MAC[1],
-                    staInfo->MAC[2], staInfo->MAC[3],
-                    staInfo->MAC[4], staInfo->MAC[5]);
+                    staInfo->mac[0], staInfo->mac[1],
+                    staInfo->mac[2], staInfo->mac[3],
+                    staInfo->mac[4], staInfo->mac[5]);
             }
             break;
         case cbWLAN_STATUS_AP_STA_REMOVED:
             {
-                cbWLAN_ApStaInformation* staInfo = (cbWLAN_ApStaInformation*)data;
+                cbWLAN_StatusStationInfo* staInfo = (cbWLAN_StatusStationInfo*)data;
                 printf("cbWLAN_STATUS_AP_STA_REMOVED - 0x%02x:%02x:%02x:%02x:%02x:%02x\n",
-                    staInfo->MAC[0], staInfo->MAC[1],
-                    staInfo->MAC[2], staInfo->MAC[3],
-                    staInfo->MAC[4], staInfo->MAC[5]);
+                    staInfo->mac[0], staInfo->mac[1],
+                    staInfo->mac[2], staInfo->mac[3],
+                    staInfo->mac[4], staInfo->mac[5]);
+            }
+            break;
+        case cbWLAN_STATUS_80211d_SCAN_IN_PROGRESS:
+            {
+                //scan11dOngoing = TRUE; // TODO: add handling of it
+            }
+            break;
+        case cbWLAN_STATUS_80211d_SCAN_NOT_IN_PROGRESS:
+            {
+                cb_uint32 *region = (cb_uint32*)data; // TODO: add handling of it
             }
             break;
         default:

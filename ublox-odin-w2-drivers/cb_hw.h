@@ -21,6 +21,8 @@ extern "C" {
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
+#define cbHW_UNIQUE_ID_SIZE          12
+ 
 typedef enum {
     cbHW_PCB_VERSION_UNKNOWN,
     cbHW_PCB_VERSION_1,
@@ -33,7 +35,8 @@ typedef enum {
 typedef enum {
     cbHW_RESET_REASON_UNKNOWN = 0,
     cbHW_RESET_REASON_FW_UPDATE,
-    cbHW_RESET_REASON_PRODUCTION_MODE
+    cbHW_RESET_REASON_PRODUCTION_MODE,
+    cbHW_RESET_REASON_CRASH
 }cbHW_ResetReason;
 
 typedef enum {
@@ -48,6 +51,9 @@ typedef enum {
     cbHW_IRQ_LOW = 12U
 }cbHW_PRIO_LVL;
 
+typedef enum {
+    cbHW_HASH_MD5
+}cbHW_HashType;
 /*===========================================================================
  * TYPES
  *=========================================================================*/
@@ -62,8 +68,9 @@ typedef void (*cbHW_SysTickCb)(void);
 void cbHW_init(void);
 void cbHW_registerStopModeStatusEvt(cbHW_StopModeStatusEvt evt);
 void cbHW_disableIrq(void);
-void cbHW_disableAllIrq(void); // Should not be used unless extremely critical
 void cbHW_enableIrq(void);
+void cbHW_disableAllIrq(void); // Should not be used unless extremely critical
+void cbHW_enableAllIrq(void);
 void cbHW_enterSleepMode(void);
 void cbHW_enterStopMode(void);
 void cbHW_setWakeupEvent(void);
@@ -73,14 +80,14 @@ void cbHW_resetWakeupEvent(void);
  * Wait for specified amount of microseconds. May be interrupt dependent.
  * @note Granularity may vary between systems. Will be at least systick based.
  * The system may go to sleep during the delay.
- * 
+ *
  * @param us Time to delay in microseconds.
  */
 void cbHW_delay(cb_uint32 us);
 
 /**
 * Wait for specified amount of microseconds using a software loop.
-* @note Granularity may vary between systems. 
+* @note Granularity may vary between systems.
 * The system will not go to sleep during the delay.
 *
 * @param us Time to delay in microseconds.
@@ -91,7 +98,7 @@ void cbHW_setSysFreq(cb_uint32 sysFreq);
 cb_uint32 cbHW_getSysFreq(void);
 void cbHW_writeBackupRegister(cb_uint32 registerId, cb_uint32 value);
 cb_uint32 cbHW_readBackupRegister(cb_int32 registerId);
-void cbHW_getHWId(cb_uint8 uid[12]);
+void cbHW_getHWId(cb_uint8 uid[cbHW_UNIQUE_ID_SIZE]);
 cbHW_PCBVersion cbHW_getPCBVersion(void);
 
 /**
@@ -119,12 +126,30 @@ cb_uint32 cbHW_getTickFrequency(void);
 */
 cb_uint32 cbHW_getTicks(void);
 
+/**
+* Enter forced boot mode. The bootloader will start in x-modem
+* mode and emit CCCC.. to notify that it is ready to receive
+* a new fw.
+* This function will return and boot mode will be entered
+* after a device specific timeout.
+* @param address x-modem file download start address
+* @param baudrate x-modem download buadrate
+* @return None
+*/
 void cbHW_forceBoot(cb_uint32 address, cb_uint32 baudrate);
 void cbHW_enterProductionMode(cbHW_FlowControl flowControl);
 cbHW_ResetReason cbHW_resetReason(void);
 cbHW_FlowControl cbHW_flowControl(void);
 
-void cbHW_enableAllIrq(void);
+/**
+* Calculates a hash over a dataset.
+* @param type: type of hashing, MD5 for now
+* @param pInData: pointer to Data over which the hashing should be done
+* @param indataSize: size of data buffer.
+* @param pOutData: pointer to result data
+* @return None
+*/
+void cbHW_hash(cbHW_HashType type, const cb_uint8* pInData,cb_uint32 indataSize, cb_uint8* pOutData);
 
 #ifdef __cplusplus
 }
