@@ -305,7 +305,8 @@ typedef struct cbWLAN_StatusStartedInfo {
 
 /**
  * Disconnected parameters indicated from WLAN driver for status indication 
- * @ref cbWLAN_STATUS_DISCONNECTED.
+ * @ref cbWLAN_STATUS_CONNECTION_FAILURE.
+ * @ref cbWLAN_STATUS_CONNECTING(Default Reason: cbWLAN_STATUS_DISCONNECTED_UNKNOWN).
  *
  * @ingroup wlan
  */
@@ -317,6 +318,7 @@ typedef struct cbWLAN_StatusDisconnectedInfo {
 /**
  * Connected parameters indicated from WLAN driver for status indication 
  * @ref cbWLAN_STATUS_CONNECTED.
+ * @ref cbWLAN_STATUS_80211r_REASSOCIATED.
  *
  * @ingroup wlan
  */
