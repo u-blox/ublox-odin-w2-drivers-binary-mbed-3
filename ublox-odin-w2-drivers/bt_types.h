@@ -22,6 +22,10 @@
  * DEFINES
  *=========================================================================*/
 
+//This is local define to remap malloc static for BT stack since there is no static heap
+#define cbHEAP_mallocStatic(a) cbHEAP_fast_malloc(a)
+
+
 #define SIZE_OF_BD_ADDR                               (6)
 #define SIZE_OF_COD                                   (3)
 #define SIZE_OF_LINK_KEY                              (16)
@@ -201,5 +205,11 @@ typedef struct
     cb_uint16  scanInterval;
     cb_uint16  scanWindow;
 } TAclParamsLe;
+
+typedef enum
+{
+    BT_RSSI_TYPE_NORMAL = 0x00,
+    BT_RSSI_TYPE_VENDOR = 0x01,
+} TRssiType;
 
 #endif /* _BT_TYPES_H */

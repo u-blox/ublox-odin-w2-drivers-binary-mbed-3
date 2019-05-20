@@ -210,9 +210,6 @@ static void handleStatusIndication(void *callbackContext, cbWLAN_StatusIndicatio
                 case cbWLAN_STATUS_DISCONNECTED_NO_BSSID_FOUND:
                     pInfoTxt = (char*)"NO_BSSID_FOUND";
                     break;
-                case cbWLAN_STATUS_DISCONNECTED_AUTH_TIMEOUT:
-                    pInfoTxt = (char*)"AUTH_TIMEOUT";
-                    break;
                 case cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE:
                     pInfoTxt = (char*)"MIC FAILURE";
                     break;

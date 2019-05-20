@@ -69,7 +69,7 @@ extern "C" {
 #define MISC_BUFFER_SIZE 255
 
 #define cbWLAN_FTIE_SIZE 255
-#define cbWLAN_RSNIE_SIZE 44
+#define cbWLAN_RSNIE_SIZE 255
 #define cbWLAN_MDIE_SIZE 5
 
 #define cbWLAN_INVALID_HANDLE           (cb_UINT32_MAX)
@@ -135,7 +135,7 @@ typedef struct cbWLAN_WPAPSKConnectParameters {
 #endif
 } cbWLAN_WPAPSKConnectParameters;
 
-#if defined(CB_FEATURE_802DOT11R)
+#if defined(CB_FEATURE_PMKCACHING) || defined(CB_FEATURE_802DOT11R)
 /**
  * Associate information elements with FT elements.
  *
@@ -278,8 +278,9 @@ typedef enum {
 typedef enum {
     cbWLAN_STATUS_DISCONNECTED_UNKNOWN,
     cbWLAN_STATUS_DISCONNECTED_NO_BSSID_FOUND,
-    cbWLAN_STATUS_DISCONNECTED_AUTH_TIMEOUT,
-    cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE, 
+    cbWLAN_STATUS_DISCONNECTED_ASSOC_FAILURE,
+    cbWLAN_STATUS_DISCONNECTED_AUTH_FAILURE,
+    cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE,
     cbWLAN_STATUS_DISCONNECTED_ROAMING,
 } cbWLAN_StatusDisconnectedReason;
 
@@ -304,9 +305,8 @@ typedef struct cbWLAN_StatusStartedInfo {
 } cbWLAN_StatusStartedInfo;
 
 /**
- * Disconnected parameters indicated from WLAN driver for status indication 
- * @ref cbWLAN_STATUS_CONNECTION_FAILURE.
- * @ref cbWLAN_STATUS_CONNECTING(Default Reason: cbWLAN_STATUS_DISCONNECTED_UNKNOWN).
+ * Disconnected parameters indicated from WLAN driver for status indication
+ * @ref cbWLAN_STATUS_DISCONNECTED.
  *
  * @ingroup wlan
  */
@@ -318,7 +318,6 @@ typedef struct cbWLAN_StatusDisconnectedInfo {
 /**
  * Connected parameters indicated from WLAN driver for status indication 
  * @ref cbWLAN_STATUS_CONNECTED.
- * @ref cbWLAN_STATUS_80211r_REASSOCIATED.
  *
  * @ingroup wlan
  */

@@ -82,8 +82,18 @@ typedef enum wm_gsetting_e {
     cbTARGET_GSETTING_HIDDEN_SSID, /** Hidden ssid, 0 disable else enable. */
     cbTARGET_GSETTING_AP_STA_INACTIVITY_TIMEOUT, /**< Aging period for Station in seconds */
     cbTARGET_GSETTING_ROAMING_AREA_HYSTERESIS, /** Threshold between good and bad connection. */
-    cbTARGET_GSETTING_FT_MODE, /** 802.11r (FT) mode, 0 - Disabled, 1 - FT over air, 2 - FT over DS */
-    cbTARGET_GSETTING_4_ADDRESS_MODE, /** Bit0 - enable dynamic mode for station. Bit1 - always enable for station. */
+    cbTARGET_GSETTING_FT_MODE, /**< 802.11r (FT) mode, 0 - Disabled, 1 - FT over air, 2 - FT over DS */
+    cbTARGET_GSETTING_4_ADDRESS_MODE, /**< Bit0 - enable dynamic mode for station. Bit1 - always enable for station. */
+    cbTARGET_GSETTING_RSSI_MIN, /**< Never connect to an AP where RSSI is not at least this value */
+    cbTARGET_GSETTING_ROAM_BAD_CHANNEL_RSSI_HYSTERESIS, /**< Threshold to avoid roaming to an AP that isn't good enough (when we are in an area with bad RSSI value) */
+    cbTARGET_GSETTING_ROAM_NO_ROAM_TMO, /**< Timeout after roaming and before looking for a better AP */
+    cbTARGET_GSETTING_ROAM_WAIT_TIMEOUT, /**< Timeout between finding a better AP and the actual roaming, to be able to get some data after being away from the channel during the previous scan */
+    cbTARGET_GSETTING_SHORT_GI, /**< Short guard interval, 1 - enable, 0 - disable. */
+    cbTARGET_GSETTING_WIRELESS_ISOLATION, /**< Wireless isolation, 1 - enable, 0 - disable. */
+    cbTARGET_GSETTING_TLS_MIN_VERSION, /**< WIFI TLS minimum version, W_CONST_TLS_VERSION_1_0 (default), W_CONST_TLS_VERSION_1_1, W_CONST_TLS_VERSION_1_2. */
+    cbTARGET_GSETTING_TLS_MAX_VERSION, /**< WIFI TLS maximum version, W_CONST_TLS_VERSION_1_0, W_CONST_TLS_VERSION_1_1, W_CONST_TLS_VERSION_1_2 (default). */
+    cbTARGET_GSETTING_BLOCK_ACK_ENABLE, /**< Enable Block Ack, 1 - Enable, 0 - Disable */
+	cbTARGET_GSETTING_DOT80211D_SCAN_INTERVAL, /**< Set DOT80211D_TIMEOUT_S, 1 - 3600*/
     cbTARGET_GSETTING_MAX,
 } cbWM_GSETTING;
 
@@ -128,6 +138,8 @@ typedef enum wm_tsetting_e {
     cbTARGET_TSETTING_ANTENNA_RECEIVE_DIVERSITY, /**< Enable receive antenna diversity. 0 = off, 1 = on. */
     cbTARGET_TSETTING_QOS_WMM_NOACK, /**< Enable WMM QoS no-ack acknowledgment policy. 0 = normal ack, 1 = no-ack. */
     cbTARGET_TSETTING_PS_BEACON_EARLY_TERMINATION, /**< Powersave: In Max PSP, use beacon early termination. */
+    cbTARGET_TSETTING_NBR_BEACONS,/** Number of beacons to track*/
+    cbTARGET_TSETTING_BEACON_TRACK_WAIT, /** Time to wait before dropping link after beacon track loss*/
     cbTARGET_TSETTING_MAX,
 } cbWM_TSETTING;
 
@@ -247,7 +259,7 @@ cbRTSL_Status cbTARGET_configure(cbTARGET_Handle* hTarget, cbTARGET_ConfigParams
 #define W_CONST_FRAGMENTATION_THRESHOLD             (2346)
 #define W_CONST_TX_POWER                            (15)
 #define W_CONST_MAX_PASSIVE_SCAN_TIME               (150)
-#define W_CONST_SCAN_LISTEN_INTERVAL                (150)
+#define W_CONST_SCAN_LISTEN_INTERVAL                (0)
 #define W_CONST_SLEEP_TIMEOUT                       (100) // Timeout in ms, 100ms timeout gives almost same throughput as without power save but still low power consumption
 #define W_CONST_DEFAULT_MODULE_TYPE                 (cbWM_MODULE_UNKNOWN)
 #define W_CONST_PMF_OPTIONAL                        (cbWLAN_PMF_OPTIONAL)
@@ -255,22 +267,26 @@ cbRTSL_Status cbTARGET_configure(cbTARGET_Handle* hTarget, cbTARGET_ConfigParams
 #define W_CONST_DEFAULT_STA_TX_RATES                (0) // Use AP default
 #define W_CONST_GOOD_RSSI                           (55)
 #define W_CONST_BAD_RSSI                            (70)
+#define W_CONST_MIN_RSSI                            (127)
 #define W_CONST_GOOD_RSSI_SCAN_YIELD_TIMEOUT        (1500)
-#define W_CONST_BAD_RSSI_SCAN_YIELD_TIMEOUT         (W_CONST_SCAN_LISTEN_INTERVAL)
+#define W_CONST_BAD_RSSI_SCAN_YIELD_TIMEOUT         (150)
 #define W_CONST_BLACKLIST_LAST_BSSID_TIMEOUT        (20) // Seconds
 #define W_CONST_ROAMING_AREA_HYSTERESIS             (3)
 #define W_CONST_TX_PACKET_ACK_TIMEOUT               (10000)
 #define W_CONST_FT_MODE                             (2)
+#define W_CONST_NBR_BEACONS_DEFAULT                 (20)
+#define W_CONST_BEACONS_TRACK_WAIT                  (100)
+#define W_CONST_WIRELESS_ISOLATION                  (0)
 
 #define W_CONST_DEFAULT_FORCE_WORLD_MODE            (0)
 
 #define W_CONST_DEFAULT_AP_STA_INACTIVITY_TIMEOUT   (120)
 
 
-#define W_CONST_DEFAULT_DOT11_SHORT_RETRY_LIMIT (0x0a0a0a0aul)
-#define W_CONST_DEFAULT_DOT11_LONG_RETRY_LIMIT  (0x0a0a0a0aul)
-#define W_CONST_DEFAULT_AP_DOT11_SHORT_RETRY_LIMIT  (0x0a0a0a0aul)
-#define W_CONST_DEFAULT_AP_DOT11_LONG_RETRY_LIMIT   (0x0a0a0a0aul)
+#define W_CONST_DEFAULT_DOT11_SHORT_RETRY_LIMIT (0x00141414ul)
+#define W_CONST_DEFAULT_DOT11_LONG_RETRY_LIMIT  (0x00141414ul)
+#define W_CONST_DEFAULT_AP_DOT11_SHORT_RETRY_LIMIT  (0x00141414ul)
+#define W_CONST_DEFAULT_AP_DOT11_LONG_RETRY_LIMIT   (0x00141414ul)
 
 //Target specific values
 #define W_CONST_PS_LISTEN_INTERVAL                  (0)
@@ -283,6 +299,16 @@ cbRTSL_Status cbTARGET_configure(cbTARGET_Handle* hTarget, cbTARGET_ConfigParams
 
 #define W_CONST_DEFAULT_RSSI                        (-100)
 
+#define W_CONST_ROAM_BAD_CHANNEL_RSSI_HYSTERESIS    (10)
+#define W_CONST_ROAM_VERIFY_CONNECTION_TMO          (10000)
+#define W_CONST_ROAM_WAIT_TIMEOUT                   (100)
+
+#define     W_CONST_TLS_VERSION_1_0 (0x0301)
+#define     W_CONST_TLS_VERSION_1_1 (0x0302)
+#define     W_CONST_TLS_VERSION_1_2 (0x0303)
+
+#define W_CONST_BLOCK_ACK                            0
+#define W_CONST_DOT80211D_SCAN_INTERVAL				 (3600)
 #ifdef __cplusplus
 }
 #endif

@@ -725,6 +725,17 @@ extern cb_int32 cbBCM_getRssi(
     TBdAddr bdAddress,
     cbBCM_RssiCallback rssiCallback);
 
+/**
+* @brief   Get current Received Signal Strength Indication (RSSI) using vendor specific HCI command
+*          of an active connection.
+* @param   bdAddress       bt address to the connected device
+* @param   rssiCallback    Callback function used to notify the rssi value
+* @return  If the operation is successful cbBCM_OK is returned.
+*/
+extern cb_int32 cbBCM_getRssiVendor(
+    TBdAddr bdAddress,
+    cbBCM_RssiCallback rssiCallback);
+
 /*
 * Read the LinkQuality .
 * @return status as int32.
