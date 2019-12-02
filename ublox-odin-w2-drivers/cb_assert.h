@@ -45,30 +45,101 @@ GENERATE_ASSERT_RESET can be overridden with hardware specific reset options
  * If the condition (C) evaluates to FALSE, the registered error handler in cbOS
  * is called with file and line info before the system is reset.
  */
+#define cb_ASSERTV2(C, FILE, LINE)                  \
+    do {                                            \
+        if (!(C)) {                                 \
+            cbOS_error2(FILE, LINE);                \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
 
-#define cb_ASSERT(C)                               \
-    do {                                           \
-        if (!(C)) {                                \
-            cbOS_error2(__CB_FILE__, __LINE__);    \
-            GENERATE_ASSERT_RESET();                 \
-        }                                          \
-    } while(0)                                     \
+#define cb_ASSERT(C)                                \
+    do {                                            \
+        if (!(C)) {                                 \
+            cbOS_error2(__CB_FILE__, __LINE__);     \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
 
-#define cb_ASSERTC(C)                              \
-    do {                                           \
-        if (!(C)) {                                \
-            cbOS_error2(__CB_FILE__, __LINE__);    \
-            GENERATE_ASSERT_RESET();                 \
-        }                                          \
-    } while(0)                                     \
+#define cb_ASSERTC(C)                               \
+    do {                                            \
+        if (!(C)) {                                 \
+            cbOS_error2(__CB_FILE__, __LINE__);     \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
 
-#define cb_ASSERT2(C, E)                           \
-    do {                                           \
-        if (!(C)) {                                \
-            cbOS_error(E, __CB_FILE__, __LINE__);  \
-            GENERATE_ASSERT_RESET();                 \
-        }                                          \
-    } while(0)                                     \
+#define cb_ASSERT2(C, E)                            \
+    do {                                            \
+        if (!(C)) {                                 \
+            cbOS_error(E, __CB_FILE__, __LINE__);   \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_EQUAL(v, test)                    \
+    do {                                            \
+        if (v != test) {                            \
+            cbOS_error(v, __CB_FILE__, __LINE__);   \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_NOT_EQUAL(v, test)                \
+    do {                                            \
+        if (v == test) {                            \
+            cbOS_error(v, __CB_FILE__, __LINE__);   \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_GREATER(v, limit)                 \
+    do {                                            \
+        if (v <= limit) {                           \
+            cbOS_error(v, __CB_FILE__, __LINE__);   \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_GREATER_OR_EQUAL(v, limit)        \
+    do {                                            \
+        if (v < limit) {                            \
+            cbOS_error(v, __CB_FILE__, __LINE__);   \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_LESS(v, limit)                    \
+    do {                                            \
+        if (v >= limit) {                           \
+            cbOS_error(v, __CB_FILE__, __LINE__);   \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_LESS_OR_EQUAL(v, limit)           \
+    do {                                            \
+        if (v > limit) {                            \
+            cbOS_error(v, __CB_FILE__, __LINE__);   \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_NOT_NULL(p)                       \
+    do {                                            \
+        if (p == NULL) {                            \
+            cbOS_error2(__CB_FILE__, __LINE__);     \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
+
+#define cb_ASSERT_IS_NULL(p)                        \
+    do {                                            \
+        if (p != NULL) {                            \
+            cbOS_error2(__CB_FILE__, __LINE__);     \
+            GENERATE_ASSERT_RESET();                \
+        }                                           \
+    } while(0)                                      \
 
 /*
  * The registered error handler is called with the file and line info before a system reset.
@@ -77,6 +148,7 @@ GENERATE_ASSERT_RESET can be overridden with hardware specific reset options
 #define cb_EXIT(E)                                           \
     do {                                                     \
         cbOS_error(((cb_int32)(E)), __CB_FILE__, __LINE__);  \
+        GENERATE_ASSERT_RESET();                             \
     } while(0)                                               \
 
 

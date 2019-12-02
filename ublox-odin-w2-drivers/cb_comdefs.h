@@ -167,7 +167,13 @@
 #  define TODO(x)
 #endif
 
-
+#ifndef cb_FALLTHROUGH
+#  if defined(__GNUC__) & __GNUC__ >= 7
+#    define cb_FALLTHROUGH __attribute__((fallthrough)) // defined in gcc v7
+#  else
+#    define cb_FALLTHROUGH ((void)0) // avoid empty declaration warning in gcc less than v7
+#  endif
+#endif
 
 /*===========================================================================
  * TYPES

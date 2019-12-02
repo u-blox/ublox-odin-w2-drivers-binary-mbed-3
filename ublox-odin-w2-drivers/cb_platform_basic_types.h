@@ -1,6 +1,17 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2016 u-blox AB, Sweden.
- * Any reproduction without written permission is prohibited by law.
+ * Copyright (c) 2016, u-blox Malmö, All Rights Reserved
+ * SPDX-License-Identifier: LicenseRef-PBL
+ *
+ * This file and the related binary are licensed under the
+ * Permissive Binary License, Version 1.0 (the "License");
+ * you may not use these files except in compliance with the License.
+ *
+ * You may obtain a copy of the License here:
+ * LICENSE-permissive-binary-license-1.0.txt and at
+ * https://www.mbed.com/licenses/PBL-1.0
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * Component   : Wireless LAN driver
  * File        : cb_types.h
@@ -27,10 +38,6 @@
 /*===========================================================================
  * COMMON SYSTEM DEFINES
  *=========================================================================*/
-#ifndef __GNUC__
-#  error "This cb_platform_basic_types.h is only valid for GCC. Check your make target"
-#endif
-
 
 typedef int8_t                  cb_int8;
 typedef int16_t                 cb_int16;
@@ -62,7 +69,11 @@ typedef int                     cb_int;
 /**
  * Used in function definitions to declare an input parameter unused to avoid warnings.
  */
+#if defined(__GNUC__) || defined(__clang__) || defined(__CC_ARM)
 #define cb_UNUSED(x) UNUSED_ ## x __attribute__((unused))
+#else
+#define cb_UNUSED(x) UNUSED_ ## x
+#endif
 
 
 /**
@@ -94,19 +105,25 @@ typedef int                     cb_int;
  *      cb_PACKED_STRUCT_ATTR_POST
  *
  */
-/*
+
 #define cb_PACKED_STRUCT_ATTR_PRE
+
+#if defined(__ICCARM__)
+#define cb_PACKED_STRUCT_ATTR_INLINE_PRE       __packed
+#else
 #define cb_PACKED_STRUCT_ATTR_INLINE_PRE
-*/
+#endif
+
+#if defined(__ICCARM__)
+#define cb_PACKED_STRUCT_ATTR_INLINE_POST       __packed
+#else
 #define cb_PACKED_STRUCT_ATTR_INLINE_POST       __attribute__ ((__packed__))
-/*
+#endif
+
+
 #define cb_PACKED_STRUCT_ATTR_POST
-*/
+
 /**@}*/
-
-
-#define DO_PRAGMA(x) _Pragma (#x)
-#define TODO(x) DO_PRAGMA(message ("TODO - " #x))
 
 
 #endif /* _CB_PLATFORM_BASIC_TYPES_H_ */

@@ -1,6 +1,11 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2014 connectBlue AB, Sweden.
- * Any reproduction without written permission is prohibited by law.
+ * Copyright (C) u-blox
+ * u-blox reserves all rights in this deliverable (documentation, software,
+ * etc., hereafter "Deliverable").
+ * This file is the sole property of u-blox. Its reproduction, modification,
+ * re-distribution, sub-licensing or any other use is subject to u-blox's
+ * General Terms and Conditions of Sales or to specific terms applicable to
+ * the file as indicated by u-blox.
  *
  * Component   : WLAN driver
  * File        : cb_target.h
