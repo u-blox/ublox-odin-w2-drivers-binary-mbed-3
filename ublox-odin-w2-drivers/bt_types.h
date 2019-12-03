@@ -2,7 +2,7 @@
 * Copyright (c) 2016 u-blox AB, Sweden.
 * Any reproduction without written permission is prohibited by law.
 *
-* Component   : 
+* Component   :
 * File        : bt_types.h
 *
 * Description : Common Bluetooth types
@@ -21,6 +21,10 @@
 /*===========================================================================
  * DEFINES
  *=========================================================================*/
+
+//This is local define to remap malloc static for BT stack since there is no static heap
+#define cbHEAP_mallocStatic(a) cbHEAP_fast_malloc(a)
+
 
 #define SIZE_OF_BD_ADDR                               (6)
 #define SIZE_OF_COD                                   (3)
@@ -98,14 +102,14 @@ typedef enum
 } TSecurityLevel;
 
 
-typedef enum 
+typedef enum
 {
   BT_MASTER_SLAVE_POLICY_ALWAYS_MASTER     = 0,
   BT_MASTER_SLAVE_POLICY_OTHER_SIDE_DECIDE = 1
 
 } TMasterSlavePolicy;
 
-typedef enum 
+typedef enum
 {
     BT_TYPE_CLASSIC    = 0,
     BT_TYPE_LOW_ENERGY = 1
@@ -184,7 +188,7 @@ typedef enum
     BT_ADV_TYPE_SCAN = 0x00,
 } TAdvDataType;
 
-typedef struct 
+typedef struct
 {
     TAdvDataType type;
     cb_uint8 length;
@@ -201,5 +205,11 @@ typedef struct
     cb_uint16  scanInterval;
     cb_uint16  scanWindow;
 } TAclParamsLe;
+
+typedef enum
+{
+    BT_RSSI_TYPE_NORMAL = 0x00,
+    BT_RSSI_TYPE_VENDOR = 0x01,
+} TRssiType;
 
 #endif /* _BT_TYPES_H */

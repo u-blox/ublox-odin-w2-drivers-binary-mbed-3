@@ -18,6 +18,7 @@
 #define _CB_WLANTARGET_DATA_H_
 
 #include "cb_types.h"
+#include "cb_target.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,6 +34,7 @@ extern "C" {
 
 typedef struct cbWLANTARGET_dataFrame cbWLANTARGET_dataFrame;
 typedef struct cbWLANTARGET_Handle cbWLANTARGET_Handle;
+typedef struct cbTARGET_dataFrame cbTARGET_dataFrame;
 
    
 /**
@@ -100,7 +102,8 @@ typedef struct
  * @param callbacks           Callbacks
  */
 void cbWLANTARGET_registerCallbacks(cbWLANTARGET_Callback* callbacks);
-    
+void cbTARGET_addRef(cbTARGET_Handle *hTarget, cbTARGET_dataFrame* dataFrame);
+
 #ifdef __cplusplus
 }
 #endif

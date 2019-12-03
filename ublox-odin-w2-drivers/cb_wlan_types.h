@@ -1,6 +1,11 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2016 u-blox AB, Sweden.
- * Any reproduction without written permission is prohibited by law.
+ * Copyright (C) u-blox
+ * u-blox reserves all rights in this deliverable (documentation, software,
+ * etc., hereafter "Deliverable").
+ * This file is the sole property of u-blox. Its reproduction, modification,
+ * re-distribution, sub-licensing or any other use is subject to u-blox's
+ * General Terms and Conditions of Sales or to specific terms applicable to
+ * the file as indicated by u-blox.
  *
  * Component   : WLAN driver
  * File        : cb_wlan_types.h
@@ -427,9 +432,9 @@ cb_PACKED_STRUCT_BEGIN(cbWLAN_FtInformation){
     cb_uint8                SNonce[32];
     cb_uint8                optionalParams[174]; // length field can maximum be 256, therefore optional params can be max 172 bytes
 } cb_PACKED_STRUCT_END(cbWLAN_FtInformation);
+#endif
 
-
-
+#if defined(CB_FEATURE_802DOT11R) || defined(CB_FEATURE_PMKCACHING)
 typedef struct cbWLAN_BSSChangeParameters  {
     cbWLAN_MACAddress      currentBssid;            /**< BSSID of connected AP. > */
     cbWLAN_MACAddress      targetBssid;             /**< BSSID to connect to. > */
@@ -589,6 +594,29 @@ typedef struct cbWLAN_HTCapabilities_st {
     cbWLAN_RateMask rates;
     cb_uint16 info;
 }cbWLAN_HTCapabilities;
+typedef struct cbWLAN_ApInformation {
+    cbWLAN_Ssid                 ssid;                   /**< SSID */
+    cbWLAN_MACAddress           bssid;                  /**< BSSID */
+    cbWLAN_Channel              channel;                /**< Channel */
+} cbWLAN_ApInformation;
+
+/**
+* Describes a station connected to an access point.
+*
+* @ingroup types
+*/
+typedef struct cbWLAN_ApStaInformation {
+    cbWLAN_MACAddress MAC;
+} cbWLAN_ApStaInformation;
+
+#if defined(CB_FEATURE_PMKCACHING)
+typedef struct cbWLAN_KeyCacheData {
+    struct cbWLAN_KeyCacheData *next;
+    cbWLAN_MACAddress bssid;
+    cb_uint8 pmkId[16];
+    cb_uint8 PMK[32];
+} cbWLAN_KeyCacheData;
+#endif
 /*---------------------------------------------------------------------------
  * VARIABLE DECLARATIONS
  *-------------------------------------------------------------------------*/

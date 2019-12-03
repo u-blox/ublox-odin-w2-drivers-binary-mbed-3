@@ -19,4 +19,4 @@ rem This file is the script to set path for yotta toolchain
 
 set PATH=%YOTTA_PATH%;%PATH%
 :: start yotta venv
-cmd /K "cd %cd% & %YOTTA_INSTALL_LOCATION%\workspace\Scripts\activate & yt link-target ublox-odin-w2-gcc & yt link-target stm32f429i-disco-gcc"
+cmd /K "cd %cd% & %YOTTA_INSTALL_LOCATION%\workspace\Scripts\activate & yt link sal-stack-lwip-ublox-odin-w2 & yt link ublox-odin-w2-lwip-adapt & yt link mbed-hal-st-stm32cubef4 & yt link mbed-hal-st-stm32f4 & yt link cmsis-core-stm32f429xi & yt link mbed-hal-st-stm32f429zi & yt link cmsis-core-stm32f4 & yt link-target ublox-odin-w2-gcc & yt link-target stm32f429i-disco-gcc"

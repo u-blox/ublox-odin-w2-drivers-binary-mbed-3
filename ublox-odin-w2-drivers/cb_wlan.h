@@ -1,11 +1,16 @@
 ﻿/*---------------------------------------------------------------------------
- * Copyright (c) 2016 u-blox AB, Sweden.
- * Any reproduction without written permission is prohibited by law.
+ * Copyright (C) u-blox
+ * u-blox reserves all rights in this deliverable (documentation, software,
+ * etc., hereafter "Deliverable").
+ * This file is the sole property of u-blox. Its reproduction, modification,
+ * re-distribution, sub-licensing or any other use is subject to u-blox's
+ * General Terms and Conditions of Sales or to specific terms applicable to
+ * the file as indicated by u-blox.
  *
  * Component   : WLAN
  * File        : cb_wlan.h
  *
- * Description : Main WLAN component, ties together WM, SUPPLICANT and 
+ * Description : Main WLAN component, ties together WM, SUPPLICANT and
  *               TARGET to one streamlined API.
  *-------------------------------------------------------------------------*/
 
@@ -69,7 +74,7 @@ extern "C" {
 #define MISC_BUFFER_SIZE 255
 
 #define cbWLAN_FTIE_SIZE 255
-#define cbWLAN_RSNIE_SIZE 44
+#define cbWLAN_RSNIE_SIZE 255
 #define cbWLAN_MDIE_SIZE 5
 
 #define cbWLAN_INVALID_HANDLE           (cb_UINT32_MAX)
@@ -135,7 +140,7 @@ typedef struct cbWLAN_WPAPSKConnectParameters {
 #endif
 } cbWLAN_WPAPSKConnectParameters;
 
-#if defined(CB_FEATURE_802DOT11R)
+#if defined(CB_FEATURE_PMKCACHING) || defined(CB_FEATURE_802DOT11R)
 /**
  * Associate information elements with FT elements.
  *
@@ -143,7 +148,7 @@ typedef struct cbWLAN_WPAPSKConnectParameters {
  */
 typedef struct cbWLAN_AssociateInformationElements{
     cb_uint8   wpaIe[cbWLAN_RSNIE_SIZE];
-    cb_uint32  wpaIeLen;                            
+    cb_uint32  wpaIeLen;
     cb_uint8   mdIe[cbWLAN_MDIE_SIZE];
     cb_uint32  mdIeLen;
     cb_uint8   ftIe[cbWLAN_FTIE_SIZE];
@@ -176,7 +181,7 @@ typedef struct cbWLAN_EnterpriseConnectParameters {
     cb_uint8                domain[cbWLAN_MAX_DOMAIN_LENGTH];           /**< Domain string. */
     cbCERT_Stream           *clientCertificate;     /**< Stream handle to provide SSL certificate for authentication. */
     cbCERT_Stream           *clientPrivateKey;      /**< Stream handle to provide SSL private key for authentication. */
-    cbCERT_Stream           *CACertificate;      /**< Stream handle to provide CA certificate for server certificate validation, 
+    cbCERT_Stream           *CACertificate;      /**< Stream handle to provide CA certificate for server certificate validation,
                                                         Can be NULL if server certificate shouldn't be validated. */
 } cbWLAN_EnterpriseConnectParameters;
 
@@ -278,8 +283,9 @@ typedef enum {
 typedef enum {
     cbWLAN_STATUS_DISCONNECTED_UNKNOWN,
     cbWLAN_STATUS_DISCONNECTED_NO_BSSID_FOUND,
-    cbWLAN_STATUS_DISCONNECTED_AUTH_TIMEOUT,
-    cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE, 
+    cbWLAN_STATUS_DISCONNECTED_ASSOC_FAILURE,
+    cbWLAN_STATUS_DISCONNECTED_AUTH_FAILURE,
+    cbWLAN_STATUS_DISCONNECTED_MIC_FAILURE,
     cbWLAN_STATUS_DISCONNECTED_ROAMING,
 } cbWLAN_StatusDisconnectedReason;
 
@@ -294,7 +300,7 @@ typedef enum {
 
 
 /**
- * Start parameters indicated from WLAN driver for status indication 
+ * Start parameters indicated from WLAN driver for status indication
  * @ref cbWLAN_STATUS_STARTED.
  *
  * @ingroup wlan
@@ -304,9 +310,8 @@ typedef struct cbWLAN_StatusStartedInfo {
 } cbWLAN_StatusStartedInfo;
 
 /**
- * Disconnected parameters indicated from WLAN driver for status indication 
- * @ref cbWLAN_STATUS_CONNECTION_FAILURE.
- * @ref cbWLAN_STATUS_CONNECTING(Default Reason: cbWLAN_STATUS_DISCONNECTED_UNKNOWN).
+ * Disconnected parameters indicated from WLAN driver for status indication
+ * @ref cbWLAN_STATUS_DISCONNECTED.
  *
  * @ingroup wlan
  */
@@ -316,9 +321,8 @@ typedef struct cbWLAN_StatusDisconnectedInfo {
 } cbWLAN_StatusDisconnectedInfo;
 
 /**
- * Connected parameters indicated from WLAN driver for status indication 
+ * Connected parameters indicated from WLAN driver for status indication
  * @ref cbWLAN_STATUS_CONNECTED.
- * @ref cbWLAN_STATUS_80211r_REASSOCIATED.
  *
  * @ingroup wlan
  */
@@ -330,7 +334,7 @@ typedef struct cbWLAN_StatusConnectedInfo {
 } cbWLAN_StatusConnectedInfo;
 
 /**
- * AP started parameters indicated from WLAN driver for status indication 
+ * AP started parameters indicated from WLAN driver for status indication
  * @ref cbWLAN_STATUS_AP_UP.
  *
  * @ingroup wlan
@@ -343,7 +347,7 @@ typedef struct cbWLAN_StatusApUpInfo {
 } cbWLAN_StatusApUpInfo;
 
 /**
- * AP stopped indicated from WLAN driver for status indication 
+ * AP stopped indicated from WLAN driver for status indication
  * @ref cbWLAN_STATUS_AP_DOWN.
  *
  * @ingroup wlan
@@ -353,7 +357,7 @@ typedef struct cbWLAN_StatusApDownInfo {
 } cbWLAN_StatusApDownInfo;
 
 /**
- * Station added/removed parameters indicated from WLAN driver for status indication 
+ * Station added/removed parameters indicated from WLAN driver for status indication
  * @ref cbWLAN_STATUS_AP_STA_ADDED.
  * @ref cbWLAN_STATUS_AP_STA_REMOVED.
  *
@@ -376,7 +380,7 @@ typedef struct cbWLAN_PacketIndicationInfo {
 } cbWLAN_PacketIndicationInfo;
 
 /**
- * Status updates from WLAN component. 
+ * Status updates from WLAN component.
  * @note The callback must not make any call back to WLAN.
  *
  * @param callbackContext Context pointer provided in @ref cbWLAN_registerStatusCallback.
@@ -468,17 +472,17 @@ cbWLAN_Handle cbWLAN_connectEnterprise(cbWLAN_CommonConnectParameters *commonPar
  * Disconnect from access point or stop ongoing connection attempt.
  * Disconnection progress is reported as @ref cbWLAN_statusIndication callback.
  *
- * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
 cbRTSL_Status cbWLAN_disconnect(cbWLAN_Handle handle);
 
 /**
  * Initiate BSS scan.
- * If specific channel is set in scan parameters, only that channel is 
+ * If specific channel is set in scan parameters, only that channel is
  * scanned. If SSID is specified, a directed probe request against that SSID
- * will be used. Scan results are reported in @ref cbWLAN_scanIndication 
+ * will be used. Scan results are reported in @ref cbWLAN_scanIndication
  * callbacks.
- * @note Depending on channel using DFS or not, passive scans may be used 
+ * @note Depending on channel using DFS or not, passive scans may be used
  * instead of active probe requests.
  *
  * @param params Scan parameters
@@ -521,7 +525,7 @@ cbWLAN_Handle cbWLAN_apStartWPAPSK(cbWLAN_CommonApParameters *commonParams, cbWL
 /**
  * Stop access point.
  *
- * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
 cbRTSL_Status cbWLAN_apStop(cbWLAN_Handle handle);
 
@@ -539,7 +543,7 @@ void cbWLAN_sendPacket(cbWLAN_Handle handle, void *txData);
  *
  * @param statusIndication Callback function.
  * @param callbackContext Context pointer, will be sent back in callback.
- * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
 cbRTSL_Status cbWLAN_registerStatusCallback(cbWLAN_statusIndication statusIndication, void *callbackContext);
 
@@ -549,7 +553,7 @@ cbRTSL_Status cbWLAN_registerStatusCallback(cbWLAN_statusIndication statusIndica
  *
  * @param packetIndication Callback function.
  * @param callbackContext Context pointer, will be sent back in callback.
- * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
 cbRTSL_Status cbWLAN_registerPacketIndicationCallback(cbWLAN_Handle handle, cbWLAN_packetIndication packetIndication, void *callbackContext);
 
@@ -558,7 +562,7 @@ cbRTSL_Status cbWLAN_registerPacketIndicationCallback(cbWLAN_Handle handle, cbWL
  *
  * @param statusIndication Callback function.
  * @param callbackContext Context pointer, will be sent back in callback.
- * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR. 
+ * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
 cbRTSL_Status cbWLAN_deregisterStatusCallback(cbWLAN_statusIndication statusIndication, void *callbackContext);
 
@@ -569,9 +573,9 @@ cbRTSL_Status cbWLAN_Util_PSKFromPWD(cb_char passphrase[cbWLAN_MAX_PASSPHRASE_LE
  * Set the channel list to be used for connection and scanning.
  * The list will be filtered according to the allowed channel list
  * set. The list can include both 2.4GHz and 5GHz channels.
- * If channel list parameter is NULL the default channel list is 
+ * If channel list parameter is NULL the default channel list is
  * restored.
- * 
+ *
  * @param channelList Pointer to channel list for the driver to use.
  *
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
@@ -589,18 +593,18 @@ cbRTSL_Status cbWLAN_getChannelList(cbWLAN_ChannelList *channelList);
 
 /**
  * Returns the channel list currently used. This channel list
- * depend on the channel list specified by the user and the 
+ * depend on the channel list specified by the user and the
  * current regulatory domain.
  *
  * @param channelList Pointer to channel list
- * 
+ *
  * @return @ref cbSTATUS_OK if call successful, otherwise cbSTATUS_ERROR.
  */
 cbRTSL_Status cbWLAN_getActiveChannelList(cbWLAN_ChannelList *channelList);
 
 /**
- * WLAN control settings. Both in and out parameters are supported. 
- * If an ioctl request is not supported cbSTATUS_ERROR is returned and 
+ * WLAN control settings. Both in and out parameters are supported.
+ * If an ioctl request is not supported cbSTATUS_ERROR is returned and
  * the value parameter shall be ignored.
  *
  * @param ioctl Parameter that shall be set. @ref cbWLAN_Ioctl lists all supported parameters.
