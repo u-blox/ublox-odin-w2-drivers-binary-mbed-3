@@ -152,6 +152,7 @@ typedef enum wm_tsetting_e {
     cbTARGET_TSETTING_PS_BEACON_EARLY_TERMINATION, /**< Powersave: In Max PSP, use beacon early termination. */
     cbTARGET_TSETTING_NBR_BEACONS,/** Number of beacons to track*/
     cbTARGET_TSETTING_BEACON_TRACK_WAIT, /** Time to wait before dropping link after beacon track loss*/
+    cbTARGET_TSETTING_ACX_STA_KEEP_ALIVE, /** Interval sending keep-alive, ms */
     cbTARGET_TSETTING_MAX,
 } cbWM_TSETTING;
 
@@ -370,6 +371,7 @@ cbRTSL_Status cbTARGET_configure(cbTARGET_Handle* hTarget, cbTARGET_ConfigParams
 #define W_CONST_FT_MODE                             (2)
 #define W_CONST_NBR_BEACONS_DEFAULT                 (20)
 #define W_CONST_BEACONS_TRACK_WAIT                  (100)
+#define W_CONST_ACX_STA_KEEP_ALIVE                  (55000)
 #define W_CONST_WIRELESS_ISOLATION                  (0)
 
 #define W_CONST_DEFAULT_FORCE_WORLD_MODE            (0)

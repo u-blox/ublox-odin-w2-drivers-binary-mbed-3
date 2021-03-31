@@ -42,7 +42,7 @@ extern "C" {
  *
  * @ingroup wlan
  */
-#define cbWLAN_MAX_USERNAME_LENGTH      42
+#define cbWLAN_MAX_USERNAME_LENGTH      64
 
 /**
  * Max password length in @ref cbWLAN_Util_PSKFromPWD and @ref cbWLAN_EnterpriseConnectParameters
@@ -89,6 +89,8 @@ typedef cb_uint32 cbWLAN_Handle;
  */
 typedef struct cbWLAN_StartParameters {
     cbWLAN_MACAddress      mac;        /**< MAC of WLAN interface, set to all zeros if hardware programmed address should be used. */
+    cb_boolean disable80211d;
+    cb_uint8 forceCountryCode[2];
     cbWM_ModuleType  deviceType;      /**< Specify current device type. */
     union {
         struct {
