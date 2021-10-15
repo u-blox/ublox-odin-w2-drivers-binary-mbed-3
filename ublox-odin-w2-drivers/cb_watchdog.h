@@ -1,6 +1,13 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2016 u-blox AB, Sweden.
- * Any reproduction without written permission is prohibited by law.
+ * Copyright (C) u-blox
+ *
+ * u-blox reserves all rights in this deliverable (documentation, software,
+ * etc., hereafter "Deliverable").
+ *
+ * This file is the sole property of u-blox. Its reproduction, modification,
+ * re-distribution, sub-licensing or any other use is subject to u-blox's
+ * General Terms and Conditions of Sales or to specific terms applicable to
+ * the file as indicated by u-blox.
  *
  * Component:   Watchdog
  * File:        cb_watchdog.h

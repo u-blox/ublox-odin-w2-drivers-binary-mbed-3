@@ -1,6 +1,13 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2016 u-blox AB, Sweden.
- * Any reproduction without written permission is prohibited by law.
+ * Copyright (C) u-blox
+ *
+ * u-blox reserves all rights in this deliverable (documentation, software,
+ * etc., hereafter "Deliverable").
+ *
+ * This file is the sole property of u-blox. Its reproduction, modification,
+ * re-distribution, sub-licensing or any other use is subject to u-blox's
+ * General Terms and Conditions of Sales or to specific terms applicable to
+ * the file as indicated by u-blox.
  *
  * Component   : Bluetooth Test
  * File        : cb_bt_test_man.h
@@ -78,7 +85,7 @@ extern cb_int32 cbBTM_enableDUT(cbBTM_TestCallback callback);
  *                         0x03 = BT EDR 3MB (8-DPSK)
  *                         0x04 = BT LE (BLE, GMSK)
  *                         0x05 = ANT (GFSK)
- * @param testPattern Range: 0x00 - 0x07 
+ * @param testPattern Range: 0x00 - 0x07
  *                         0x00 = PN9
  *                         0x01 = PN15
  *                         0x02 = ZOZO (101010101010101010)
@@ -154,7 +161,7 @@ extern cb_int32 cbBTM_tiDrpbTesterConRx(
  * @param frequencyMode 0x00 = Hopping 0x03 = Single frequency
  * @param txSingleFrequency Transmission frequency in MHz,Range 2402 - 2480, 0xFFFF = no TX
  * @param rxSingleFrequency Transmission frequency in MHz,Range 2402 - 2480, 0xFFFF = no RX
- * @param aclDataPattern ACL TX packet data pattern Range: 0x00 - 0x05 
+ * @param aclDataPattern ACL TX packet data pattern Range: 0x00 - 0x05
  *                         0x00 = All 0
  *                         0x01 = All 1
  *                         0x02 = ZOZO (101010101010101010)

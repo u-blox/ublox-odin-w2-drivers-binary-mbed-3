@@ -1,7 +1,9 @@
 /*---------------------------------------------------------------------------
  * Copyright (C) u-blox
+ *
  * u-blox reserves all rights in this deliverable (documentation, software,
  * etc., hereafter "Deliverable").
+ *
  * This file is the sole property of u-blox. Its reproduction, modification,
  * re-distribution, sub-licensing or any other use is subject to u-blox's
  * General Terms and Conditions of Sales or to specific terms applicable to

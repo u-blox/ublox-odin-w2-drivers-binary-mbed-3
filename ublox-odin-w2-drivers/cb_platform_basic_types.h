@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2016, u-blox Malmö, All Rights Reserved
+ * Copyright (C) u-blox
  * SPDX-License-Identifier: LicenseRef-PBL
  *
  * This file and the related binary are licensed under the

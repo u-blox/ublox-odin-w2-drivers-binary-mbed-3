@@ -1,7 +1,9 @@
 /*---------------------------------------------------------------------------
  * Copyright (C) u-blox
+ *
  * u-blox reserves all rights in this deliverable (documentation, software,
  * etc., hereafter "Deliverable").
+ *
  * This file is the sole property of u-blox. Its reproduction, modification,
  * re-distribution, sub-licensing or any other use is subject to u-blox's
  * General Terms and Conditions of Sales or to specific terms applicable to
@@ -22,6 +24,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "cb_inet.h"
+#include "cb_heap.h"
+#include "cb_timer.h"
+#include "cb_random.h"
 #include "cb_hw.h"
 #include "cb_log.h"
 #include "cb_target.h"
@@ -72,7 +78,7 @@ typedef enum wm_gsetting_e {
     cbTARGET_GSETTING_FRAGMENTATION_THRESHOLD, /**< Set the fragmentation threshold */
     cbTARGET_GSETTING_TX_POWER, /**< Desired output power in dBm. */
     cbTARGET_GSETTING_MAX_PASSIVE_SCAN_TIME, /**< Maximum scan time for passive scan */
-    cbTARGET_GSETTING_MODULE_TYPE, /**< Type of module. TODO: remove. Legacy parameter that shouldn't be possible to change. */
+    cbTARGET_GSETTING_MODULE_TYPE, /**< Type of module. */
     cbTARGET_GSETTING_SCAN_LISTEN_INTERVAL, /**< Listen interval between channel scans */
     cbTARGET_GSETTING_SLEEP_TIMEOUT, /**< Only allow power save modes after this period of inactivity. Timeout in ms. Only used when power save is enabled */
     cbTARGET_GSETTING_DOT11_SHORT_RETRY_LIMIT, /**< 802.11 short retry limit for station (dot11ShortRetryLimit). Bit 31-24 reserved, bit 23-16 EAPOL & Broadcast, bit 15-8 MGMT, bit 7-0 data. */
